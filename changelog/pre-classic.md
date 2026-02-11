@@ -25,7 +25,7 @@
   - For 1 tick, the player's eye level is 0.9 blocks above the feet instead of 1.62 blocks, which means the player is effectively spawned at Y 74.72 instead.
     - This mismatch also results in the camera rising by 0.715 blocks after the first tick, though is barely noticable.
 - Pressing `RETURN` saves the world.
-  - The world is saved in a single file called "[level.dat](save-formats/block-byte-array.md)"
+  - The world is saved in a single file called "[level.dat](../save-formats/block-byte-array.md)"
 - Pressing `ESC` closes the game.
   - Closing the game automatically saves the world.
 
