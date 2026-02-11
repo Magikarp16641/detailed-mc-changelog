@@ -21,94 +21,24 @@
   - The character `&` can never render because of this.
   - The game crashes if `&` is the last character of a string.
 
-<style>table,th,td{border:1px solid black;border-collapse:collapse;text-align:center;padding-left:4px;padding-right:4px;}</style>
-<table>
-  <tr>
-    <th>Formatting code</th>
-    <th>Base color</th>
-    <th>Shadow color</th>
-  </tr>
-  <tr>
-    <td><code>&0</code></td>
-    <td style="background-color:#000000;color:white">#000000</td>
-    <td style="background-color:#000000;color:white">#000000</td>
-  </tr>
-  <tr>
-    <td><code>&1</code></td>
-    <td style="background-color:#0000BF">#0000BF</td>
-    <td style="background-color:#00002F;color:white">#00002F</td>
-  </tr>
-  <tr>
-    <td><code>&2</code></td>
-    <td style="background-color:#00BF00">#00BF00</td>
-    <td style="background-color:#002F00;color:white">#002F00</td>
-  </tr>
-  <tr>
-    <td><code>&3</code></td>
-    <td style="background-color:#00BFBF">#00BFBF</td>
-    <td style="background-color:#002F2F;color:white">#002F2F</td>
-  </tr>
-  <tr>
-    <td><code>&4</code></td>
-    <td style="background-color:#BF0000">#BF0000</td>
-    <td style="background-color:#2F0000;color:white">#2F0000</td>
-  </tr>
-  <tr>
-    <td><code>&5</code></td>
-    <td style="background-color:#BF00BF">#BF00BF</td>
-    <td style="background-color:#2F002F;color:white">#2F002F</td>
-  </tr>
-  <tr>
-    <td><code>&6</code></td>
-    <td style="background-color:#BFBF00">#BFBF00</td>
-    <td style="background-color:#2F2F00;color:white">#2F2F00</td>
-  </tr>
-  <tr>
-    <td><code>&7</code></td>
-    <td style="background-color:#BFBFBF">#BFBFBF</td>
-    <td style="background-color:#2F2F2F;color:white">#2F2F2F</td>
-  </tr>
-  <tr>
-    <td><code>&8</code></td>
-    <td style="background-color:#404040;color:white">#404040</td>
-    <td style="background-color:#101010;color:white">#101010</td>
-  </tr>
-  <tr>
-    <td><code>&9</code></td>
-    <td style="background-color:#4040FF">#4040FF</td>
-    <td style="background-color:#10103F;color:white">#10103F</td>
-  </tr>
-  <tr>
-    <td><code>&a</code></td>
-    <td style="background-color:#40FF40">#40FF40</td>
-    <td style="background-color:#103F10;color:white">#103F10</td>
-  </tr>
-  <tr>
-    <td><code>&b</code></td>
-    <td style="background-color:#40FFFF">#40FFFF</td>
-    <td style="background-color:#103F3F;color:white">#103F3F</td>
-  </tr>
-  <tr>
-    <td><code>&c</code></td>
-    <td style="background-color:#FF4040">#FF4040</td>
-    <td style="background-color:#3F1010;color:white">#3F1010</td>
-  </tr>
-  <tr>
-    <td><code>&d</code></td>
-    <td style="background-color:#FF40FF">#FF40FF</td>
-    <td style="background-color:#3F103F;color:white">#3F103F</td>
-  </tr>
-  <tr>
-    <td><code>&e</code></td>
-    <td style="background-color:#FFFF40">#FFFF40</td>
-    <td style="background-color:#3F3F10;color:white">#3F3F10</td>
-  </tr>
-  <tr>
-    <td>any other code</td>
-    <td style="background-color:#FFFFFF">#FFFFFF</td>
-    <td style="background-color:#3F3F3F;color:white">#3F3F3F</td>
-  </tr>
-</table>
+| Formatting code | Base color | Shadow color |
+| :---: | :---: | :---: |
+| `&0` | `#000000` | `#000000` |
+| `&1` | `#0000BF` | `#00002F` |
+| `&2` | `#00BF00` | `#002F00` |
+| `&3` | `#00BFBF` | `#002F2F` |
+| `&4` | `#BF0000` | `#2F0000` |
+| `&5` | `#BF00BF` | `#2F002F` |
+| `&6` | `#BFBF00` | `#2F2F00` |
+| `&7` | `#BFBFBF` | `#2F2F2F` |
+| `&8` | `#404040` | `#101010` |
+| `&9` | `#4040FF` | `#10103F` |
+| `&a` | `#40FF40` | `#103F10` |
+| `&b` | `#40FFFF` | `#103F3F` |
+| `&c` | `#FF4040` | `#3F1010` |
+| `&d` | `#FF40FF` | `#3F103F` |
+| `&e` | `#FFFF40` | `#3F3F10` |
+| any other code | `#FFFFFF` | `#3F3F3F` |
 
 - The font has the appearance of the Code page 437 character set.
 - Characters `00`, `20` and `FF` are spaces with widths 1, 4 and 0 respectively.
@@ -301,63 +231,18 @@
     - That means that in those positions bushes never decay, grass never spreads from or dies, and liquids never spread from or turn into calm liquid.
     - calmWater and calmLava are only obtainable in these positions if they naturally generated there.
 
-<table>
-  <tr>
-    <th>Probability out of 2^32</th>
-    <th>Average time between ticks</th>
-    <th>Number of blocks</th>
-  </tr>
-  <tr>
-    <td>0</td>
-    <td>N/A</td>
-    <td>715264</td>
-  </tr>
-  <tr>
-    <td>256</td>
-    <td>40 s</td>
-    <td>448512</td>
-  </tr>
-  <tr>
-    <td>512</td>
-    <td>20 s</td>
-    <td>398592<td>
-  </tr>
-  <tr>
-    <td>768</td>
-    <td>13.33333 s</td>
-    <td>395264</td>
-  </tr>
-  <tr>
-    <td>1024</td>
-    <td>10 s</td>
-    <td>354816</td>
-  </tr>
-  <tr>
-    <td>1280</td>
-    <td>8 s</td>
-    <td>383232</td>
-  </tr>
-  <tr>
-    <td>1536</td>
-    <td>6.66667 s</td>
-    <td>373504</td>
-  </tr>
-  <tr>
-    <td>1792</td>
-    <td>5.71429 s</td>
-    <td>432128</td>
-  </tr>
-  <tr>
-    <td>2048</td>
-    <td>5 s</td>
-    <td>492544</td>
-  </tr>
-  <tr>
-    <td>2304</td>
-    <td>4.44444 s</td>
-    <td>200448</td>
-  </tr>
-</table>
+| Probability out of 2<sup>32</sup> | Average time between ticks | # of blocks |
+| ---: | --- | :---: |
+| 0 | N/A | 715264 |
+| 256 | 40 s | 448512 |
+| 512 | 20 s | 398592 |
+| 768 | 13.33333 s | 395264 |
+| 1024 | 10 s | 354816 |
+| 1280 | 8 s | 383232 |
+| 1536 | 6.66667 s | 373504 |
+| 1792 | 5.71429 s | 432128 |
+| 2048 | 5 s | 492544 |
+| 2304 | 4.44444 s | 200448 |
 
 ### General
 - The version number in the top left of the screen now reads "0.0.12a_03".
