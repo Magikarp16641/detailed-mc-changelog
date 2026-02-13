@@ -13,6 +13,7 @@
 ### World generation
 - The world is finite and its dimensions are 256x64x256.
 - World generation consists of 42 layers of `rock` and 1 layer of `grass`.
+- When loading a world, if the level.dat is too short the missing blocks are filled with natural generation.
 
 ### Gameplay
 - Left-clicking places blocks. Right-clicking destroys blocks (sets the ID to `00`).
@@ -20,12 +21,15 @@
 - Horizontal movement is controlled by both `W`, `A`, `S`, `D` and the arrow keys.
 - Jumping is controlled by `SPACE`, `LMETA` and `LWIN`.
 - The movement physics run at a rate of 60 ticks per second.
+  - A maximum of 60 ticks can happen in a frame.
 - When loading into the world or after pressing `R` the player is spawned at Y 74 at a random point above the world.
   - Pressing `R` does not reset the player's velocity, making it possible to build up falling speed up to the terminal velocity by continually pressing `R`.
   - For 1 tick, the player's eye level is 0.9 blocks above the feet instead of 1.62 blocks, which means the player is effectively spawned at Y 74.72 instead.
     - This mismatch also results in the camera rising by 0.715 blocks after the first tick, though is barely noticable.
 - Pressing `RETURN` saves the world.
-  - The world is saved in a single file called "[level.dat](../save-formats/block-byte-array.md)"
+  - The world is saved in a single file called "[level.dat](../save-formats/block-byte-array.md)".
+    - Loading worlds with this save format in 0.0.13a-launcher or later will result in discontinued world name and creator values.⬟
+    - Downgrading worlds from 0.0.13a-launcher or later will cause the extra data stored by the newer save format to be interpreted as block IDs. Editing them by placing and breaking blocks gives rise to many possibilities and is known as [header editing](../complex-methods/header-editing.md).⬟
 - Pressing `ESC` closes the game.
   - Closing the game automatically saves the world.
 
@@ -102,6 +106,7 @@
 ### World generation
 - The world is now randomly generated using Perlin noise.
 - The terrain consists of rock, grass and dirt.
+- Attempting to load a level.dat that is too short now crashes the game instead of filling missing blocks with natural generation.
 
 ### Gameplay
 **Controls**
@@ -157,6 +162,7 @@
     - Increased jump height from 1.06750 blocks to 1.23350 blocks.
     - Increased terminal falling velocity from 14.99998 m/s to 79.99988 m/s.
     - Increased friction while grounded.
+  - Lowered the maximum number of ticks in a frame to 20.
 
 ### General
 - The game is now in fullscreen mode.

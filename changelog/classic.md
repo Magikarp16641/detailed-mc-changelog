@@ -111,7 +111,7 @@
     - If the depth is equal to the spread speed, stop.
     - Replaces horizontally adjacent ID `00`s to the last with the liquid and restarts the spreading algorithm from them with a depth 1 higher.
   - If it couldn't spread at all, it turns into the corresponding calm liquid block.
-- When water is updated by lava it turns to rock. When lava is updated by water it turns to rock.
+- When water is updated by lava it turns to rock and when lava is updated by water it turns to rock.
 - Their model is shifted 0.1 blocks downwards.
   - This causes z-fighting in certain scenarios.
 - They are semi-transparent.
@@ -120,6 +120,8 @@
 - The top face doesn't render if the block above is solid, resulting in an x-ray like effect.
 - When the player is submerged in a liquid a fog effect renders. The fog is dark blue when in water and orange when in lava. The lava fog is denser.
 - Can only be obtained via spreading from preexisting calmWater or calmLava, which can't be obtained outside of terrain generation. Cannot be obtained above Y 31.
+  - Water will briefly become unobtainable in 0.0.13a-launcher.★
+  - Lava above Y 21 will briefly become unobtainable in 0.0.13a-launcher.★
 
 **calmWater, calmLava**
 - Have IDs of `09` and `0B`.
@@ -145,6 +147,8 @@
       - calmWater at the world edge always turns to water upon receiving a block update, but if it's one of the about 17% of blocks which are never random ticked it can never turn back into calmWater.
 - When calmWater is updated by lava, it turns to rock. When calmLava is is updated by water, it turns to rock.
 - Can initially only be obtained via terrain generation. Cannot be obtained above Y 31.
+  - calmWater will briefly become unobtainable in 0.0.13a-launcher.★
+  - calmLava above Y 21 will briefly become unobtainable in 0.0.13a-launcher.★
 
 ### Gameplay
 **Block updates**
@@ -168,7 +172,7 @@
   - This is supposed to mimic a layer of water (or calmWater) at Y 30 and 31, but the water is missing its side texture.
 - Faces on the outside of the world no longer render.
   - This is noticable on the top faces of blocks at Y 63.
-  - As a direct result, the selected block is no longer shown in the top right corner of the screen as it's being rendered at 0,-2,0. The bush is not affected.
+  - As a direct result, the selected block type is no longer shown in the top right corner of the screen as it's being rendered at 0,-2,0. The bush is not affected.
 - Zombies can no longer be removed by being below Y -100 in practice.
 
 **Controls**
@@ -188,7 +192,7 @@
 
 **Miscellaneous**
 - Added the "IT HAPPENED!" and "hoooly fuck" error messages into the `floodFillLiquids` method. They can never appear in normal gameplay.
-- Readded the `META-INF` fodler, which includes a `MANIFEST.MF` file.
+- Readded the `META-INF` folder, which includes a `MANIFEST.MF` file.
 - Added an unused `grass.png` texture.
 - Added an unused `null` file.
 
@@ -261,11 +265,168 @@
   - Added an opaque water texture.
 
 ## Removals
-### Blocks
-- Removed the unused stoneBrick, wood and bush constants from the code, the blocks themselves aren't removed.
-- Removed the unused empty block constant.
-
 ### General
 - The game can no longer be run outside an applet. As such the game's resolution is now always 640x480.
 - `resourceName` + " -> " + `id` no longer gets sent to the game log when a new texture is laoded.
 - Removed unused server code.
+- Removed the unused stoneBrick, wood and bush constants from the code, the blocks themselves aren't removed.
+- Removed the unused empty block constant.
+
+# 0.0.13a-launcher
+## Additions
+### Gameplay
+**Pause screen**
+- Pressing `ESC` or tabbing out now opens a pause screen instead of just releasing the mouse.
+- The pause screen includes 4 buttons:
+  - "Generate new level"
+    - Generates a new level with the dimensions of 32x64x512 and removes all zombies.
+      - The world is small enough to be safely downgraded to prior versions without losing data, making it possible to create calmLava next to or on top of ID `00` by downgrading to before 0.0.12a_03-200018.⬟
+        - In rd-160052-launcher and later the game will crash not only when rendering the lava, but also when rendering what used to be the header.
+  - "Save level.."
+    - Does nothing.
+  - "Load level.."
+    - Does nothing.
+  - "Back to game"
+    - Closes the pause screen.
+- The text color does not correspond to any formatting code.
+  - The color is `#E0E0E0` with its shadow being `#383838`.
+  - When the button is hovered over the color changes to `#FFFFA0` with its shadow being `#3F3F28`.
+
+### General
+- The game can once again be ran outside an applet. It has a resolution of 864x480.
+- Added game arguments. Launching the game with the `-fullscreen` argument opens the game in fullscreen mode.
+- Added a thin black block selection outline.
+- Added uncompiled `_LevelGen.java_` and `_NoiseMap.java_` files.
+  - Include a slightly modified version of last version's terrain generator without water and lava generation.
+  - `_LevelGen.java_` includes commented out lines of code which would make water (not calmWater) generate at the edge of the world without flooding.
+- Added an unused improved Perlin noise implementation.
+- Readded unused server code.
+- Readded the unused empty, stoneBrick, wood and bush constants to the code.
+
+## Changes
+### Blocks
+**bush**
+- Texture changed.
+- The orientation of the rendered textures is now opposite of what it used to be.
+
+**water, calmWater**
+- Water now turns to rock when updated by calmLava.
+  - This never happens as calmLava never sends out block updates.
+- Made the water collision check stricter. The player is no longer considered as in water if only the bottom or top 0.4 blocks of the hitbox collide with water.
+  - Being supported by water through a positive ceiling corner due to collision check imperfection is no longer possible.
+- The player now does a 0.69085 block jump when coming ashore.
+  - With the new water collision check changes, it would otherwise be impossible to get ashore from water.
+- Water, calmWater and the water texture past the world border no longer render behing the block placing preview.
+- The underwater fog now renders based on 0.12 blocks above the player's eye level.
+- The underwater fog is bluer than before.
+
+**lava, calmLava**
+- Lava now turns to rock when updated by calmWater.
+  - This never happens as calmWater never sends out block updates.
+- The player now does a 0.69085 block jump when coming ashore.
+- Lava is no longer semi-transparent.
+- Slightly changed texture.
+- The underlava fog now renders based on 0.12 blocks above the player's eye level.
+- The underlava fog is now denser and red instead of orange.
+
+### World generation
+- Greatly simplified terrain generation.
+- Added an "Eroding.." step between "Raising.." and "Carving.."
+- The terrain now consists of 22 layers of rock, 10 layers of dirt and 1 layer of grass.
+- Caves still generate.
+  - 64 caves generate in the new world size.
+- Due to Y 31 always generating filled with dirt, no calmWater can get flooded from the edges.
+- Added water pools. `width * height / 5000` attempts are made to find an ID `00` at Y 31 to flood fill calmWater from.
+  - The number of attempts is 13 for the default world size and 3 for the new thin world size.
+  - Water pools can never generate for the same reason as above.
+- The "Flood filled " + count + " tiles in " + time + " ms" message is now shown first and only calmWater is counted towards the number of tiles.
+- The number of attempts to generate lava pools is now dependand on world dimensions and is equal to `width * height * depth / 10000`. This results in a slight increase for the default world size from 400 to 419. The number of attempts on the new thin world size is 104.
+- calmLava generating on top of calmWater now turns the water into rock.☆
+- Because Y 31 always generates filled with dirt, calmWater can't generate. Discontinuing water and calmWater.☆
+- Because all layers between Y 22 and Y 31 always generates filled with dirt, calmLava can't generate above Y 21. Discontinueding lava and calmLava above Y 21.☆
+
+### Gameplay
+**Random ticks**
+- The number and distribution of random ticks depends on the world size.
+  - The number of random ticks per game tick is still `width * height * depth / 200`
+  - Unless all dimensions are a power of 2, large sections of the world never get random ticked.
+    - If all dimensions are 1 more than a power of 2 only 8 blocks ever get random ticked (less if one ore more of the dimensions is exactly 1).
+- The newly possible 32x64x512 world has 5,242.88 random ticks per game tick and notably does not have any blocks that never tick.
+
+| Probability out of 2<sup>32</sup> | Average time between ticks | # of blocks |
+| ---: | --- | :---: |
+| 3328 | 12.30769 s | 4608 |
+| 3456 | 11.85185 s | 24576 |
+| 3584 | 11.42857 s | 58368 |
+| 3712 | 11.03448 s | 82944 |
+| 3840 | 10.66667 s | 103936 |
+| 3968 | 10.32258 s | 157696 |
+| 4096 | 10 s | 178688 |
+| 4224 | 9.69697 s | 131072 |
+| 4352 | 9.41176 s | 125952 |
+| 4480 | 9.14286 s | 117760 |
+| 4608 | 8.88889 s | 54272 |
+| 4736 | 8.64865 s | 7168 |
+| 4864 | 8.42105 s | 1536 |
+
+**Controls**
+- Modified the player's movement physics.
+  - Reverted jump height from 1.68546 blocks to 1.23350 blocks.
+  - Increased swimming and sinking speed in water from 1.33333 m/s to 2.00000 m/s.
+  - Decresed the speed of swimming up in water from 2.66667 m/s to 2.00000 m/s.
+- Holding down the `SPACE`, `LMETA` or `LWIN` now makes the player jump only once.
+- Holding down `R` now makes the player respawn only once.
+- Reduced player reach from 3 blocks to 2.5 blocks.
+
+### General
+**World boundary**
+- The player and zombies can no longer spawn within a block of the world boundary to prevent spawning inside it.
+  - If either the height or depth of the world is 1, it's possible to spawn anywhere between 0 and 1, which results in a 60% chance to spawn clipped inside the world border (84% if both dimensions are 1).
+    - If both dimensions are 1 there is a 36% chance of spawning clipped inside the corner of the world.
+  - If either the height or depth of the world is 0, it's possible to spawn anywhere between -1 and 1, which results in a 30% chance to spawn clipped 2 blocks inside the world border (51% if both dimensions are 0).
+    - If both dimensions are 0 there is a 9% chance of spawning clipped inside a corner 2 blocks inside the world border.
+- How far the `rock.png` and `water.png` textures stretch past the world border now depends on the height and width of the world. They render for 640 blocks, 5 times the height or 5 times the width of the world, whichever is smallest.
+  - The textures are rendered in chunks with a width of 128 blocks, the world's height, or the world's width.
+  - If the chunk width does not divide one of the world dimensions, texture misalighnments occur in the corresponding positive direction.
+    - The floor at the bottom of the world extends past the world edge.
+    - The water and ground levels start further from the world.
+    - The textures extend further from the world than in the negative direction.
+- Faces on the outside of the world once again render.
+  - Does not apply to liquids.
+  - This fixes the bug that made selected block types not render in the top right of the screen.
+
+**Save format**
+- Changed the [save format](../save-formats/early-classic.md).
+  - Worlds from previous versions are automatically converted upon loading.
+    - Specifically worlds are assumed to use the [older save format](../save-formats/block-byte-array.md) if either the magic number is incorrect or the version number is greater than 1.
+- World name and creator name are now saved. They are encoded using MUTF-8.
+  - Newly generated world have the world name set to "A Nice World" and the creator set to "noname".
+  - Worlds converted from previous versions have the world name set to "--" and the creator set to "unknown".⬠⬟
+  - Attempting to load a string with invalid UTF-8 or a 4 byte character will crash the game.
+  - Loading a string with an overlong encoding will convert it to its regular encoding.
+  - Loading a string containing `00` will convert it to `C0 80`.
+- The create time of the world is now saved.
+  - Worlds converted from previous versions have the create time set to 1970-01-01 00:00:00.000.
+- Added support for different world sizes.
+  - Worlds generated when no level.dat is found have their world size set to 256x64x256 (width, depth, height).
+  - Worlds generated by the "Generate new level" button have their world size set to 32x64x512.
+  - Worlds converted from previous versions have their world size set to 256x64x256.
+  - Attempting to load a world with a negative world dimension crashes the game.
+- The level.dat of a 256x64x256 world is now too long to be able to be safely downgraded and updated back. Making creating invalid liquid block configurations via downgrading no longer possible in those worlds.⬠
+- Downgrading worlds with this save format into earlier versions makes the header be interpreted as block IDs, which can subsequently be modified. This gives rise to many possibilities and is known as [header editing](../complex-methods/header-editing.md).⬠⬟
+
+**Miscellaneous**
+- The version number in the top left of the screen now reads "0.0.13a".
+- Changed the game window title to "Minecraft 0.0.13a".
+- Increased the maximum render distance from 1000 blocks to 1024 blocks.
+- Changed the lighting of the selected block type shown in the top right corner.
+- Running the game in an applet no longer forces the game to have a resoltion of 640x480. It will instead have resolution equal to the dimensions of the applet.
+- The code is no longer obfuscated.
+
+## Removals
+### Gameplay
+- Pressing `N` no longer generates a new world.
+
+### General
+- Removed the `META-INF` folder and the `MANIFEST.MF` file.
+- Removed the unused `null` file.
