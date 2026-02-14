@@ -95,7 +95,12 @@ Below is a table of blocks and how they can be created from the header without h
 | `B8`-`FF` | N/A | | ??? | |
 
 ## Block configurations
-Block IDs being created from the header and shifting blocks (either via invalidating the header or changing the world dimensions) both allow for water or calmWater adjacent to lava or calmLava. Both of which are normally impossible.
+Block IDs being created from the header and shifting blocks (either via invalidating the header or changing the world dimensions) both allow invalid block configurations. Those include :
+- water or calmWater adjacent to lava or calmLava.
+- calmWater or calmLava above or next to ID `00`.
+- calmWater at the world border at non-ticking coordinates above or below rock.
+- calmWater at the world border at non-ticking coordinates adjacent to grass, stoneBrick, wood or bush.
+- calmWater at the world border at non-ticking coordinates below dirt.
 
 ## World data
 The width, height and depth of the world can be edited to many different combinations of values from a range of -32,768 to 32,767. For the world to not immediately crash on load none of the dimensions can be negative, and their product has to be sufficiently below 4,194,304 for there to be enough bytes in the level.dat for each block to have an associated ID.
