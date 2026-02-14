@@ -373,7 +373,7 @@
 - Modified the player's movement physics.
   - Reverted jump height from 1.68546 blocks to 1.23350 blocks.
   - Increased swimming and sinking speed in water from 1.33333 m/s to 2.00000 m/s.
-  - Decresed the speed of swimming up in water from 2.66667 m/s to 2.00000 m/s.
+  - Decresed upwards swimming speed in water from 2.66667 m/s to 2.00000 m/s.
 - Holding down the `SPACE`, `LMETA` or `LWIN` now makes the player jump only once.
 - Holding down `R` now makes the player respawn only once.
 - Reduced player reach from 3 blocks to 2.5 blocks.
