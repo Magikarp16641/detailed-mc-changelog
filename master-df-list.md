@@ -29,7 +29,7 @@ This serves as a list of all discontinued features mentioned in this changelog.
 | water (`08`) or calmWater (`09`) adjacent to lava (`0A`) or calmLava (`0B`) | [Header editing](complex-methods/header-editing.md) | |
 | calmWater (`09`) or calmLava (`0B`) above or next to ID `00` | [Header editing](complex-methods/header-editing.md) | |
 | calmWater (`09`) at the world border at non-ticking coordinates above or below rock (`01`) | [Header editing](complex-methods/header-editing.md) | |
-| calmWater (`09`) at the world border at non-ticking coordinates adjacent to grass (`02`), stoneBrick (`04`), wood (`05`) or bush (`06`) | ([Header editing](complex-methods/header-editing.md) | |
+| calmWater (`09`) at the world border at non-ticking coordinates adjacent to grass (`02`), stoneBrick (`04`), wood (`05`) or bush (`06`) | [Header editing](complex-methods/header-editing.md) | |
 | calmWater (`09`) at the world border at non-ticking coordinates below dirt (`03`) | [Header editing](complex-methods/header-editing.md) | |
 
 # World data
