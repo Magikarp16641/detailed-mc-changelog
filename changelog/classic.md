@@ -12,6 +12,8 @@
 ### General
 **GUI**
 - Added a version number to the top left of the screen that currently reads "0.0.11a".
+- The framerate and number of chunk updates now display below the version number instead of being sent to the game log.
+  - If a frame takes longer than a second to render, it will always display as 0 fps and 0 chunk updates regardless of how many chunk updates there were.
 
 **Font**
 - Added support for text rendering.
@@ -65,7 +67,6 @@
 - Left-clicking now destroys and places blocks based on the current edit mode.
 - Solid blocks can no longer be placed inside the player or zombies.
 - Pressing `ESC` no longer closes the game and instead ungrabs the mouse.
-- The framerate and number of chunk updates now display below the version number instead of being sent to the game log.
 - The game's resolution is now 854x480 instead of 1024x768. This is not the correct aspect ratio and as such the actual gameplay has a resolution of 640x480 with a 214 pixel wide light blue section to its right.
 - Updated the `terrain.png`.
   - Removed the unused unbreakable, opaque and semi-transparent water, and lava textures.
@@ -122,6 +123,7 @@
 - Can only be obtained via spreading from preexisting calmWater or calmLava, which can't be obtained outside of terrain generation. Cannot be obtained above Y 31.
   - Water will briefly become unobtainable in 0.0.13a-launcher.★
   - Lava above Y 21 will briefly become unobtainable in 0.0.13a-launcher.★
+  - Lava above Y 27 will become unobtainable in 0.0.13a-launcher.★
 
 **calmWater, calmLava**
 - Have IDs of `09` and `0B`.
@@ -269,8 +271,6 @@
 - The game can no longer be run outside an applet. As such the game's resolution is now always 640x480.
 - `resourceName` + " -> " + `id` no longer gets sent to the game log when a new texture is laoded.
 - Removed unused server code.
-- Removed the unused stoneBrick, wood and bush constants from the code, the blocks themselves aren't removed.
-- Removed the unused empty block constant.
 
 # 0.0.13a-launcher
 ## Additions
@@ -301,7 +301,6 @@
   - `_LevelGen.java_` includes commented out lines of code which would make water (not calmWater) generate at the edge of the world without flooding.
 - Added an unused improved Perlin noise implementation.
 - Readded unused server code.
-- Readded the unused empty, stoneBrick, wood and bush constants to the code.
 
 ## Changes
 ### Blocks
@@ -315,6 +314,9 @@
 - Made the water collision check stricter. The player is no longer considered as in water if only the bottom or top 0.4 blocks of the hitbox collide with water.
   - Being supported by water through a positive ceiling corner due to collision check imperfection is no longer possible.
 - The player now does a 0.69085 block jump when coming ashore.
+  - When the shore is in the positive X or Z direction, the jump is only performed when the shore is at the same Y level as the water.
+  - When the shore is in the negative X direction, the jump is also performed when the shore is above the water if the player's velocity in the Z direction is non-positive.
+  - When the shore is in the negative Z direction, the jump is always performed, regardless of the shore's Y level.
   - With the new water collision check changes, it would otherwise be impossible to get ashore from water.
 - Water, calmWater and the water texture past the world border no longer render behing the block placing preview.
 - The underwater fog now renders based on 0.12 blocks above the player's eye level.
@@ -324,6 +326,7 @@
 - Lava now turns to rock when updated by calmWater.
   - This never happens as calmWater never sends out block updates.
 - The player now does a 0.69085 block jump when coming ashore.
+  - The check for when to jump has the same issues as for water.
 - Lava is no longer semi-transparent.
 - Slightly changed texture.
 - The underlava fog now renders based on 0.12 blocks above the player's eye level.
@@ -331,11 +334,12 @@
 
 ### World generation
 - Greatly simplified terrain generation.
-- Added an "Eroding.." step between "Raising.." and "Carving.."
+- Added an "Eroding.." step between "Raising.." and "Carving..".
 - The terrain now consists of 22 layers of rock, 10 layers of dirt and 1 layer of grass.
+- Lowered the minimum Y level grass can generate on from Y 32 to Y 31.
+  - This has no effect in this version due to the flat terrain generation.
 - Caves still generate.
   - 64 caves generate in the new world size.
-- Due to Y 31 always generating filled with dirt, no calmWater can get flooded from the edges.
 - Added water pools. `width * height / 5000` attempts are made to find an ID `00` at Y 31 to flood fill calmWater from.
   - The number of attempts is 13 for the default world size and 3 for the new thin world size.
   - Water pools can never generate for the same reason as above.
@@ -392,7 +396,7 @@
     - The water and ground levels start further from the world.
     - The textures extend further from the world than in the negative direction.
 - Faces on the outside of the world once again render.
-  - Does not apply to liquids.
+  - Faces of liquids only render above the world.
   - This fixes the bug that made selected block types not render in the top right of the screen.
 
 **Save format**
@@ -430,3 +434,105 @@
 ### General
 - Removed the `META-INF` folder and the `MANIFEST.MF` file.
 - Removed the unused `null` file.
+
+# 0.0.13a_03
+## Additions
+### Gameplay
+- Added online level saving.
+
+### General
+**Graphics**
+- Added a progress bar to the loading screen.
+  - The progress bar for "Watering.." does not progress for water being flooded from the edges of the world.
+  - The progress bar for "Watering.." and "Melting.." only updates every 100 placing attempts, resulting in a choppy appearance.
+
+**Applet**
+- Added the `username`, `sessionid`, `loadmap_user` and `loadmap_id` parameters to the applet.
+  - It is impossible to know what username restrictions the game had at the time.
+  - The username can be set to any UTF-8 string up to 65,535 bytes in length that consists of the following character codepoints: U+0001-U+0008, U+000B, U+000E-U+D7FF, U+E000-U+FFFF.
+  - The username can't begin or end with a character with a codepoint of U+0020 or less.
+- If the username is specified, newly created worlds will use it in place of "noname" for the creator.
+- If the username isn't specified, newly created worlds will have their creator set to "anonymous".
+- If both the loadmap_user and loadmap_id parameters are specified, the level saved at `http://` + host address + `/level/load.html?id=` + loadmap_id + `&user=` + loadmap_user will be automatically loaded.
+
+**Miscellaneous**
+- Readded the `META-INF` folder and the `MANIFEST.MF` file.
+- Readded the unused `null` file.
+
+## Changes
+### Mobs
+**Zombie**
+- Zombies no longer spawn when loading into a world.
+
+### Gameplay
+**Game menu**
+- The pause menu is now called "Game menu", which is rendered above the buttons.
+- Opening the game menu now darkens the rest of the screen more.
+- The "Save level.." and "Load level.." buttons are now disabled if the username isn't specified, which makes them darker.
+- The "Save level.." and "Load level.." buttons now open new "Save level" and "Load level" screens if the username is specified.
+  - There are 5 buttons, 1 for each save slot, and a "Cancel" button.
+    - By default the 5 level buttons say "---", but don't render.
+  - Pressing the "Cancel" button brings the player back to the game menu.
+  - The game creates a new thread to get the list of saved levels from `http://` + host address + `/listmaps.jsp?user=` + username.
+    - While the list is being obtained, the screen says "Getting level list..".
+    - If the list could not be obtained, the screen says "Failed to load levels".
+    - If the website could be reached, but the number of levels is less than 5, the screen will display the message that was in place of the first level name.
+      - This likely served as an error message for if online level saving was disabled.
+    - When the list is obtained, the 5 level buttons are set to display the level names and render.
+      - If a level isn't saved, the button likely displays "-", though this is controlled server-side.
+      - On the load level screen, buttons with "-" are disabled and can't be pressed.
+- Pressing a level button on the save level screen opens a new "Enter level name:" screen.
+  - The screen contains a text box as well as "Save" and "Cancel" buttons.
+  - Pressing the "Cancel" button brings the player back to the save level screen
+  - The following characters can be used in the level name: `20`-`23`, `25`, `27`-`3A`, `3C`-`3F`, `41`-`5B`, `5D`, `5F`, `61`-`7B` and `7D` (` `, `!`, `"`, `#`, `%`, `'`, `(`, `)`, `*`, `+`, `,`, `-`, `.`, `/`, digits, `:`, `<`, `=`, `>`, `?`, latin capital letters, `[`, `]`, `_`, latin small letters, `{` and `}`).
+    - This is the first time that the issue with `7B` (`{`) having its width incorrectly set to 1 can be observed.
+  - At the end of the name an additonal `_` is renered for 6 ticks, not rendered for 6 ticks, and then rendered again.
+    - Due to integer overflow, after 2^31 ticks the `_` is not rendered for only 5 ticks.
+    - Due to java rounding towarards 0, after 2^32 ticks, the `_` is rendered for 11 ticks.
+  - If the level name does not have at least 2 characters after being trimmed (removing all characters `20` and below from the start and end of the string), the "Save" button is disabled and can't be pressed.
+  - Pressing the "Save" button trims all whitespace (characters `20` and below) from the start and end of the name and saves the level in that slot with that name.
+  - While the level is being saved a loading screen with "Saving level" is shown.
+    - The status cycles through "Compressing..", "Connecting.." and "Saving..".
+  - The game attempts to connect to `http://` + host address + `/level/save.html`, where it sends the username, sessionid, level name, slot id, the length of the compressed level and finally the level itself.
+  - If the game doesn't read "ok" from the server, the status is set to "Failed: " + error message.
+  - If an exception occurs at any point in the saving process, the status is set to "Failed!".
+- Pressing a level button on the load level screen, the game attempts to load the level.
+  - While the level is being loaded a loading screen with "Loading level" is shown.
+    - The status cycles through "Connecting.." and "Loading..".
+  - The game attempts to connect to `http://` + host address + `/level/load.html?id=` + slot id + `&user=` + username.
+  - If the game reads "ok" from the server, the level is loaded from the server.
+    - The loading screen is the same as when loading the level from file.
+  - If the game doesn't read "ok" from the server, the status is set to "Failed: " + error message.
+  - If an exception occurs at any point in the loading process, the status is set to "Failed!"
+
+### World generation
+- Terrain generation is no longer flat.
+  - calmWater can once again generates from flooding from the world edge and from water pools.
+  - calmLava can once again generate above Y 21. This only recontinues lava and calmLava between Y 22 and Y 27, lava and calmLava between Y 28 and Y 31 are still discontinued.
+  - Grass can now actually generate at Y 31, recontinuing calmWater at the world border at non-ticking coordinates adjacent to grass.
+- Now uses improved perlin noise.
+- Added a "Soiling.." step between "Eroding.." and "Carving..".
+- Rock now always generates 2 blocks below the surface.
+- Increased the number of attempts to generate water pools from `width * height / 5000` to `width * height / 200`.
+- Water pools can now generate anywhere between Y 29 and Y 31 instead of only at Y 31.
+- Lowered the maximum Y level lava pools can generate at to Y 27 instead of Y 31.
+
+### General
+**World boundary**
+- The `rock.png` and `water.png` textures now render for 2048 blocks.
+  - If either the world width or height is 0, the game now crashes.
+  - If the smaller of the world with or height is smaller than 128 and not a power of 2, it renders slightly further.
+    - It renders up to `2048 / s` blocks out, where `s` is the size of the chunk in which the texture is rendered. If the size doesn't divide 2048, it renders to the lowest multiple of the size that is larger.
+
+**Miscellaneous**
+- The version number in the top left of the screen now reads "0.0.13a_03".
+- Changed the game window title to "Minecraft 0.0.13a_03".
+- The level loading screen is now darker.
+- Chunks are no longer rendered if they're empty, or if all faces inside it are culled.
+
+## Removals
+### General
+- The game can no longer be ran outside an applet.
+- Removed the `-fullscreen` game argument.
+- Removed unused server code.
+- Removed the unused `_LevelGen.java_` and `_NoiseMap.java_` files.

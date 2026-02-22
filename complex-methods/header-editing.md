@@ -16,6 +16,8 @@ Any of the bytes in the world and creator names, the time created as well as any
 ## Editing the length of strings
 A more advanced and more powerful technique involves changing the length of the world name or creator fields. Doing so makes the data that comes after it be read from a different part of the header, allowing for many possibilities. Most notably increasing the length of the string allows for the create time and world dimensions to be read from the blocks array, providing much control to their values.
 
+Creating a world in 0.0.13a_03 or later makes it possible to set the creator field to almost any UTF-8 string up to 65,535 bytes long. The string cannot start or end with a character with the codepoint of U+0020 or below and the string cannot contain any of the following character codepoints: U+0000, U+0009-U+000A, U+000C-U+000D, U+D800-U+DFFF, U+10000-U+10FFFF.
+
 # Advanced techniques
 ## Header stacking
 By invalidating a header and updating back to 0.0.13a-launcher or later a new header will be generated with the old header being at the start of the block array. Doing this before increasing the length of strings allows for the data being read from the old header, providing more options just valid block IDs give.
@@ -105,6 +107,6 @@ Block IDs being created from the header and shifting blocks (either via invalida
 ## World data
 The width, height and depth of the world can be edited to many different combinations of values from a range of -32,768 to 32,767. For the world to not immediately crash on load none of the dimensions can be negative, and their product has to be sufficiently below 4,194,304 for there to be enough bytes in the level.dat for each block to have an associated ID.
 
-The world and creator names can be edited to many otherwise impossible values. The game will crash on loading if either of the names includes malformed UTF-8 or a 4 byte character. If either of the strings contain `00` bytes and converting them to `C0 80` brings the length of the string over 65,535 bytes, the world is able to be loaded, but can't be saved. 
+The world and creator names can be edited to many otherwise impossible values. The only otherwise obtainable world names are "--" through updating older worlds to 0.0.13a-launcher or later, and "A Nice World" from generating a new world in 0.0.13a-launcher or later. "unknown" creator is also obtainable from updating older worlds to 0.0.13a-launcher, and "noname" creator is not discontinued and obtainable from generating a new world in 0.0.13a-launcher or later. Creator names that don't include U+0000, U+0009, U+000A, U+000C, U+000D, or a surrogate, and don't start or end with U+0020 or less are also possible by generating a new world in 0.0.13a_03 or later. The game will crash on loading if either of the names includes malformed UTF-8 or a 4 byte character. If either of the strings contain `00` bytes and converting them to `C0 80` brings the length of the string over 65,535 bytes, the world is able to be loaded, but can't be saved. 
 
 The create time can be edited to be any value between -292275055-5-17 16:47:04.192 and 292278994-08-17 07:12:55.807. Most of these values are impossible to obtain otherwise, though the exact range depends on the operating system.

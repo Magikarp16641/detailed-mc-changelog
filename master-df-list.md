@@ -5,8 +5,9 @@ This serves as a list of all discontinued features mentioned in this changelog.
 
 | Discontinued Feature | Version range (path) | Notes |
 | --- | --- | --- |
-| water (`08`), calmWater (`09`) | 0.0.12a_03-200018 | New worlds only, recontinued using [Header editing](complex-methods/header-editing.md) |
-| lava (`0A`), calmLava (`0B`) between Y 22 and Y 31 | 0.0.12a_03-200018 | New worlds only, recontinued using [Header editing] |
+| water (`08`), calmWater (`09`) | 0.0.12a_03-200018 | New worlds only, recontinued using [Header editing](complex-methods/header-editing.md) and in 0.0.13a_03. |
+| lava (`0A`), calmLava (`0B`) between Y 22 and Y 27 | 0.0.12a_03-200018 | New worlds only, recontinued using [Header editing](complex-methods/header-editing.md) and in 0.0.13a_03. |
+| lava (`0A`), calmLava (`0B`) between Y 28 and Y 31 | 0.0.12a_03-200018 | New worlds only, recontinued using [Header editing](complex-methods/header-editing.md). |
 | water (`08`), calmWater (`09`) | [Header editing](complex-methods/header-editing.md) | |
 | water (`08`) or calmWater (`09`) between Y 32 and Y 63 | [Header editing](complex-methods/header-editing.md) | |
 | calmWater (`09`) in unnatural non-ticking locations | [Header editing](complex-methods/header-editing.md) | |
@@ -22,10 +23,12 @@ This serves as a list of all discontinued features mentioned in this changelog.
 | water (`08`) or calmWater (`09`) below lava (`0A`) or calmLava (`0B`) | 0.0.12a_03-200018 | New worlds only, recontinued using [Header editing](complex-methods/header-editing.md) |
 | calmWater (`09`) or calmLava (`0B`) above or next to ID `00` | (0.0.12a_03-200018) -> (rd-132211-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.12a_03-200018 only, recontinued using [Header editing](complex-methods/header-editing.md) |
 | calmWater (`09`) at the world border at non-ticking coordinates above or below rock (`01`) | (0.0.12a_03-200018) -> (rd-132211-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.12a_03-200018 only, recontinued using [Header editing](complex-methods/header-editing.md) |
-| calmWater (`09`) at the world border at non-ticking coordinates adjacent to grass (`02`), stoneBrick (`04`) or wood (`05`) | (0.0.12a_03-200018) -> (rd-160052-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.12a_03-200018 only, recontinued using [Header editing](complex-methods/header-editing.md) |
-| calmWater (`09`) at the world border at non-ticking coordinates below dirt (`03`) | (0.0.12a_03-200018) -> (rd-160052-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.12a_03-200018 only, recontinued using [Header editing](complex-methods/header-editing.md) |
-| calmWater (`09`) at the world border at non-ticking coordinates adjacent to bush (`06`) | (0.0.12a_03-200018) -> (rd-161348-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.12a_03-200018 only, recontinued using [Header editing](complex-methods/header-editing.md) |
-| calmLava (`0B`) above or next to ID `00` in a 32x64x512 world | (0.0.13a-launcher) -> (rd-132211-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.13a-launcher only, recontinued using [Header editing](complex-methods/header-editing.md) |
+| calmWater (`09`) at the world border at non-ticking coordinates next to grass (`02`) | (0.0.12a_03-200018) -> (rd-160052-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.12a_03-200018 only, recontinued using [Header editing](complex-methods/header-editing.md) and on newly generated worlds in 0.0.13a_03. |
+| calmWater (`09`) at the world border at non-ticking coordinates above or below grass (`02`) | (0.0.12a_03-200018) -> (rd-160052-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.12a_03-200018 only, recontinued using [Header editing](complex-methods/header-editing.md). |
+| calmWater (`09`) at the world border at non-ticking coordinates adjacent to stoneBrick (`04`) or wood (`05`) | (0.0.12a_03-200018) -> (rd-160052-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.12a_03-200018 only, recontinued using [Header editing](complex-methods/header-editing.md). |
+| calmWater (`09`) at the world border at non-ticking coordinates below dirt (`03`) | (0.0.12a_03-200018) -> (rd-160052-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.12a_03-200018 only, recontinued using [Header editing](complex-methods/header-editing.md). |
+| calmWater (`09`) at the world border at non-ticking coordinates adjacent to bush (`06`) | (0.0.12a_03-200018) -> (rd-161348-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.12a_03-200018 only, recontinued using [Header editing](complex-methods/header-editing.md). |
+| calmLava (`0B`) above or next to ID `00` in a 32x64x512 world | (0.0.13a-launcher) -> (rd-132211-launcher - 0.0.11a-launcher) | Worlds generated in 0.0.13a-launcher only, recontinued using [Header editing](complex-methods/header-editing.md). |
 | water (`08`) or calmWater (`09`) adjacent to lava (`0A`) or calmLava (`0B`) | [Header editing](complex-methods/header-editing.md) | |
 | calmWater (`09`) or calmLava (`0B`) above or next to ID `00` | [Header editing](complex-methods/header-editing.md) | |
 | calmWater (`09`) at the world border at non-ticking coordinates above or below rock (`01`) | [Header editing](complex-methods/header-editing.md) | |
@@ -37,8 +40,11 @@ This serves as a list of all discontinued features mentioned in this changelog.
 | Discontinued Feature | Version range (path) | Notes |
 | --- | --- | --- |
 | "--" world name | (rd-132211-launcher - 0.0.12a_03-200018) -> (0.0.13a-launcher - ???) | |
-| "unknown" creator | (rd-132211-launcher - 0.0.12a_03-200018) -> (0.0.13a-launcher - ???) | |
-| Unnatural world dimensions | Header editing](complex-methods/header-editing.md) | |
-| Non-default world name | [Header editing](complex-methods/header-editing.md) | |
-| Non-default creator | [Header editing](complex-methods/header-editing.md) | |
+| "unknown" creator | (rd-132211-launcher - 0.0.12a_03-200018) -> (0.0.13a-launcher) | Recontinued on newly generated worlds in 0.0.13a_03. |
+| World dimensions of 32x65x256 | 0.0.13-launcher | New worlds only, partially recontinued using [Header editing](complex-methods/header-editing.md) (not recontinued in combination with "A New World" world name and "noname" creator). |
+| World dimensions other than 256x64x256 | [Header editing](complex-methods/header-editing.md) | |
+| World name other than "--" or "A New World" | [Header editing](complex-methods/header-editing.md) | |
+| Creator other than "noname" | [Header editing](complex-methods/header-editing.md) | Many variants recontinued on newly generated worlds in 0.0.13a_03. |
+| Creator containing null, horizontal tab, line feed, form feed, carriage return or surrogates | [Header editing](complex-methods/header-editing.md) | |
+| Creator starting or ending with space or a C0 control character | [Header editing](complex-methods/header-editing.md) | |
 | Create time out of operating system limits | [Header editing](complex-methods/header-editing.md) | |

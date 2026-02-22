@@ -87,9 +87,6 @@
 - Downgrading calmWater into this version makes it possible to obtain calmWater at the world edge at non-ticking coordinates adjacent to wood, which is normally unobtainable.⬟
   - This is very difficult to obtain, as rendering the chunk with the calmWater crashes the game.
 
-**empty**
-- Isn't assigned an ID, and instead it's an unused constant with a value of `null`.
-
 ### Non-mob entities
 **Particle**
 - Breaking a block creates 64 particle entitites.
@@ -112,6 +109,7 @@
 **Controls**
 - Pressing `1`, `2`, `3` or `4` now sets the block type of placed blocks to rock, dirt, stoneBrick or wood respectively.
   - The currently selected block type is shown in the top right corner of the screen.
+    - The textures of the blocks are vertically flipped.
 - Pressing `G` now spawns a zombie at the player's position.
   - This does not have the same interpolation issue as other entities because the zombie is ticked before it has a chance to render.
 
@@ -212,6 +210,7 @@
 - The game is once again windowed with a resolution of 1024x768 like before.
 - Made the crosshair thicker and larger.
 - Made the selected block GUI slightly larger.
+- Unflipped the textures of the selected block.
 - Updated the `terrain.png`.
   - The file is anachronistic, it dates to 2009-05-21 and is identical to 0.0.13a's version.
   - Added the bush texture. Changed the wood texture.
