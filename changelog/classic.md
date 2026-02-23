@@ -451,8 +451,8 @@
   - It is impossible to know what username restrictions the game had at the time.
   - The username can be set to any UTF-8 string up to 65,535 bytes in length that consists of the following character codepoints: U+0001-U+0008, U+000B, U+000E-U+D7FF, U+E000-U+FFFF.
   - The username can't begin or end with a character with a codepoint of U+0020 or less.
-- If the username is specified, newly created worlds will use it in place of "noname" for the creator.
-- If the username isn't specified, newly created worlds will have their creator set to "anonymous".
+- If the username is specified, newly created worlds will use it in place of "noname" for the creator. If it isn't specified newly created worlds will have their creator set to "anonymous" instead.
+  - This increases the possibilities of header editing.★
 - If both the loadmap_user and loadmap_id parameters are specified, the level saved at `http://` + host address + `/level/load.html?id=` + loadmap_id + `&user=` + loadmap_user will be automatically loaded.
 
 **Miscellaneous**

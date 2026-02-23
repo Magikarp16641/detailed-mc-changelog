@@ -41,7 +41,7 @@ This serves as a list of all discontinued features mentioned in this changelog.
 | --- | --- | --- |
 | "--" world name | (rd-132211-launcher - 0.0.12a_03-200018) -> (0.0.13a-launcher - ???) | |
 | "unknown" creator | (rd-132211-launcher - 0.0.12a_03-200018) -> (0.0.13a-launcher) | Recontinued on newly generated worlds in 0.0.13a_03. |
-| World dimensions of 32x65x256 | 0.0.13-launcher | New worlds only, partially recontinued using [Header editing](complex-methods/header-editing.md) (not recontinued in combination with "A New World" world name and "noname" creator). |
+| World dimensions of 32x65x256 | 0.0.13-launcher | New worlds only, partially recontinued using [Header editing](complex-methods/header-editing.md) (not recontinued in combination with a create time not entirely composed of ascii, 2 byte UTF-8 characters, or `C0 80`). |
 | World dimensions other than 256x64x256 | [Header editing](complex-methods/header-editing.md) | |
 | World name other than "--" or "A New World" | [Header editing](complex-methods/header-editing.md) | |
 | Creator other than "noname" | [Header editing](complex-methods/header-editing.md) | Many variants recontinued on newly generated worlds in 0.0.13a_03. |
