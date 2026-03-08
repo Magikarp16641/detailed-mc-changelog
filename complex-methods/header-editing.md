@@ -109,4 +109,30 @@ The width, height and depth of the world can be edited to many different combina
 
 The world and creator names can be edited to many otherwise impossible values. The only otherwise obtainable world names are "--" through updating older worlds to 0.0.13a-launcher or later, and "A Nice World" from generating a new world in 0.0.13a-launcher or later. "unknown" creator is also obtainable from updating older worlds to 0.0.13a-launcher, and "noname" creator is not discontinued and obtainable from generating a new world in 0.0.13a-launcher or later. Creator names that don't include U+0000, U+0009, U+000A, U+000C, U+000D, or a surrogate, and don't start or end with U+0020 or less are also possible by generating a new world in 0.0.13a_03 or later. The game will crash on loading if either of the names includes malformed UTF-8 or a 4 byte character. If either of the strings contain `00` bytes and converting them to `C0 80` brings the length of the string over 65,535 bytes, the world is able to be loaded, but can't be saved. 
 
-The create time can be edited to be any value between -292275055-5-17 16:47:04.192 and 292278994-08-17 07:12:55.807. Most of these values are impossible to obtain otherwise, though the exact range depends on the operating system.
+The create time can be edited to be any value between -292275055-5-17 16:47:04.192 and 292278994-08-17 07:12:55.807. Though all values are theoretically possible in later versions depending on the operating system.
+
+### 0.0.13a-launcher world
+The dimensions, world name and creator of the 32x64x256 world that can be generated in 0.0.13a-launcher can be fully recreated using header editing, however only certain values of create time can be created.
+
+Using null conversion the create time can consist of the following:
+ - ASCII character (`00`-`7F`)
+ - Null (`C0 80`)
+ - 2 byte utf-8 character (`C2`-`DF` followed by `80`-`BF`)
+ - The last byte can be the start of a 2 byte character sequence (`C0` or `C2`-`DF`)
+
+Additionally any byte of a multi-byte character can be replaced with the following:
+ - `00`-`01`, `08` or `0A`
+ - `02`-`06`
+   - If the byte being replaced is the starting byte, all bytes that come before it in the create time have to be ASCII.
+   - If the byte being replaced is the continuation byte, all bytes that come after it in the create time have to be ASCII.
+ - `09` or `0B`
+   - The byte being replaced cannot be the 3rd or 8th most significant byte in the create time.
+
+If the world is generated in 0.0.13a_03 or 0.0.13a_03-launcher with the username being set correctly non-surrogate 3-byte characters can be used as well:
+  - `E0` followed by `90`-`BF` followed by `80`-`BF`
+  - `E1`-`EC` followed by 2 `80`-`BF` bytes
+  - `ED` followed by `80`-`9F` followed by `80`-`BF`
+  - `EE`-`EF` followed by 2 `80`-`BF` bytes
+  - The last 2 bytes of the create time can be the first 2 bytes of a 3-byte character
+  - Any of the bytes in 3-byte characters can be replaced following the same rules as 2-byte characters
+  - If the create time consists of 2 3-byte characters separated by an ASCII character, the character can't be `09`, `0C` or `0D`.
