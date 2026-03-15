@@ -454,6 +454,7 @@
 - If the username is specified, newly created worlds will use it in place of "noname" for the creator. If it isn't specified newly created worlds will have their creator set to "anonymous" instead.
   - This increases the possibilities of header editing.★
 - If both the loadmap_user and loadmap_id parameters are specified, the level saved at `http://` + host address + `/level/load.html?id=` + loadmap_id + `&user=` + loadmap_user will be automatically loaded.
+  - If the level does not have the magic or version numbers set to the correct values, the game will crash.
 
 **Miscellaneous**
 - Readded the `META-INF` folder and the `MANIFEST.MF` file.
@@ -483,7 +484,9 @@
       - On the load level screen, buttons with "-" are disabled and can't be pressed.
 - Pressing a level button on the save level screen opens a new "Enter level name:" screen.
   - The screen contains a text box as well as "Save" and "Cancel" buttons.
-  - Pressing the "Cancel" button brings the player back to the save level screen
+  - Pressing the "Cancel" button brings the player back to the save level screen.
+    - Going back to the save level screen adds 5 level buttons and the "Cancel" button even though they already exist. Visually this makes the level buttons say "---", though if a level name is long enough, parts of it will be visible at the sides.
+	  - The name of the level has to be at least 203 pixels wide to be visible unless a character with an incorrect width is near the end of the name, it which case it can be slighly shorter while staying visible.
   - The following characters can be used in the level name: `20`-`23`, `25`, `27`-`3A`, `3C`-`3F`, `41`-`5B`, `5D`, `5F`, `61`-`7B` and `7D` (` `, `!`, `"`, `#`, `%`, `'`, `(`, `)`, `*`, `+`, `,`, `-`, `.`, `/`, digits, `:`, `<`, `=`, `>`, `?`, latin capital letters, `[`, `]`, `_`, latin small letters, `{` and `}`).
     - This is the first time that the issue with `7B` (`{`) having its width incorrectly set to 1 can be observed.
   - At the end of the name an additonal `_` is renered for 6 ticks, not rendered for 6 ticks, and then rendered again.
@@ -501,6 +504,7 @@
     - The status cycles through "Connecting.." and "Loading..".
   - The game attempts to connect to `http://` + host address + `/level/load.html?id=` + slot id + `&user=` + username.
   - If the game reads "ok" from the server, the level is loaded from the server.
+    - If the level does not have the correct magic or version number set, the loading no level will be loaded and the player will be respawned in the previously loaded world.
     - The loading screen is the same as when loading the level from file.
   - If the game doesn't read "ok" from the server, the status is set to "Failed: " + error message.
   - If an exception occurs at any point in the loading process, the status is set to "Failed!"
