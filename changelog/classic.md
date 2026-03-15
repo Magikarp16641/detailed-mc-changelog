@@ -540,3 +540,9 @@
 - Removed the `-fullscreen` game argument.
 - Removed unused server code.
 - Removed the unused `_LevelGen.java_` and `_NoiseMap.java_` files.
+
+# 0.0.13a_03-launcher
+## Additions
+### General
+- Added SHA1 digests of all class files to `MANIFEST.MF`.
+- Added the `MOJANGCS.RSA` and `MOJANGCS.SF` files to the `META-INF` folder.

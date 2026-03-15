@@ -16,7 +16,7 @@ Any of the bytes in the world and creator names, the time created as well as any
 ## Editing the length of strings
 A more advanced and more powerful technique involves changing the length of the world name or creator fields. Doing so makes the data that comes after it be read from a different part of the header, allowing for many possibilities. Most notably increasing the length of the string allows for the create time and world dimensions to be read from the blocks array, providing much control to their values.
 
-Creating a world in 0.0.13a_03 or later makes it possible to set the creator field to almost any UTF-8 string up to 65,535 bytes long. The string cannot start or end with a character with the codepoint of U+0020 or below and the string cannot contain any of the following character codepoints: U+0000, U+0009-U+000A, U+000C-U+000D, U+D800-U+DFFF, U+10000-U+10FFFF.
+Creating a world in 0.0.13a_03 or 0.0.13a_03-launcher makes it possible to set the creator field to almost any UTF-8 string up to 65,535 bytes long. The string cannot start or end with a character with the codepoint of U+0020 or below and the string cannot contain any of the following character codepoints: U+0000, U+0009-U+000A, U+000C-U+000D, U+D800-U+DFFF, U+10000-U+10FFFF.
 
 # Advanced techniques
 ## Header stacking
