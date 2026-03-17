@@ -65,7 +65,7 @@
 ### General
 - Right-clicking now changes between destroying and placing modes.
 - Left-clicking now destroys and places blocks based on the current edit mode.
-- Solid blocks can no longer be placed inside the player or zombies.
+- Solid blocks can no longer be placed inside the player or zombies. They can still be placed inside particles.
 - Pressing `ESC` no longer closes the game and instead ungrabs the mouse.
 - The game's resolution is now 854x480 instead of 1024x768. This is not the correct aspect ratio and as such the actual gameplay has a resolution of 640x480 with a 214 pixel wide light blue section to its right.
 - Updated the `terrain.png`.
@@ -99,6 +99,7 @@
   - If the player is inside water and lava at the same time, they're only affected by the water.
   - The check for whether the player is inside a liquid is imperfect in the positive X, Y and Z directions. This makes it possible to swim up when up against a +X +Z corner if there's liquid behind it.
     - It's also possible to be supported by just a ceiling corner, though getting to the correct Y level requires swimming up first.
+  - The added vertical mobility makes it possible to reduce the player's height to 0 via float rounding. Having a height of 0 allows the player to effectively no-clip by walking in the seam between blocks.
 - Can't be selected.
 - Aren't solid, but do block light.
 - Water has a spread speed of 8. Lava has a spread speed of 2.
@@ -122,14 +123,14 @@
 - When the player is submerged in a liquid a fog effect renders. The fog is dark blue when in water and orange when in lava. The lava fog is denser.
 - Can only be obtained via spreading from preexisting calmWater or calmLava, which can't be obtained outside of terrain generation. Cannot be obtained above Y 31.
   - Water will briefly become unobtainable in 0.0.13a-launcher.★
-  - Lava above Y 21 will briefly become unobtainable in 0.0.13a-launcher.★
+  - Lava above Y 21 will briefly become unobtainable in 0.0.13a-launcher before becoming recontinued in 0.0.13a_03.★
   - Lava above Y 27 will become unobtainable in 0.0.13a-launcher.★
 
 **calmWater, calmLava**
 - Have IDs of `09` and `0B`.
 - Have the same properties and render the same as their non-calm counterparts.
 - Does nothing when ticked.
-- When updated, if any of the horizontally adjacent blocks or the block below have ID `00`, it turns into its non-calm counterpart.
+- When given a block update, if any of the horizontally adjacent blocks or the block below have ID `00`, it turns into its non-calm counterpart.
   - If it's at the edge or bottom of the world, it will always turns into its non-calm counterpart.
   - calmWater and calmLava can be downgraded to an earlier version to break or place an adjacent block without causing a block update.⬠
     - Doing this in any version other that rd-132211-launcher or rd-132328-launcher is extremely difficult, as rendering the liquid block crashes the game.
@@ -137,16 +138,13 @@
     - This can be used to create calmWater at the world edge at non-ticking coordinates next to an unnatural block, which is normally not possible at certain coordinates.⬟
       - Unnatural blocks include:
         - Rock above or below the calmWater.
-	   - calmWater can never generate atop or below rock at the world edge due to caves not carving through edge blocks.
-	 - Grass in rd-160052-launcher or later.
-	   - Grass next to or below the calmWater is considerably easier that other newer blocks, as it doesn't require any player interaction if dirt generated naturally in the correct spot.
-	   - Grass can't generate adjacent to water due to it always generating above Y 31, the highest water level.
-	 - Dirt above the calmWater in rd-160052-launcher or later.
-	   - Dirt can't generate above calmWater at the world edge due to caves not carving through edge blocks.
-	 - stoneBrick and wood in rd-160052-launcher or later.
-	 - Bush in rd-161348-launcher or later.
-      - calmWater can never generate on top of or below rock at the world edge due to caves not carving through edge blocks.
-      - calmWater at the world edge always turns to water upon receiving a block update, but if it's one of the about 17% of blocks which are never random ticked it can never turn back into calmWater.
+	    - Grass in rd-160052-launcher or later.
+	      - Obtaining grass next to or below calmWater is considerably easier that other newer blocks, as it doesn't require any player interaction if dirt generated naturally in the correct spot.
+	    - Dirt above calmWater in rd-160052-launcher or later.
+	    - stoneBrick and wood in rd-160052-launcher or later.
+	    - Bush in rd-161348-launcher or later.
+    - calmWater can never generate on top of or below rock at the world edge due to caves not carving through edge blocks.
+    - calmWater at the world edge always turns to water upon receiving a block update, but if it's one of the about 17% of blocks which are never random ticked it can never turn back into calmWater.
 - When calmWater is updated by lava, it turns to rock. When calmLava is is updated by water, it turns to rock.
 - Can initially only be obtained via terrain generation. Cannot be obtained above Y 31.
   - calmWater will briefly become unobtainable in 0.0.13a-launcher.★
@@ -164,8 +162,11 @@
 **World boundary**
 - Added a boundary to the bottom and sides of the world, which prevents the player and entities from going outside the world.
   - Respawning within 0.3 blocks of the world boundary causes the player to spawn standing inside it, where they'll stand at Y 73 until they move or respawn again. This has a 0.46820% chance of occuring.
-  - Respawning withing 0.3 blocks of the world corner and walking deeper into the boundary makes it possible to get stuck with no way out aside from respawning again. Spawning close enough to the corner has a 0.00054% chance of occuring.
+  - Respawning within 0.3 blocks of the world corner and walking deeper into the boundary makes it possible to get stuck with no way out aside from respawning again. Spawning close enough to the corner has a 0.00054% chance of occuring.
   - The 10 zombies that spawn on world load also have a chance of spawning clipped outside the world.
+  - If the width of the player's hitbox is reduced from float rounding errors, it's possible to spawn a zombie clipped inside the world border by pressing `G`.
+  - If the height of the player's hitbox is reduced to 0 due to float rounding, it's possible to walk outside the world border.
+  - If the width of the player's or zombie's hitbox is reduced to 0 due to float rounding, it's possible to fall below the world.
 - Below the world and on its sides up to Y 30 the boundary has the appearance of the new `rock.png` texture tiled every block.
   - Because `rock.png` is identical to the unbreakable block texture, this makes it appear as if the world was encased with unbreakable blocks placed up to Y 29.
 - Outside the world there is a plane of the `rock.png` texture at Y 30 up to 640 blocks outside the world.
@@ -175,7 +176,7 @@
 - Faces on the outside of the world no longer render.
   - This is noticable on the top faces of blocks at Y 63.
   - As a direct result, the selected block type is no longer shown in the top right corner of the screen as it's being rendered at 0,-2,0. The bush is not affected.
-- Zombies can no longer be removed by being below Y -100 in practice.
+- Zombies can no longer be practically removed by being below Y -100. This can now only happen if the zombie's width is reduced to 0 from float rounding, which may not be possible due to the random nature of a zombie's movement.
 
 **Controls**
 - Pressing `N` regenerates the world, respawns the player and deletes all zombies.
@@ -255,8 +256,7 @@
 - Changed the game window title to "Minecraft 0.0.12a_03".
 - Light depths now track the Y level of the last transparent block instead of the first light blocker.
   - The only noticable difference this makes is making zombies appear darker when clipped inside a block.
-    - In this version, zombies can get inside a block by standing inside a liquid when it turns to rock.
-    - Zombies couldn't get inside blocks in 0.0.11a-launcher, but in rd-161348-launcher and before a block could simply be placed where they're standing.
+    - It is impossible to get zombies inside blocks in 0.0.11a-launcher, meaning this can only be observed by comparing to rd-161348-launcher or earlier.
 - Halved the maximum number of chunks that can be rebuilt per frame to 4.
 - When a chunk was last dirtied no longer affects rebuild order. The order is now based only on whether the chunk is within the player's field of view and the chunk's distance to the player.
 - Chunk updates no longer contribute towards the number of chunk updates twice.
@@ -268,8 +268,8 @@
 
 ## Removals
 ### General
-- The game can no longer be run outside an applet. As such the game's resolution is now always 640x480.
-- `resourceName` + " -> " + `id` no longer gets sent to the game log when a new texture is laoded.
+- The game can no longer be ran outside of an applet. As such the game's resolution is now always 640x480.
+- `resourceName` + " -> " + `id` no longer gets sent to the game log when a new texture is loaded.
 - Removed unused server code.
 
 # 0.0.13a-launcher
@@ -313,6 +313,9 @@
   - This never happens as calmLava never sends out block updates.
 - Made the water collision check stricter. The player is no longer considered as in water if only the bottom or top 0.4 blocks of the hitbox collide with water.
   - Being supported by water through a positive ceiling corner due to collision check imperfection is no longer possible.
+  - If the player's height is reduced to below 0.8 blocks, it becomes impossible to be inside water at certain Y levels.
+  - If the player's height is reduced to below 0.4 blocks, the player is no longer considered as being in water when standing on the floor, making it possible to jump inside water.
+  - It's no longer possible to use water to reduce the player's height to 0 using float rounding. Lava has to be used instead.
 - The player now does a 0.69085 block jump when coming ashore.
   - When the shore is in the positive X or Z direction, the jump is only performed when the shore is at the same Y level as the water.
   - When the shore is in the negative X direction, the jump is also performed when the shore is above the water if the player's velocity in the Z direction is non-positive.
@@ -377,7 +380,7 @@
 - Modified the player's movement physics.
   - Reverted jump height from 1.68546 blocks to 1.23350 blocks.
   - Increased swimming and sinking speed in water from 1.33333 m/s to 2.00000 m/s.
-  - Decresed upwards swimming speed in water from 2.66667 m/s to 2.00000 m/s.
+  - Decreased upwards swimming speed in water from 2.66667 m/s to 2.00000 m/s.
 - Holding down the `SPACE`, `LMETA` or `LWIN` now makes the player jump only once.
 - Holding down `R` now makes the player respawn only once.
 - Reduced player reach from 3 blocks to 2.5 blocks.
@@ -489,9 +492,9 @@
 	  - The name of the level has to be at least 203 pixels wide to be visible unless a character with an incorrect width is near the end of the name, it which case it can be slighly shorter while staying visible.
   - The following characters can be used in the level name: `20`-`23`, `25`, `27`-`3A`, `3C`-`3F`, `41`-`5B`, `5D`, `5F`, `61`-`7B` and `7D` (` `, `!`, `"`, `#`, `%`, `'`, `(`, `)`, `*`, `+`, `,`, `-`, `.`, `/`, digits, `:`, `<`, `=`, `>`, `?`, latin capital letters, `[`, `]`, `_`, latin small letters, `{` and `}`).
     - This is the first time that the issue with `7B` (`{`) having its width incorrectly set to 1 can be observed.
-  - At the end of the name an additonal `_` is renered for 6 ticks, not rendered for 6 ticks, and then rendered again.
+  - At the end of the name an additonal `_` is rendered for 6 ticks, not rendered for 6 ticks, and then rendered again.
     - Due to integer overflow, after 2^31 ticks the `_` is not rendered for only 5 ticks.
-    - Due to java rounding towarards 0, after 2^32 ticks, the `_` is rendered for 11 ticks.
+    - Due to java rounding towards 0, after 2^32 ticks, the `_` is rendered for 11 ticks.
   - If the level name does not have at least 2 characters after being trimmed (removing all characters `20` and below from the start and end of the string), the "Save" button is disabled and can't be pressed.
   - Pressing the "Save" button trims all whitespace (characters `20` and below) from the start and end of the name and saves the level in that slot with that name.
   - While the level is being saved a loading screen with "Saving level" is shown.
@@ -513,7 +516,8 @@
 - Terrain generation is no longer flat.
   - calmWater can once again generates from flooding from the world edge and from water pools.
   - calmLava can once again generate above Y 21. This only recontinues lava and calmLava between Y 22 and Y 27, lava and calmLava between Y 28 and Y 31 are still discontinued.
-  - Grass can now actually generate at Y 31, recontinuing calmWater at the world border at non-ticking coordinates adjacent to grass.
+  - Grass can now generate at Y 31, recontinuing calmWater at the world border at non-ticking coordinates adjacent to grass.
+    - The minimum Y level grass could generate at was lowered in 0.0.13a-launcher, but it never came into effect due to the flat terrain.
 - Now uses improved perlin noise.
 - Added a "Soiling.." step between "Eroding.." and "Carving..".
 - Rock now always generates 2 blocks below the surface.
@@ -525,7 +529,7 @@
 **World boundary**
 - The `rock.png` and `water.png` textures now render for 2048 blocks.
   - If either the world width or height is 0, the game now crashes.
-  - If the smaller of the world with or height is smaller than 128 and not a power of 2, it renders slightly further.
+  - If the smaller of the world width or height is smaller than 128 and not a power of 2, it renders slightly further.
     - It renders up to `2048 / s` blocks out, where `s` is the size of the chunk in which the texture is rendered. If the size doesn't divide 2048, it renders to the lowest multiple of the size that is larger.
 
 **Miscellaneous**

@@ -4,7 +4,7 @@
 **rock and grass**
 - Both blocks share the ID `01` with the type being determined by the Y level. All blocks on Y 42 are grass, all other blocks are rock instead.
 
-**"air"**
+**ID `00`**
 - Any ID other than `01` signifies the absence of a block, though only ID `00` is obtainable through regular gameplay in this version.
 - Downgrading calmWater or calmLava from 0.0.12a_03-200018 into this version can be used to create invalid block configurations as breaking or placing blocks nearby does not cause block updates. The invalid configurations include:
   - calmWater or calmLava next to or above ID `00`.⬟
@@ -22,6 +22,9 @@
 - Jumping is controlled by `SPACE`, `LMETA` and `LWIN`.
 - The movement physics run at a rate of 60 ticks per second.
   - A maximum of 60 ticks can happen in a frame.
+- The player's hitbox is 1.8 blocks tall and 0.6 blocks wide.
+  - When moving across across a coordinate that is a power of 2, the size can slightly change due to both sides of the hitbox having a different level of rounding.
+  - If the width of the hitbox is reduced to 0, it's possible to fall through the seams between blocks.
 - When loading into the world or after pressing `R` the player is spawned at Y 74 at a random point above the world.
   - Pressing `R` does not reset the player's velocity, making it possible to build up falling speed up to the terminal velocity by continually pressing `R`.
   - For 1 tick, the player's eye level is 0.9 blocks above the feet instead of 1.62 blocks, which means the player is effectively spawned at Y 74.72 instead.
@@ -56,7 +59,9 @@
   - Their initial position is set to 128,0,128 before their spawn position is determined, which results in a graphical bug.
     - Before the first tick, their position is interpolated between 0,0,0 and 128,0,128.
     - Before the second tick, their position is interpolated between 128,0,128 and their random spawn position.
-    - This is barely noticable due to the hight tps.
+    - This is barely noticable due to the high tps.
+- It's 1.8 blocks tall and 0.6 blocks wide, the same as the player.
+  - It's theoretically possible for the width to be reduced to 0 from float rounding, allowing it to fall through the seams between blocks. But the chances of it happening are astronomically low, possibly low enough that no random seed allows for it, though this is impossible to check.
 - Moves around randomly with the same physics as the player.
   - Has a 1% chance of jumping every frame.
 - Zombies above Y 100 respawn.
