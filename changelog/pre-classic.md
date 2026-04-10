@@ -6,9 +6,11 @@
 
 **ID `00`**
 - Any ID other than `01` signifies the absence of a block, though only ID `00` is obtainable through regular gameplay in this version.
-- Downgrading calmWater or calmLava from 0.0.12a_03-200018 into this version can be used to create invalid block configurations as breaking or placing blocks nearby does not cause block updates. The invalid configurations include:
+- Downgrading calmWater or calmLava from 0.0.12a_03-200018 or later into this version can be used to create invalid block configurations as breaking or placing blocks nearby does not cause block updates. The invalid configurations include:
   - calmWater or calmLava next to or above ID `00`.⬟
   - calmWater at the world edge at non-ticking coordinates above or below rock.⬟
+- Downgrading sand or gravel from 0.0.14a_08 or later into this version can be used to create sand or gravel above block ID `00`, which aren't normally obtainable.⬟
+- Block ID `00` can currently be obtained at the world edge at Y 30 and 31, which will become discontinued in 0.0.14a_08.★
 
 ### World generation
 - The world is finite and its dimensions are 256x64x256.
@@ -120,7 +122,7 @@
 
 **Random ticks**
 - Every tick a number of blocks in the world are randomly selected to be ticked.
-  - The number of blocks is `width * height * depth / 400`, which is 10,485.76 in this version.
+  - The number of blocks is $`width * height * depth / 400`$, which is 10,485.76 in this version.
     - Fractional block ticks carry over to the next game tick.
     - A given block will therefore be ticked every 20 seconds on average.
 - The only block affected by random ticks is grass.
@@ -204,7 +206,7 @@
 - Particles now fall slower.
 - Particles no longer have a flat 10% chance of getting removed every tick, instead when they have a random lifetime between 4 and 40 ticks.
   - Shorter durations are likelier.
-  - A lifetime of 40 ticks is extremely unlikely, as it requires `Math.random()` to return exactly 0.0.
+  - A lifetime of 40 ticks is extremely unlikely.
 - Particles now have a random size between 0.1 and 0.2 blocks.
   - This is purely visual, their hitbox is still a 0.2 blocks wide cube.
 - Particles now billboard vertically as well, instead of just horizontally.

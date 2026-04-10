@@ -3,8 +3,9 @@
 ### World generation
 **Caves**
 - Added caves
-- `width * height * depth / 256 / 64` attempts are made to generate caves. This results in 256 attempts in this version.
-- Caves can be anywhere between 0 and 150 blocks long.
+- $`width * height * depth / 256 / 64`$ attempts are made to generate caves. This results in 256 attempts in this version.
+- Caves can be anywhere between 0 and 149 blocks long.
+  - The distribution of cave lengths is nearly uniform.
 - Caves start at 2 blocks wide and increase in width up to 7 blocks.
   - They are half as tall as they are wide.
 - Caves carve only through rock and can't carve through blocks that are at edge, top or bottom of the world.
@@ -111,7 +112,7 @@
     - Lava can only spread 1 block downwards, if it does it immediately stops the spreading algorithm.
   - Attempts to spread horizontally from the ticked block or, if the water spread downwards, from the bottommost placed water.
     - If the depth is equal to the spread speed, stop.
-    - Replaces horizontally adjacent ID `00`s to the last with the liquid and restarts the spreading algorithm from them with a depth 1 higher.
+    - Replaces horizontally adjacent ID `00`s with the liquid and restarts the spreading algorithm from them with a depth 1 higher.
   - If it couldn't spread at all, it turns into the corresponding calm liquid block.
 - When water is updated by lava it turns to rock and when lava is updated by water it turns to rock.
 - Their model is shifted 0.1 blocks downwards.
@@ -147,7 +148,7 @@
     - calmWater at the world edge always turns to water upon receiving a block update, but if it's one of the about 17% of blocks which are never random ticked it can never turn back into calmWater.
 - When calmWater is updated by lava, it turns to rock. When calmLava is is updated by water, it turns to rock.
 - Can initially only be obtained via terrain generation. Cannot be obtained above Y 31.
-  - calmWater will briefly become unobtainable in 0.0.13a-launcher.★
+  - calmWater will briefly become unobtainable in 0.0.13a-launcher before becoming recontinued in 0.0.13a_03.★
   - calmLava above Y 21 will briefly become unobtainable in 0.0.13a-launcher.★
 
 ### Gameplay
@@ -343,11 +344,11 @@
   - This has no effect in this version due to the flat terrain generation.
 - Caves still generate.
   - 64 caves generate in the new world size.
-- Added water pools. `width * height / 5000` attempts are made to find an ID `00` at Y 31 to flood fill calmWater from.
+- Added water pools. $`width * height / 5000`$ attempts are made to find an ID `00` at Y 31 to flood fill calmWater from.
   - The number of attempts is 13 for the default world size and 3 for the new thin world size.
   - Water pools can never generate for the same reason as above.
 - The "Flood filled " + count + " tiles in " + time + " ms" message is now shown first and only calmWater is counted towards the number of tiles.
-- The number of attempts to generate lava pools is now dependand on world dimensions and is equal to `width * height * depth / 10000`. This results in a slight increase for the default world size from 400 to 419. The number of attempts on the new thin world size is 104.
+- The number of attempts to generate lava pools is now dependand on world dimensions and is equal to $`width * height * depth / 10000`$. This results in a slight increase for the default world size from 400 to 419. The number of attempts on the new thin world size is 104.
 - calmLava generating on top of calmWater now turns the water into rock.☆
 - Because Y 31 always generates filled with dirt, calmWater can't generate. Discontinuing water and calmWater.☆
 - Because all layers between Y 22 and Y 31 always generates filled with dirt, calmLava can't generate above Y 21. Discontinueding lava and calmLava above Y 21.☆
@@ -355,7 +356,7 @@
 ### Gameplay
 **Random ticks**
 - The number and distribution of random ticks depends on the world size.
-  - The number of random ticks per game tick is still `width * height * depth / 200`
+  - The number of random ticks per game tick is still $`width * height * depth / 200`$.
   - Unless all dimensions are a power of 2, large sections of the world never get random ticked.
     - If all dimensions are 1 more than a power of 2 only 8 blocks ever get random ticked (less if one ore more of the dimensions is exactly 1).
 - The newly possible 32x64x512 world has 5,242.88 random ticks per game tick and notably does not have any blocks that never tick.
@@ -382,6 +383,7 @@
   - Increased swimming and sinking speed in water from 1.33333 m/s to 2.00000 m/s.
   - Decreased upwards swimming speed in water from 2.66667 m/s to 2.00000 m/s.
 - Holding down the `SPACE`, `LMETA` or `LWIN` now makes the player jump only once.
+  - Jumping into a liquid causes the player to not be able to swim until they let go of the jump button.
 - Holding down `R` now makes the player respawn only once.
 - Reduced player reach from 3 blocks to 2.5 blocks.
 
@@ -415,12 +417,12 @@
 - The create time of the world is now saved.
   - Worlds converted from previous versions have the create time set to 1970-01-01 00:00:00.000.
 - Added support for different world sizes.
-  - Worlds generated when no level.dat is found have their world size set to 256x64x256 (width, depth, height).
+  - Worlds generated when no level.dat is found have their world size set to 256x64x256.
   - Worlds generated by the "Generate new level" button have their world size set to 32x64x512.
   - Worlds converted from previous versions have their world size set to 256x64x256.
   - Attempting to load a world with a negative world dimension crashes the game.
 - The level.dat of a 256x64x256 world is now too long to be able to be safely downgraded and updated back. Making creating invalid liquid block configurations via downgrading no longer possible in those worlds.⬠
-- Downgrading worlds with this save format into earlier versions makes the header be interpreted as block IDs, which can subsequently be modified. This gives rise to many possibilities and is known as [header editing](../complex-methods/header-editing.md).⬠⬟
+- Downgrading worlds with this save format into earlier versions makes the header be interpreted as block IDs, which can subsequently be modified. This gives rise to many possibilities and is known as [header editing].⬠⬟
 
 **Miscellaneous**
 - The version number in the top left of the screen now reads "0.0.13a".
@@ -454,7 +456,7 @@
   - It is impossible to know what username restrictions the game had at the time.
   - The username can be set to any UTF-8 string up to 65,535 bytes in length that consists of the following character codepoints: U+0001-U+0008, U+000B, U+000E-U+D7FF, U+E000-U+FFFF.
   - The username can't begin or end with a character with a codepoint of U+0020 or less.
-- If the username is specified, newly created worlds will use it in place of "noname" for the creator. If it isn't specified newly created worlds will have their creator set to "anonymous" instead.
+- If the username and sessionid are specified, newly created worlds will use it in place of "noname" for the creator. If it isn't specified newly created worlds will have their creator set to "anonymous" instead.
   - This increases the possibilities of header editing.★
 - If both the loadmap_user and loadmap_id parameters are specified, the level saved at `http://` + host address + `/level/load.html?id=` + loadmap_id + `&user=` + loadmap_user will be automatically loaded.
   - If the level does not have the magic or version numbers set to the correct values, the game will crash.
@@ -477,6 +479,7 @@
   - There are 5 buttons, 1 for each save slot, and a "Cancel" button.
     - By default the 5 level buttons say "---", but don't render.
   - Pressing the "Cancel" button brings the player back to the game menu.
+    - This creates duplicate versions of the game menu buttons. This is unobservable, as the buttons exactly overlap each other. Can lead to performance drops or an eventual crash if this is repeated many times.
   - The game creates a new thread to get the list of saved levels from `http://` + host address + `/listmaps.jsp?user=` + username.
     - While the list is being obtained, the screen says "Getting level list..".
     - If the list could not be obtained, the screen says "Failed to load levels".
@@ -514,14 +517,14 @@
 
 ### World generation
 - Terrain generation is no longer flat.
-  - calmWater can once again generates from flooding from the world edge and from water pools.
-  - calmLava can once again generate above Y 21. This only recontinues lava and calmLava between Y 22 and Y 27, lava and calmLava between Y 28 and Y 31 are still discontinued.
+  - calmWater can once again generates from flooding from the world edge and from water pools, once again making water and calmWater obtainable without the use of header editing.⬠
+  - calmLava can once again generate above Y 21. This only recontinues lava and calmLava between Y 22 and Y 27, lava and calmLava between Y 28 and Y 31 are still discontinued.⬠
   - Grass can now generate at Y 31, recontinuing calmWater at the world border at non-ticking coordinates adjacent to grass.
     - The minimum Y level grass could generate at was lowered in 0.0.13a-launcher, but it never came into effect due to the flat terrain.
 - Now uses improved perlin noise.
 - Added a "Soiling.." step between "Eroding.." and "Carving..".
 - Rock now always generates 2 blocks below the surface.
-- Increased the number of attempts to generate water pools from `width * height / 5000` to `width * height / 200`.
+- Increased the number of attempts to generate water pools from $`width * height / 5000`$ to $`width * height / 200`$.
 - Water pools can now generate anywhere between Y 29 and Y 31 instead of only at Y 31.
 - Lowered the maximum Y level lava pools can generate at to Y 27 instead of Y 31.
 
@@ -530,7 +533,7 @@
 - The `rock.png` and `water.png` textures now render for 2048 blocks.
   - If either the world width or height is 0, the game now crashes.
   - If the smaller of the world width or height is smaller than 128 and not a power of 2, it renders slightly further.
-    - It renders up to `2048 / s` blocks out, where `s` is the size of the chunk in which the texture is rendered. If the size doesn't divide 2048, it renders to the lowest multiple of the size that is larger.
+    - It renders up to $`2048 / s`$ blocks out, where $`s`$ is the size of the chunk in which the texture is rendered. If the size doesn't divide 2048, it renders to the lowest multiple of the size that is larger.
 
 **Miscellaneous**
 - The version number in the top left of the screen now reads "0.0.13a_03".
@@ -550,3 +553,213 @@
 ### General
 - Added SHA1 digests of all class files to `MANIFEST.MF`.
 - Added the `MOJANGCS.RSA` and `MOJANGCS.SF` files to the `META-INF` folder.
+
+# 0.0.14a_08
+## Additions
+### Blocks
+**sand, gravel**
+- Have IDs of `0C` and `0D`.
+- Can be selected by pressing `8` and `9`.
+- Attempt to fall when placed or when given a block update.
+- When falling it instantly swaps with the lowest `00` ID block directly below it.
+- Block swapping sends block updates at both blocks.
+  - If the the JVM thread stack size is set low enough and enough block updates are chained, it's possible to trigger a `StackOverflowError`. If the level was automatically saved during a crash, this would allow for sand or gravel above block ID `00`. Starting in this version, the level is no longer saved when the game is ran from an applet, which is currently the only way to run the game.
+- If downgraded to 0.0.13a_03-launcher or before, the block below it can be broken to obtain sand or gravel above block ID `00`.⬟⬠
+  - Downgrading to 0.0.13a-launcher or later creates many invalid block IDs, which can crash the game when loaded in a number of ways.
+- Can now be obtained without the use of header editing.⬠
+
+**goldOre, ironOre, coalOre**
+- Have IDs of `0E`, `0F` and `10`.
+- Can only be obtained from natural generation.
+- If downgraded to 0.0.13a_03-launcher or before, grass can grow below it, which isn't normally possible.⬟⬠
+  - Downgrading to 0.0.13a-launcher or later creates many invalid block IDs, which can crash the game when loaded in a number of ways.
+- Can now be obtained on newly generated worlds without the use of header editing.⬠
+  - They can only be obtained in certain quantities and not at the edges, bottom or top of the world.
+
+**treeTrunk**
+- Has an ID of `11`.
+- Can be selected by pressing `6`.
+- Can now be obtained without the use of header editing.⬠
+
+**leaves**
+- Have an ID of `12`.
+- Can be selected by pressing `7`.
+- Does not block light or occlude neighboring faces.
+- Can now be obtained without the use of header editing.⬠
+
+### Gameplay
+**Generate new level screen**
+- Pressing the "Generate new level" button in the game menu now opens a new screen instead of immediately generating a new world.
+- The generate new level screen includes 4 buttons:
+  - "Small"
+    - Generates a new 128x64x128 world.
+  - "Normal"
+    - Generates a new 256x64x256 world.
+  - "Huge"
+    - Generates a new 512x64x512 world.
+  - "Cancel"
+    - Returns the player to the game menu.
+
+**Scheduled ticks**
+- Added scheduled ticks.
+- Scheduled ticks are executed whenever the level tick count is a multiple of 5.
+  - If the block at that location is still the same ID and the ID is positive, the block is ticked.
+  - Scheduled ticks are executed every 5 ticks except for when the tick count overflows when the next scheduled ticks takes 6 ticks instead.
+- When water or lava are placed, a scheduled tick is added.
+- When calmWater or calmLava are given a block update when they could spread, they now add a scheduled tick in addition to turning to their non-calm counterpart.
+- Changed liquid spreading to use scheduled ticks.
+  - Water and lava first try to start spreading downwards like before. Water spreads as far down as it can, while lava spreads at most 1 block down.
+  - They then attempt to spread horizontally (lava only does so if it couldn't spread downwards.
+  - Water and lava now only spread a maximum of 1 block, instead of 8 and 2 respectively.
+  - When a liquid succesfully spreads scheduled ticks are added for both the source and all newly added blocks.
+- Water and lava now spread at the same rate.
+- Scheduled ticks don't save to file. Saving and reopening the world briefly pauses liquid spreading until the liquid is random ticked or given a block update.
+
+### General
+- Added clouds and a skybox.
+  - The cloud texture is stored in a new `clouds.png` file.
+  - The skybox color is `#80CCFF`.
+  - The clouds render 2 blocks above the world. The skybox renders 10 blocks above the world. They render in 512x512 block chunks up to 2048 blocks away from the world.
+    - If either the height or width of the world isn't a multiple of 512, they can render up to 511 blocks further in the respective positive direction.
+  - Clouds move towards negative X at a rate of 0.6 m/s.
+  - Pixels in the clouds are 8 blocks across.
+- Added an unused `tallterrain.png` file.
+  - Is the `terrain.png` from the previous version if the textures were stacked vertically instead of in a 16x16 matrix and all textures after the first 32 were set to be completely white.
+
+
+## Changes
+### Blocks
+**stoneBrick**
+- Texture changed.
+
+**wood**
+- Texture changed.
+
+### World generation
+- Changed terrain generation.
+- The soil layer is no longer always 2 blocks thick. It now ranges from 0 to 12 blocks thick.
+  - The layer is 4 blocks thick with some variance added. The maximum amount of variance depends on the X,Z coordinates modulo 128. Some coordinates always have a layer of 4 soil.
+  - Unless the terrain is below water, the layer is always at least 1 block thick, as the topmost block is converted to soil.
+- Grass no longer gets placed in the "Soiling.." phase.
+- Decreased maximum cave length from 150 to 149 blocks.
+  - The lengths now follow a triangular distribution centered on 75 instead of being nearly uniform.
+- Ores are now generated as part of the "Carving.." phase.
+  - The progress bar is evenly split between carving caves, placing coalOre, placing ironOre and placing goldOre.
+  - Each type of ore has rarity value, which controls how many veins are generated and how long and wide they are.
+    - coalOre has a rarity of 90, ironOre has a rarity of 70, and goldOre has a rarity of 50.
+  - Ore veins are generated using the same algorithm as caves.
+    - $`width * height * depth / 256 / 64 * rarity / 100`$ veins are generated.
+    - coalOre veins are between 0 and 134 blocks long, ironOre veins are between 0 and 104 blocks long and goldOre veins are between 0 and 74 blocks long.
+    - The radius of a vein gradually increases from 1 to $`1 + rarity / 100`$ blocks.
+    - Ores can replace any rock that is not at the bottom, edge or top of the world.
+- Added the "Growing.." and "Planting.." phases after the "Melting.." phase.
+  - During the "Growing.." phase all topmost blocks except liquids get replaced with grass, sand or gravel.
+    - On average roughly 22% of blocks at Y 31 or below are turned to gravel and roughly 42.5% of blocks at Y 31 or below are turned to sand.
+    - The exact chance of block turning to gravel or sand depends on the X,Y coordinates. Not all coordinates have a chance to turn to sand or gravel.
+  - During the "Planting.." phase trees are planted.
+    - $`width * height / 4000`$ centers for generating groups of trees from are randomly chosen.
+	- From every center the following is done 20 times:
+	  - Starting from the center 20 steps of a random walk are performed.
+	  - Each step moves moves the coordinates up to 5 blocks away in any direction with a triangular distribution.
+	  - After every step a random height of 4 or 5 blocks is chosen.
+	  - If the location isn't obstructed, is above grass a tree is placed.
+	    - The tree is placed atop the grass and the grass is replaced with dirt.
+	    - A tree consists of 4 (or 5) treeTrunks on top of each other and a crown, which is a 3x3x3 cube of leaves centered on the top treeTrunk with the 4 top corners removed.
+		- A location is considered unobstructed if all blocks within 1 block of the would-be tree are `00`.
+		  - For the purposes of this check the top 4 corners of the crown are not removed.
+		  - Only blocks at the same Y level are considered. A tree can theoretically spawn partially below a ledge.
+- The game now prints "New improvednoise!" into the console every time an improved noise object is created. This happens 96 times every time a new world is generated.
+  - 40 times in the "Raising.." phase.
+  - 32 times in the "Eroding.." phase.
+  - 8 times in the "Soiling.." phase.
+  - 16 times in the "Growing.." phase.
+    - This is after the flood filled and lava count strings are printed to the log.
+
+### Gameplay
+**Random ticks**
+- Changed how blocks are chosen to be random ticked. All blocks are now chosen with equal probability on the natural world sizes.
+  - This makes it possible to obtain calmWater and calmLava in unnatural "non-ticking" locations as well as calmWater at the world edge in a "non-ticking location adjacent to an unnatural block without the use of header editing.⬠
+
+**Controls**
+- Pressing `RETURN` no longer saves the level and instead saves the player's position and horizontal camera angle as their spawn point and respawns them there. Pressing `R` now respawns the player at the spawn point.
+  - When generating a new world or when updating a world from 0.0.13a_03-launcher or before a random spawnpoint will be set.
+    - 10,000 attempts to find a valid spawn point are made.
+	- Spawn points cannot be chosen within a quarter of the relevant dimension of the world edge.
+	- A Spawn point is considered valid if the highest block (not counting block ID `00` and liquids) is at half the world depth of higher.
+	- If all 10,000 attempts fail, the spawn point will be set at Y -100 at the X,Z coordinates of the 10,001st attempt.
+    - More accurately a random spawnpoint is set if the spawn point is set to 0,0,0, which is also possible by using float rounding to reduce hitbox width to 0 or by using [header editing].
+	- Attempting to find a new spawnpoint of a world whose width or height is less than 2 crashes the game.
+  - If the spawn point is inside a solid block, the player will spawn above it in a free location.
+    - If the spawn point is outside the world, this will softlock the game as it tries to find a free location that doesn't exist.
+  - If the spawn point is below the world, the player will spawn at 0,0,0. Attempting to respawn resets the player's pitch, sets the player's yaw to rotSpawn, and resets all velocity, but it doesn't change the player's position.
+  - Jumping in the same tick as respawning makes it possible to jump from the spawn point even if it was midair. This makes it possible to get a spawn point very high above the world.
+    - The highest obtainable Y level is 16,777,216. Any higher and player jumping is not fast enough to overcome floating point imprecision.
+  - By changing the player's height to 0 using float rounding it's possible to set the spawn point to be outside the world up to 4,194,304 blocks from 0,0 at any Y level between 1 and 1 more than the level depth.
+  - By changing the player's width to 0 using float rounding it's possible to fall below the world and set the spawn point to be as low as -67,108,864.
+    - Due to floating point imprecision not all Y values are possible:
+	  - Values below -16,777,216 are only obtainable if they're divisible by 2.
+	  - Values below -33,554,432 are only obtainable if they're divisible by 4.
+	  - -16,777,215 and -33,554,432 are not obtainable.
+	- All values of X,Z below the world in addition to many outside it are obtainable.
+	- In conjunction with changing the player's height to 0 using float rounding values of X,Z up to 4,194,304 blocks from 0,0 are obtainable.
+- Pressing `G` no longer spawns zombies if there are at least 256 entities in the world already.
+  - The player and particles are not saved to the entities list and as such don't prohibit zombie spawning.
+- bush is now selected by pressing `5` instead of `6`.
+- The mouse wheel can now be used to scroll through the list of placeable blocks.
+- Pressing the mouse wheel can now be used to select the block type that the player is facing.
+  - Only works on blocks that can normally be selected.
+  - Attempting to select grass selects dirt instead.
+- Holding down left-click now places/breaks blocks at a rate of 4 per second.
+- Placing block ID `00` at the world edge between the ground and water levels (Y 30 and 31 on the default world sizes) now places water instead, discontinuing block ID `00` at those locations.☆
+  - This also makes it possible to obtain water or calmWater in worlds generated before 0.0.12a_03-200018 or in 0.0.13a-launcher without the use of header editing.
+- Block faces can no longer be selected if the face is occlusion culled.
+  - This makes it impossible to have the block placement preview be inside a solid block. It can still appear inside a bush or leaves, though the block can't actually be placed.
+- Jumping into a liquid no longer prohibits the player from swimming until they let go of the jump button.
+
+### General
+**Save format**
+- Changed the [save format](../save-formats/serialized-level.md).
+- The level is now saved using [Java's Serializable interface](https://docs.oracle.com/javase/6/docs/platform/serialization/spec/protocol.html).
+- A list of entities is now saved, though only zombies can be added to it.
+- Spawn position and rotation is now saved.
+- The total tick count is now saved.
+- Width, height and depth are now stored as ints instead of shorts, increasing the maximum theoretical dimension from 32,767 to 2,147,483,647.
+- The world name and creator fields now support strings theoretically up to 2,147,483,645 bytes long instead of only 65,535 bytes long.
+  - Long name creator can be obtained by creating a new world while having the username and sessionid applet parameters set.
+- The new save format changes the possibilities of [header editing].⬠⬟
+- Updating a level from the [previous save format](../save-formats/early-classic.md) prints "Version is 1!" into the log.
+- Loading a file with a corrupted stream magic or version throws a StreamCorruptedException.
+- Loading a world with a null blocks field throws a RuntimeException with the message "The level is corrupt!".
+- If there is a crash during loading, if the magic number is corrupted, or if the version number is greater than 2 a new world is generated.
+- If the game were ran outside an applet, a crash during the loading process would cause the file to be read again as if it was using the [first save format](../save-formats/block-byte-array.md).
+
+**Rendering**
+- Render distance now affectes all rendering, not just chunks.
+- Lower render distance now makes fog appear closer.
+- Changed possible render distances from "unlimited", 128, 64 and 32 blocks to 1024, 256, 64 and 16 blocks.
+- Changed how chunks are handled when one of the world dimensions is not a multiple of 16.
+  - Chunks that would be smaller than 16x16x16 no longer render.
+  - Invalid block IDs don't crash the game if they aren't rendered.
+  - Blocks with ID `80`-`FF` still crash the game if an adjacent block is rendered.
+- The ground and water levels of the `rock.png` and `water.png` textures outside the world now depend on the level depth. `rock.png` and `water.png` render 2 and 0.1 blocks below half the depth respectively.
+- The `rock.png` texture below and outside the world is now darker.
+- Solid blocks now render all their faces if they are within 0.1 blocks of the camera.
+  - This is to prevent x-raying using the newly added sand or gravel.
+- Camera rotation is now interpolated.
+- Fog at rendering layer 0 is now linear instead of exponential.
+
+**Miscellaneous**
+- The version number in the top left of the screen now reads "0.0.14a_08".
+- Changed the game window title to "Minecraft 0.0.14a_08".
+- When running the game from an applet levels are no longer loaded from file and the level is no longer automatically saved when the game is closed.
+  - Since the game can only be ran from an applet, level saving and loading can now only be done online.
+- Changed how mouse movement is handled.
+- Most menus now clear their buttons when loaded.
+  - This change only affects the game menu, which generated duplicate buttons when going back to it. This was not practically observable due to the buttons overlapping each other.
+  - The save and load level screens do not clear their buttons, despite the save level screen being the only menu where the issue is easily observable.
+- With the save format changes, the code is now partially unobfuscated.
+- Added an unused cloud texture, duplicate dirt and grass side textures, and a 2nd duplicate grass top texture to `texture.png`.
+- Updated the `MANIFEST.MF` file.
+- Replaced the `MOJANGCS.RSA` and `MOJANGCS.SF` files with the `MOJANG_C.DSA` and `MOJANG_C.SF` files.
+
+[Header editing]: ../complex-methods/header-editing.md
