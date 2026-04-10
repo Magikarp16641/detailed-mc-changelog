@@ -55,7 +55,7 @@ This serves as a list of all discontinued features mentioned in this changelog.
 | Zombie with y above 16777216.0 | [Header editing] | |
 | Zombie with yd below -3.919994 or above 0.4116 | [Header editing] | |
 | Zombie with position-velocity mismatch | [Header editing] | |
-| Zombie with horizontal velocity-rot-rotA | [Header editing] | |
+| Zombie with horizontal velocity-rot-rotA mismatch | [Header editing] | |
 | Zombie with rot below -1.3421773E8 or above 2.1474836E9 | [Header editing] | |
 | Zombie with rotA below -7.9999685 or above 99.99962 | [Header editing] | |
 | Zombie with speed other than 1.0 | [Header editing] | |

@@ -39,8 +39,6 @@ Since the creator field also gets shortened in the second step, the world dimens
 ## Field description corruption
 By changing the name of a field in the field description, the field will effectively be reset to its default value. For primitive data types this isn't useful, as the value can be set to 0 directly instead. For non-primitive data types this will set their value to `null`.
 
-Corruption the "blocks" field is an alternative way to stack headers as it causes an exception at the correct time, which results in the level being loaded as if it was using the [block byte array save format](../save-formats/block-byte-array.md).
-
 ## Custom field description creation
 Via creative usage of null byte conversion and other manipulation techniques, it's possible to write custom field descriptions.
 - If new fields are added it's possible to delete sequences of bytes, as they won't be serialized again after being loaded.
