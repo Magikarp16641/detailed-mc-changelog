@@ -32,7 +32,7 @@ The level object has the following fields:
 | name | java.util.String | The world name. |
 
 ## com.mojang.minecraft.Entity
-The Entity class is extended by the Particle, Player, and Zombie classes. Typically levels don't save any Entity, Particle, or Player objects.
+The Entity class is extended by the NetworkPlayer, Particle, Player, and Zombie classes. Levels typically only include zombies.
 
 The Entity class has the following fields:
 
@@ -92,6 +92,13 @@ The Player class contains an input field, whose class cannot be serialized. As s
 | Field | Type | Description |
 | --- | :---: | --- |
 | input | com.mojang.minecraft.player.a | Cannot be serialized. |
+
+### com.mojang.minecraft.net.NetworkPlayer
+The NetworkPlayer class has the following fields:
+
+| Field | Type | Description |
+| --- | :---: | --- |
+| ticks | int | Number of times the network player has been ticked, used for the animation. |
 
 ## com.mojang.minecraft.phys.AABB
 | Field | Type | Description |
@@ -220,7 +227,9 @@ ArrayList has 1 int field named "size", whose value is equal to the number of el
 | com.mojang.minecraft.Entity | 0 | `00 00 00 00 00 00 00 00` | 0.0.14a_08 - ??? |
 | com.mojang.minecraft.character.Zombie | 77479605454997290 | `01 13 43 4A 68 7B 87 2A` | 0.0.14a_08 - ??? |
 | com.mojang.minecraft.level.Level | 0 | `00 00 00 00 00 00 00 00` | 0.0.14a_08 - ??? |
-| com.mojnag.minecraft.particle.Particle | -635797757596879942 | `F7 2D 31 4E DD 72 B3 BA` | 0.0.14a_08 - ??? |
+| com.mojang.minecraft.net.NetworkPlayer | 77479605454997290 | `01 13 43 4A 68 7B 87 2A` | 0.0.15a-05311904 - ??? |
+| com.mojang.minecraft.particle.Particle | -635797757596879942 | `F7 2D 31 4E DD 72 B3 BA` | 0.0.14a_08 |
+| com.mojang.minecraft.particle.Particle | -4069360689737339054 | `C7 86 BA 03 59 44 6F 52` | 0.0.15a-05311904 - ??? |
 | com.mojang.minecraft.phys.AABB | 0 | `00 00 00 00 00 00 00 00` | 0.0.14a_08 - ??? |
 | com.mojang.minecraft.player.Player | 9206737118623327547 | `7F C4 E6 A1 47 F2 65 3B` | 0.0.14a_08 - ??? |
 | byte[] | -5984413125824719648 | `AC F3 17 F8 06 08 54 E0` | N/A |

@@ -165,8 +165,8 @@ Besides custom world dimensions the following field values are not otherwise pos
 * unprocessed other than 0 if the volume of the world is a multiple of 200
 * unprocessed not a multiple of 100/50/40/25/20/10/8/5/4/2 if the greatest common diviser of the volume of the world and 200 is 100/50/40/25/20/10/8/5/4/2
 * unprocessed tickCount mismatch if the volume of the world modulo 200 is not a multiple of 8
-* xSpawn or zSpawn below -4,194,304 or above 4,194,304
-  * Causes a softlock on load if the position is outside the world.
+* xSpawn or zSpawn outside the world
+  * Causes a softlock on load
 * ySpawn below -67,108,864
 * ySpawn not representable as a float
 * ySpawn -16,777,215 or -33,554,432
@@ -200,8 +200,11 @@ Besides custom world dimensions the following field values are not otherwise pos
 * Multiple Zombies sharing a hitbox
 * Entity entity
 * Particle entity
+  * Has a different serialVersionUID in 0.0.14a_08 and in 0.0.15a-05311904 and later
 * Player entity
   * Crashes the game on the first game tick and therefore cannot be saved while playing on an applet
+* NetworkPlayer entity
+  * 0.0.15a-05311904 or later only
 
 ## Arbitrary Code Excecution
 WIP

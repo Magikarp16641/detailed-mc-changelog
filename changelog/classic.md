@@ -281,8 +281,7 @@
 - The pause screen includes 4 buttons:
   - "Generate new level"
     - Generates a new level with the dimensions of 32x64x512 and removes all zombies.
-      - The world is small enough to be safely downgraded to prior versions without losing data, making it possible to create calmLava next to or on top of ID `00` by downgrading to before 0.0.12a_03-200018.⬟
-        - In rd-160052-launcher and later the game will crash not only when rendering the lava, but also when rendering what used to be the header.
+	  - These world dimensions become discontinued in the next version.★
   - "Save level.."
     - Does nothing.
   - "Load level.."
@@ -312,7 +311,7 @@
 **water, calmWater**
 - Water now turns to rock when updated by calmLava.
   - This never happens as calmLava never sends out block updates.
-- Made the water collision check stricter. The player is no longer considered as in water if only the bottom or top 0.4 blocks of the hitbox collide with water.
+- Made the water collision check stricter. The player is no longer considered as being in water if only the bottom or top 0.4 blocks of the hitbox collide with water.
   - Being supported by water through a positive ceiling corner due to collision check imperfection is no longer possible.
   - If the player's height is reduced to below 0.8 blocks, it becomes impossible to be inside water at certain Y levels.
   - If the player's height is reduced to below 0.4 blocks, the player is no longer considered as being in water when standing on the floor, making it possible to jump inside water.
@@ -457,7 +456,7 @@
   - The username can be set to any UTF-8 string up to 65,535 bytes in length that consists of the following character codepoints: U+0001-U+0008, U+000B, U+000E-U+D7FF, U+E000-U+FFFF.
   - The username can't begin or end with a character with a codepoint of U+0020 or less.
 - If the username and sessionid are specified, newly created worlds will use it in place of "noname" for the creator. If it isn't specified newly created worlds will have their creator set to "anonymous" instead.
-  - This increases the possibilities of header editing.★
+  - This increases the possibilities of header editing.⬟
 - If both the loadmap_user and loadmap_id parameters are specified, the level saved at `http://` + host address + `/level/load.html?id=` + loadmap_id + `&user=` + loadmap_user will be automatically loaded.
   - If the level does not have the magic or version numbers set to the correct values, the game will crash.
 
@@ -473,6 +472,7 @@
 ### Gameplay
 **Game menu**
 - The pause menu is now called "Game menu", which is rendered above the buttons.
+- Pressing the "Generate new level" button now generates a 256x64x256 world instead of a 32x64x512 world.☆
 - Opening the game menu now darkens the rest of the screen more.
 - The "Save level.." and "Load level.." buttons are now disabled if the username isn't specified, which makes them darker.
 - The "Save level.." and "Load level.." buttons now open new "Save level" and "Load level" screens if the username is specified.
@@ -564,6 +564,11 @@
 - When falling it instantly swaps with the lowest `00` ID block directly below it.
 - Block swapping sends block updates at both blocks.
   - If the the JVM thread stack size is set low enough and enough block updates are chained, it's possible to trigger a `StackOverflowError`. If the level was automatically saved during a crash, this would allow for sand or gravel above block ID `00`. Starting in this version, the level is no longer saved when the game is ran from an applet, which is currently the only way to run the game.
+- Rarely when a cave is carved directly below the surface they can generate above block ID `00`. This can theoretically happen at most positions between Y 3 and 31 that are not touching the world border.
+  - At certain X,Z positions this can never happen due to the soil layer being too thick.
+  - At certain X,Z positions this can't happen as low as Y 3, instead the lowest possible Y value is somewhere between Y 24 and 31.
+  - Gravel that is both above and below block ID `00` will become discontinued in the next version.★
+  - Since liquids turning to rock don't currently send block updates, downgrading gravel above block ID `00` below water or calmWater to this version makes it possible to create gravel above block ID `00` below rock (provided that there exists lava or calmLava high enough in the world).⬟
 - If downgraded to 0.0.13a_03-launcher or before, the block below it can be broken to obtain sand or gravel above block ID `00`.⬟⬠
   - Downgrading to 0.0.13a-launcher or later creates many invalid block IDs, which can crash the game when loaded in a number of ways.
 - Can now be obtained without the use of header editing.⬠
@@ -665,9 +670,7 @@
 	  - If the location isn't obstructed, is above grass a tree is placed.
 	    - The tree is placed atop the grass and the grass is replaced with dirt.
 	    - A tree consists of 4 (or 5) treeTrunks on top of each other and a crown, which is a 3x3x3 cube of leaves centered on the top treeTrunk with the 4 top corners removed.
-		- A location is considered unobstructed if all blocks within 1 block of the would-be tree are `00`.
-		  - For the purposes of this check the top 4 corners of the crown are not removed.
-		  - Only blocks at the same Y level are considered. A tree can theoretically spawn partially below a ledge.
+		- A location is considered unobstructed if all blocks within 1 block (2 blocks for levels with the crown) of the tree horizontally are block ID `00`.
 - The game now prints "New improvednoise!" into the console every time an improved noise object is created. This happens 96 times every time a new world is generated.
   - 40 times in the "Raising.." phase.
   - 32 times in the "Eroding.." phase.
@@ -695,13 +698,11 @@
   - Jumping in the same tick as respawning makes it possible to jump from the spawn point even if it was midair. This makes it possible to get a spawn point very high above the world.
     - The highest obtainable Y level is 16,777,216. Any higher and player jumping is not fast enough to overcome floating point imprecision.
   - By changing the player's height to 0 using float rounding it's possible to set the spawn point to be outside the world up to 4,194,304 blocks from 0,0 at any Y level between 1 and 1 more than the level depth.
+    - Setting the spawn point outside the world softlocks the game and as such cannot be saved.
   - By changing the player's width to 0 using float rounding it's possible to fall below the world and set the spawn point to be as low as -67,108,864.
-    - Due to floating point imprecision not all Y values are possible:
-	  - Values below -16,777,216 are only obtainable if they're divisible by 2.
-	  - Values below -33,554,432 are only obtainable if they're divisible by 4.
-	  - -16,777,215 and -33,554,432 are not obtainable.
-	- All values of X,Z below the world in addition to many outside it are obtainable.
-	- In conjunction with changing the player's height to 0 using float rounding values of X,Z up to 4,194,304 blocks from 0,0 are obtainable.
+    - Due to floating point imprecision not all Y values are possible.
+	  - Values not representable as a float aren't obtainable.
+	  - ySpawn equal to -16777215 or -33554432 is unobtainable.
 - Pressing `G` no longer spawns zombies if there are at least 256 entities in the world already.
   - The player and particles are not saved to the entities list and as such don't prohibit zombie spawning.
 - bush is now selected by pressing `5` instead of `6`.
@@ -710,6 +711,7 @@
   - Only works on blocks that can normally be selected.
   - Attempting to select grass selects dirt instead.
 - Holding down left-click now places/breaks blocks at a rate of 4 per second.
+  - Holding down left-click while closing a menu causes the player to not place/break blocks at first. If the button is held down for 10005 ticks (8 minutes and 20.25 seconds) blocks will start being placed/mined again.
 - Placing block ID `00` at the world edge between the ground and water levels (Y 30 and 31 on the default world sizes) now places water instead, discontinuing block ID `00` at those locations.☆
   - This also makes it possible to obtain water or calmWater in worlds generated before 0.0.12a_03-200018 or in 0.0.13a-launcher without the use of header editing.
 - Block faces can no longer be selected if the face is occlusion culled.
@@ -728,7 +730,6 @@
   - Long name creator can be obtained by creating a new world while having the username and sessionid applet parameters set.
 - The new save format changes the possibilities of [header editing].⬠⬟
 - Updating a level from the [previous save format](../save-formats/early-classic.md) prints "Version is 1!" into the log.
-- Loading a file with a corrupted stream magic or version throws a StreamCorruptedException.
 - Loading a world with a null blocks field throws a RuntimeException with the message "The level is corrupt!".
 - If there is a crash during loading, if the magic number is corrupted, or if the version number is greater than 2 a new world is generated.
 - If the game were ran outside an applet, a crash during the loading process would cause the file to be read again as if it was using the [first save format](../save-formats/block-byte-array.md).
@@ -761,5 +762,128 @@
 - Added an unused cloud texture, duplicate dirt and grass side textures, and a 2nd duplicate grass top texture to `texture.png`.
 - Updated the `MANIFEST.MF` file.
 - Replaced the `MOJANGCS.RSA` and `MOJANGCS.SF` files with the `MOJANG_C.DSA` and `MOJANG_C.SF` files.
+
+# 0.0.15a-05311904
+## Additions
+### Entities
+**NetworkPlayer**
+- Used for representing other players when on a server.
+- Have the same appearance as size as zombies.
+- Unlike zombies, they have a heightOffset of 1.62, the same as the player.
+
+### Gameplay
+- When the game is launched it will now attempt to connect to a server at `79.136.77.240:5565`.
+  - If the connection fails, the game can be played in singleplayer as before.
+- The corresponding server version was never released to the public.
+- Packets are sent between the client and server as their id followed by bytes representing data contained in the packet.
+  - Strings sent by the client are represented as their MUTF-8 encoding padded with spaces (`20`) to always be 64 bytes long.
+  - When a string is received by the client, 64 bytes are read, interpreted as MUTF-8, and trimmed to remove excess spaces.
+    - The trimming also removes any spaces and C0 control characters at the start and end of the original string.
+  - Byte arrays are padded with `00` bytes to always be at least 1024 bytes long.
+  - When a byte array is received by the client, it always reads it as a 1024 byte array.
+- There are currently 10 packet types with one of them being unused. Receiving a packet with a different id throws an IOException with the message "Bad command: " + id.
+  - `00` : String
+    - Is sent by the client when connecting to the server alongside the player's username.
+      - If the user is null because the applet didn't have the `username` or `sessionid` parameter specified, the username is set to "guest".
+    - If received by the client, the loading screen with the message "Connecting to the server.." will appear and the string contained in the packet will be printed to the log.
+  - `01`
+    - Unused.
+  - `02`
+    - If received by the client, the status on the loading screen will read "Loading level.." and the level object on the client will be set to null in preparation for receiving level data from the server.
+  - `03` : Short, byte[], Byte
+    - If received by the client the bytes from the byte array will be added to a buffer that contains the level's blocks as it's being loaded.
+    - The short represents how many bytes from the byte array should be read.
+    - The byte represents the percentage of the level loading progress used for the progress bar on the loading screen.
+  - `04` : Short, Short, Short
+    - Contains the dimensions of the world.
+    - If received by the client, the level will be loaded from the blocks buffer and the world dimensions.
+  - `05` : Short, Short, Short, Byte, Byte
+    - When a player places/breaks a block their client will sent this packet to the server along with the coordinates of the block, and the edit mode and selected block type of the player.
+  - `06` : Short, Short, Short, Byte
+    - When received by the client, the block id at the coordinates represented by the shorts will be changed to the value of the byte.
+  - `07` : Byte, String, Short, Short, Short, Byte, Byte
+    - The first byte represents the internal id of a player.
+    - The string represents the player's username.
+    - The 3 shorts represents the player's position measured in 32nds of a block.
+    - The last 2 bytes represent the player's xRot and yRot measured in 256ths of a full rotation.
+    - The behavior when received by the client depends on the id.
+      - If the id is non-negative, a new NetworkPlayer will be added.
+        - The xRot and yRot are incorrectly swapped.
+      - If the id is negative, the client's player position and rotation will be changed.
+        - This movement is not interpolated.
+  - `08` : Byte, Short, Short, Short, Byte, Byte
+    - Contains the id, position, and rotation of a player in the same format as packet `07`.
+    - Is sent by the client every tick with an id of -1 and the player's current position and rotation.
+    - When received by the client, the position and rotation of the NetworkPlayer with the given id will be changed.
+      - This movement is not interpolated.
+      - If the id is negative, or doesn't correspond to any NetworkPlayer, nothing happens.
+  - `09` : Byte
+    - Contains the id of a player.
+    - When received by the client, the NetworkPlayer with the given id will be removed.
+      - If the id is negative, or doesn't correspond to any NetworkPlayer, nothing happens.
+- The position of players is represented correctly in packets only if the player is within 1024 blocks of 0,0,0 in any direction.
+- The position of a block is represented correctly in packets only if the all it's coordinates are at most 32,767.
+- The "Generate new level...", "Save level..", and "Load level.." buttons can still be pressed when connected to a server.
+  - Generating or loading a level results in client server desync.
+
+## Changes
+### Blocks
+**wood**
+- Texture slightly changed.
+
+**water, calmWater**
+- Now send a block update when converted to rock.
+- The top face now renders even if the block above is solid.
+  - It doesn't render if the water is not at the world edge and the 4 blocks horizontally adjacent to the solid block are not block ID `00`.
+
+**lava, calmLava**
+- Now send a block update when converted to rock.
+- Now appear brighter and their brightness does not depend on skylight.
+- Scheduled ticks now have to be processed 6 times for lava to flow 1 block, making lava about 6 times slower.
+  - If the lava is random ticked before the scheduled tick takes effect it can spread slightly faster.
+- The player is no longer considered as being in lava if only the bottom or top 0.4 blocks of the hitbox collide with lava, the same as with water.
+- The top face now renders even if the block above is solid.
+  - It doesn't render if the water is not at the world edge and the 4 blocks horizontally adjacent to the solid block are not block ID `00`.
+
+**sand**
+- Texture changed.
+
+**gravel**
+- Texture changed.
+
+**treeTrunk**
+- Texture changed.
+
+### Entities
+**Particle**
+- The gravity of particles created from leaves is now only 0.4 times that of other particles.
+
+**Zombie**
+- Zombies no longer swing their head around.
+
+### World generation
+- Gravel can now generate only below water or calmWater.
+  - This discontinues gravel above and below block ID `00`.☆
+  - If gravel above block ID `00` below water or calmWater is downgraded to 0.0.14a_08, it's possible to obtain gravel above block ID `00` below rock.⬟⬠
+- Trees can now be 6 blocks tall.
+- Changed the appearance of tree crowns.
+  - Tree crowns are now 4 blocks tall instead of 3.
+  - The bottom 2 layers of the tree crown now extends out to 2 blocks.
+    - This makes it possible for leaves to generate next to blocks. In particular it is now theoretically possible for a leaves block to generate next to sand that is above block ID `00`, thus making this block combination no longer require downgrading.⬠
+  - The leaves at the corners of the bottom 3 layers now only have a 50% chance of generating each.
+- "New improvednoise!" is no longer printed 96 times every time a new world is generated.
+
+### General
+- The version number in the top left of the screen now reads "0.0.15a".
+- Changed the game window title to "Minecraft 0.0.15a".
+- Holding down the left-click button while clicking into an unfocused game now no longer places/mines blocks automatically until the button is held for over 10005 ticks.
+- The bottom face of blocks is now darker than the top face.
+- Blocks and entities in the darkness are now slightly lighter.
+- The fog is now slightly bluer.
+- Fog now renders twice as close than it did before. Possible render distances are now 512, 128, 32, and 8 blocks instead of 1024, 256, 64, and 16 blocks.
+- Changed the appearance of fog when under inside a liquid. The water surface now appears almost opaque when underwater.
+- Updated the `terrain.png`.
+  - Replaced one of the unused grass top textures, the unused grass side, dirt and cloud textures, and 4 placeholder textures with a subtely modified version of the placeholder texture.
+- Updated the contents of the `META-INF` folder.
 
 [Header editing]: ../complex-methods/header-editing.md
