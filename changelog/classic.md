@@ -75,7 +75,7 @@
 - Changed fog density.
 - The game window now has "Minecraft 0.0.11a" as its title.
 - Changed all references of "RubyDung" to "Minecraft" in the code.
-- Class files are now compiled with Java 5 instead of Java 6.
+- Class files are now compiled using Java 5 instead of Java 6.
 - Encountering a GL error now prints an error message into the log.
 - Slightly optimized the particle engine and tesselator to not do useless calculations.
 
@@ -124,7 +124,7 @@
 - When the player is submerged in a liquid a fog effect renders. The fog is dark blue when in water and orange when in lava. The lava fog is denser.
 - Can only be obtained via spreading from preexisting calmWater or calmLava, which can't be obtained outside of terrain generation. Cannot be obtained above Y 31.
   - Water will briefly become unobtainable in 0.0.13a-launcher.★
-  - Lava above Y 21 will briefly become unobtainable in 0.0.13a-launcher before becoming recontinued in 0.0.13a_03.★
+  - Lava above Y 21 will briefly become unobtainable in 0.0.13a-launcher.★
   - Lava above Y 27 will become unobtainable in 0.0.13a-launcher.★
 
 **calmWater, calmLava**
@@ -135,7 +135,7 @@
   - If it's at the edge or bottom of the world, it will always turns into its non-calm counterpart.
   - calmWater and calmLava can be downgraded to an earlier version to break or place an adjacent block without causing a block update.⬠
     - Doing this in any version other that rd-132211-launcher or rd-132328-launcher is extremely difficult, as rendering the liquid block crashes the game.
-    - This can be used to create calmWater or calmLava next to or on top of ID `00`, which is normally impossible.⬟
+    - This can be used to create calmWater or calmLava next to or on top of ID `00`.⬟
     - This can be used to create calmWater at the world edge at non-ticking coordinates next to an unnatural block, which is normally not possible at certain coordinates.⬟
       - Unnatural blocks include:
         - Rock above or below the calmWater.
@@ -148,7 +148,7 @@
     - calmWater at the world edge always turns to water upon receiving a block update, but if it's one of the about 17% of blocks which are never random ticked it can never turn back into calmWater.
 - When calmWater is updated by lava, it turns to rock. When calmLava is is updated by water, it turns to rock.
 - Can initially only be obtained via terrain generation. Cannot be obtained above Y 31.
-  - calmWater will briefly become unobtainable in 0.0.13a-launcher before becoming recontinued in 0.0.13a_03.★
+  - calmWater will briefly become unobtainable in 0.0.13a-launcher.★
   - calmLava above Y 21 will briefly become unobtainable in 0.0.13a-launcher.★
 
 ### Gameplay
@@ -195,7 +195,7 @@
 - When generating a new level the top line reads "Generating level" with the bottom cycling through "Raising..", "Carving..", "Watering.." and "Melting.." as the level is being generated.
 
 **Miscellaneous**
-- Added the "IT HAPPENED!" and "hoooly fuck" error messages into the `floodFillLiquids` method. They can never appear in normal gameplay.
+- Added the "IT HAPPENED!" and "hoooly fuck" error messages to the `floodFillLiquids` method. They can never appear in normal gameplay.
 - Readded the `META-INF` folder, which includes a `MANIFEST.MF` file.
 - Added an unused `grass.png` texture.
 - Added an unused `null` file.
@@ -349,8 +349,8 @@
 - The "Flood filled " + count + " tiles in " + time + " ms" message is now shown first and only calmWater is counted towards the number of tiles.
 - The number of attempts to generate lava pools is now dependand on world dimensions and is equal to $`width * height * depth / 10000`$. This results in a slight increase for the default world size from 400 to 419. The number of attempts on the new thin world size is 104.
 - calmLava generating on top of calmWater now turns the water into rock.☆
-- Because Y 31 always generates filled with dirt, calmWater can't generate. Discontinuing water and calmWater.☆
-- Because all layers between Y 22 and Y 31 always generates filled with dirt, calmLava can't generate above Y 21. Discontinueding lava and calmLava above Y 21.☆
+- Because Y 31 always generates filled with dirt, calmWater can't generate. Discontinuing water and calmWater.☆⬠
+- Because all layers between Y 22 and Y 31 always generates filled with dirt, calmLava can't generate above Y 21. Discontinuing lava and calmLava above Y 21.☆⬠
 
 ### Gameplay
 **Random ticks**
@@ -495,6 +495,7 @@
 	  - The name of the level has to be at least 203 pixels wide to be visible unless a character with an incorrect width is near the end of the name, it which case it can be slighly shorter while staying visible.
   - The following characters can be used in the level name: `20`-`23`, `25`, `27`-`3A`, `3C`-`3F`, `41`-`5B`, `5D`, `5F`, `61`-`7B` and `7D` (` `, `!`, `"`, `#`, `%`, `'`, `(`, `)`, `*`, `+`, `,`, `-`, `.`, `/`, digits, `:`, `<`, `=`, `>`, `?`, latin capital letters, `[`, `]`, `_`, latin small letters, `{` and `}`).
     - This is the first time that the issue with `7B` (`{`) having its width incorrectly set to 1 can be observed.
+  - Pressing `BACK` deletes the character that was entered last.
   - At the end of the name an additonal `_` is rendered for 6 ticks, not rendered for 6 ticks, and then rendered again.
     - Due to integer overflow, after 2^31 ticks the `_` is not rendered for only 5 ticks.
     - Due to java rounding towards 0, after 2^32 ticks, the `_` is rendered for 11 ticks.
@@ -517,8 +518,10 @@
 
 ### World generation
 - Terrain generation is no longer flat.
-  - calmWater can once again generates from flooding from the world edge and from water pools, once again making water and calmWater obtainable without the use of header editing.⬠
-  - calmLava can once again generate above Y 21. This only recontinues lava and calmLava between Y 22 and Y 27, lava and calmLava between Y 28 and Y 31 are still discontinued.⬠
+  - calmWater can once again generates from flooding from the world edge and from water pools, once again making water and calmWater obtainable without the use of header editing.☆⬠
+    - This makes it possible to dowgrade calmWater to before 0.0.12a_03-200018 to obtain invalid block configurations once again.⬟
+  - calmLava can once again generate above Y 21. This only recontinues lava and calmLava between Y 22 and Y 27, lava and calmLava between Y 28 and Y 31 are still discontinued.☆⬠
+    - This makes it possible to downgrade calmLava to before 0.0.12a_03-200018 to obtain floating calmLava between Y 22 and Y 27 once again.⬟
   - Grass can now generate at Y 31, recontinuing calmWater at the world border at non-ticking coordinates adjacent to grass.
     - The minimum Y level grass could generate at was lowered in 0.0.13a-launcher, but it never came into effect due to the flat terrain.
 - Now uses improved perlin noise.
@@ -563,20 +566,18 @@
 - Attempt to fall when placed or when given a block update.
 - When falling it instantly swaps with the lowest `00` ID block directly below it.
 - Block swapping sends block updates at both blocks.
-  - If the the JVM thread stack size is set low enough and enough block updates are chained, it's possible to trigger a `StackOverflowError`. If the level was automatically saved during a crash, this would allow for sand or gravel above block ID `00`. Starting in this version, the level is no longer saved when the game is ran from an applet, which is currently the only way to run the game.
-- Rarely when a cave is carved directly below the surface they can generate above block ID `00`. This can theoretically happen at most positions between Y 3 and 31 that are not touching the world border.
-  - At certain X,Z positions this can never happen due to the soil layer being too thick.
-  - At certain X,Z positions this can't happen as low as Y 3, instead the lowest possible Y value is somewhere between Y 24 and 31.
+  - If the the JVM thread stack size is set low enough and enough block updates are chained, it's possible to trigger a `StackOverflowError`. If the level was automatically saved during a crash this would allow for sand or gravel above block ID `00`, but starting in this version the level is no longer saved when the game is ran from an applet, which is currently the only way to run the game.
+- Rarely when a cave is carved directly below the surface they can generate above block ID `00`.
   - Gravel that is both above and below block ID `00` will become discontinued in the next version.★
-  - Since liquids turning to rock don't currently send block updates, downgrading gravel above block ID `00` below water or calmWater to this version makes it possible to create gravel above block ID `00` below rock (provided that there exists lava or calmLava high enough in the world).⬟
-- If downgraded to 0.0.13a_03-launcher or before, the block below it can be broken to obtain sand or gravel above block ID `00`.⬟⬠
+  - Since liquids turning to rock don't currently send block updates, downgrading gravel above block ID `00` below water or calmWater to this version makes it possible to create gravel above block ID `00` below rock.⬟
+- If downgraded to 0.0.13a_03-launcher or before, the block below it can be broken to obtain sand or gravel above block ID `00`. Similarly, this can be used to make grass grow somewhere below floating sand or gravel, or below Y 5 at least 3 blocks below a ring of goldOre, ironOre, coalOre, or floating sand or gravel.⬟⬠
   - Downgrading to 0.0.13a-launcher or later creates many invalid block IDs, which can crash the game when loaded in a number of ways.
 - Can now be obtained without the use of header editing.⬠
 
 **goldOre, ironOre, coalOre**
 - Have IDs of `0E`, `0F` and `10`.
 - Can only be obtained from natural generation.
-- If downgraded to 0.0.13a_03-launcher or before, grass can grow below it, which isn't normally possible.⬟⬠
+- If downgraded to 0.0.13a_03-launcher or before, grass can grow somewhere below it, or below Y 5 at least 3 blocks below a ring of goldOre, ironOre, coalOre, or floating sand or gravel.⬟⬠
   - Downgrading to 0.0.13a-launcher or later creates many invalid block IDs, which can crash the game when loaded in a number of ways.
 - Can now be obtained on newly generated worlds without the use of header editing.⬠
   - They can only be obtained in certain quantities and not at the edges, bottom or top of the world.
@@ -681,7 +682,7 @@
 ### Gameplay
 **Random ticks**
 - Changed how blocks are chosen to be random ticked. All blocks are now chosen with equal probability on the natural world sizes.
-  - This makes it possible to obtain calmWater and calmLava in unnatural "non-ticking" locations as well as calmWater at the world edge in a "non-ticking location adjacent to an unnatural block without the use of header editing.⬠
+  - This makes it possible to obtain calmWater and calmLava in unnatural locations and configurations in positions that used to not receive random ticks.⬠
 
 **Controls**
 - Pressing `RETURN` no longer saves the level and instead saves the player's position and horizontal camera angle as their spawn point and respawns them there. Pressing `R` now respawns the player at the spawn point.
@@ -746,7 +747,6 @@
 - The `rock.png` texture below and outside the world is now darker.
 - Solid blocks now render all their faces if they are within 0.1 blocks of the camera.
   - This is to prevent x-raying using the newly added sand or gravel.
-- Camera rotation is now interpolated.
 - Fog at rendering layer 0 is now linear instead of exponential.
 
 **Miscellaneous**
@@ -773,54 +773,14 @@
 
 ### Gameplay
 - When the game is launched it will now attempt to connect to a server at `79.136.77.240:5565`.
+  - The corresponding server version was never released to the public.
   - If the connection fails, the game can be played in singleplayer as before.
-- The corresponding server version was never released to the public.
-- Packets are sent between the client and server as their id followed by bytes representing data contained in the packet.
-  - Strings sent by the client are represented as their MUTF-8 encoding padded with spaces (`20`) to always be 64 bytes long.
-  - When a string is received by the client, 64 bytes are read, interpreted as MUTF-8, and trimmed to remove excess spaces.
-    - The trimming also removes any spaces and C0 control characters at the start and end of the original string.
-  - Byte arrays are padded with `00` bytes to always be at least 1024 bytes long.
-  - When a byte array is received by the client, it always reads it as a 1024 byte array.
-- There are currently 10 packet types with one of them being unused. Receiving a packet with a different id throws an IOException with the message "Bad command: " + id.
-  - `00` : String
-    - Is sent by the client when connecting to the server alongside the player's username.
-      - If the user is null because the applet didn't have the `username` or `sessionid` parameter specified, the username is set to "guest".
-    - If received by the client, the loading screen with the message "Connecting to the server.." will appear and the string contained in the packet will be printed to the log.
-  - `01`
-    - Unused.
-  - `02`
-    - If received by the client, the status on the loading screen will read "Loading level.." and the level object on the client will be set to null in preparation for receiving level data from the server.
-  - `03` : Short, byte[], Byte
-    - If received by the client the bytes from the byte array will be added to a buffer that contains the level's blocks as it's being loaded.
-    - The short represents how many bytes from the byte array should be read.
-    - The byte represents the percentage of the level loading progress used for the progress bar on the loading screen.
-  - `04` : Short, Short, Short
-    - Contains the dimensions of the world.
-    - If received by the client, the level will be loaded from the blocks buffer and the world dimensions.
-  - `05` : Short, Short, Short, Byte, Byte
-    - When a player places/breaks a block their client will sent this packet to the server along with the coordinates of the block, and the edit mode and selected block type of the player.
-  - `06` : Short, Short, Short, Byte
-    - When received by the client, the block id at the coordinates represented by the shorts will be changed to the value of the byte.
-  - `07` : Byte, String, Short, Short, Short, Byte, Byte
-    - The first byte represents the internal id of a player.
-    - The string represents the player's username.
-    - The 3 shorts represents the player's position measured in 32nds of a block.
-    - The last 2 bytes represent the player's xRot and yRot measured in 256ths of a full rotation.
-    - The behavior when received by the client depends on the id.
-      - If the id is non-negative, a new NetworkPlayer will be added.
-        - The xRot and yRot are incorrectly swapped.
-      - If the id is negative, the client's player position and rotation will be changed.
-        - This movement is not interpolated.
-  - `08` : Byte, Short, Short, Short, Byte, Byte
-    - Contains the id, position, and rotation of a player in the same format as packet `07`.
-    - Is sent by the client every tick with an id of -1 and the player's current position and rotation.
-    - When received by the client, the position and rotation of the NetworkPlayer with the given id will be changed.
-      - This movement is not interpolated.
-      - If the id is negative, or doesn't correspond to any NetworkPlayer, nothing happens.
-  - `09` : Byte
-    - Contains the id of a player.
-    - When received by the client, the NetworkPlayer with the given id will be removed.
-      - If the id is negative, or doesn't correspond to any NetworkPlayer, nothing happens.
+  - Worlds can still be saved while connected to the server.
+    - This could be used to obtain the NetworkPlayer entity if the server were archived.
+  - There are currently no protections against loading or generating a world while connected to the server, which can result in massive desync.
+    - This could be used to obtain discontinued block configurations if the server were archived.
+- The client and server communicate with each other using [packets](../server-protocols/early-multiplayer-test.md).
+  - The length of a packet, which is used for checking whether the client has received the entire packet, errouneously does not include the length of strings, which can cause a BufferUnderflowException.
 - The position of players is represented correctly in packets only if the player is within 1024 blocks of 0,0,0 in any direction.
 - The position of a block is represented correctly in packets only if the all it's coordinates are at most 32,767.
 - The "Generate new level...", "Save level..", and "Load level.." buttons can still be pressed when connected to a server.
@@ -832,7 +792,7 @@
 - Texture slightly changed.
 
 **water, calmWater**
-- Now send a block update when converted to rock.
+- Now send a block update when converted to rock.⬠
 - The top face now renders even if the block above is solid.
   - It doesn't render if the water is not at the world edge and the 4 blocks horizontally adjacent to the solid block are not block ID `00`.
 
@@ -864,7 +824,7 @@
 ### World generation
 - Gravel can now generate only below water or calmWater.
   - This discontinues gravel above and below block ID `00`.☆
-  - If gravel above block ID `00` below water or calmWater is downgraded to 0.0.14a_08, it's possible to obtain gravel above block ID `00` below rock.⬟⬠
+  - If gravel above block ID `00` below water or calmWater is downgraded to 0.0.14a_08, it's possible to obtain gravel above block ID `00` below rock.⬟
 - Trees can now be 6 blocks tall.
 - Changed the appearance of tree crowns.
   - Tree crowns are now 4 blocks tall instead of 3.
@@ -884,6 +844,75 @@
 - Changed the appearance of fog when under inside a liquid. The water surface now appears almost opaque when underwater.
 - Updated the `terrain.png`.
   - Replaced one of the unused grass top textures, the unused grass side, dirt and cloud textures, and 4 placeholder textures with a subtely modified version of the placeholder texture.
+- Updated the contents of the `META-INF` folder.
+
+# 0.0.16a_02-081047
+## Additions
+### Gameplay
+**Chat**
+- Opened by pressing `T`.
+- Pressing `ESC` closes the chat.
+- The following characters can be entered into the chat: `20`-`23`, `25`, `27`-`3A`, `3C`-`3F`, `41`-`5B`, `5D`, `5F`, `61`-`7B` and `7D` (` `, `!`, `"`, `#`, `%`, `'`, `(`, `)`, `*`, `+`, `,`, `-`, `.`, `/`, digits, `:`, `<`, `=`, `>`, `?`, latin capital letters, `[`, `]`, `_`, latin small letters, `{` and `}`).
+  - These are the same restriction as in the "Enter level name:" screen.
+- Chat messages can't have more than 64 characters.
+- At the end of the message an additional `_` is flashed the same as in the "Enter level name:" screen.
+- Pressing `BACK` deletes the character that was entered last.
+- Pressing `RETURN` trims the chat message and sends it to the server if it's at least 1 character long.
+- Chat messages disappear after 10 seconds or if there are 8 newer messages.
+- System messages are prepended by "&e", making them yellow.
+
+**Error screen**
+- Has a title and message on a red background.
+- When the player is kicked from a server, an error screen with the title "Connection lost" as well as another message shows up.
+- When an exception occurs when reading packets from the server, an error screen with the title "Disconnected!" and the message "You've lost connection to the server" shows up.
+- When an exception occurs, an error screen with the title "Client error" and the message "The game broke ! \[" + exception + "]" shows up.
+
+## Changes
+### Entities
+**NetworkPlayer**
+- Added a move queue.
+  - Every time a movement packet is received from the server, 2 player moves are added to the move queue to interpolate movement.
+  - Every tick 1 player move from the move queue is executed.
+  - If the move queue gets too long, the game will execute up to 5 player moves per tick until the move queue contains less than 10 entries.
+- Greatly changed the fields inside the NetworkPlayer class. 
+  - Added the "minecraft" field, which cannot be serialized unless it's null. It being null causes a NullPointerException during rendering.
+    - Due to this change, saving worlds while being connected to a server is now only possible if no other players are online.
+- They are no longer animated when stationary.
+- The body now has a separate yaw from the head.
+  - They can differ by a maximum of 75 degrees.
+- Rotation is now interpolated.
+- The head can now tilt up and down.
+
+### Gameplay
+**Online level saving**
+- Level names are now limited to 64 characters.
+- The host address no longer includes the port if the port is unset.
+
+**Multiplayer**
+- The client will no longer attempt to join a server at `79.136.77.240:5565` every time the game is launched. Instead the client will only attempt to join a server if the applet has the `server` and `port` parameters set.
+  - If the client fails to connect to the server an error screen with "Failed to connect" and "You failed to connect to the server. It's probably down!" appears.
+- Changed the [server protocol](../server-protocols/classic.md).
+- Added protocol version numbers, this version has the PVN of 3.
+- Added server names and the motd. They are now displayed on the loading screen instead of "Connecting to the server.." and "Loading level..".
+- Added several different player movement packets.
+- Added a chat message packet.
+- Added a kick message packet.
+- Clients now send any unsent packets when disconnecting from the server.
+- An exception when writing packets now disconnects the client from the server.
+- The order of reading and writing packets within a tick swapped. Clients now send packets after reading incoming packets.
+- When joining a server the order of the xRot and yRot in the initial new player packet sent to the client is read incorrectly, causing the player to not look horizontally if the rotSpawn is not 0.0.
+  - This makes it possible for xRot to be temporarily below -90.0 or above 90.0.
+- When another player disconnects from the server, their associated NetworkPlayer is now properly removed. Previously it was only removed from the main entities list.
+- The player action packet is now only sent if the block was actually broken/placed client-side.
+- Pressing `G` no longer spawns zombies when on a server.
+- Receiving a block change packet (`06`) from the server causing block updates, but does not cause sand or gravel to fall. Combining this with server-client desync, which is most easily done by loading or generating a world while on a server, allows for sand or gravel above block ID `00`.★
+  - This can also be used to obtain grass somewhere below floating sand or gravel or grass below Y 5 at least 3 blocks below a ring of goldOre, ironOre, coalOre, or floating sand or gravel (provided that the ring contains at least 1 sand or gravel and that the ores are naturally generated).★
+
+### General
+- The version number in the top left of the screen now reads "0.0.16a_02".
+- Changed the game window title to "Minecraft 0.0.16a_02".
+- Camera rotation is now interpolated.
+- Changed the fog.
 - Updated the contents of the `META-INF` folder.
 
 [Header editing]: ../complex-methods/header-editing.md

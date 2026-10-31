@@ -9,7 +9,7 @@
 - Downgrading calmWater or calmLava from 0.0.12a_03-200018 or later into this version can be used to create invalid block configurations as breaking or placing blocks nearby does not cause block updates. The invalid configurations include:
   - calmWater or calmLava next to or above ID `00`.⬟
   - calmWater at the world edge at non-ticking coordinates above or below rock.⬟
-- Downgrading sand or gravel from 0.0.14a_08 or later into this version can be used to create sand or gravel above block ID `00`, which aren't normally obtainable.⬟
+- Downgrading sand or gravel from 0.0.14a_08 or later into this version can be used to create sand or gravel above block ID `00`, which aren't normally obtainable in certain locations or block configurations.⬟
 - Block ID `00` can currently be obtained at the world edge at Y 30 and 31, which will become discontinued in 0.0.14a_08.★
 
 ### World generation
@@ -127,7 +127,7 @@
     - A given block will therefore be ticked every 20 seconds on average.
 - The only block affected by random ticks is grass.
   - If the grass is not lit, it turns into dirt.
-  - Else 4 random blocks get picked in a 3x5x3 box around the grass. If a picked block is dirt and is lit, it turns into grass.
+  - Else 4 random blocks get picked in a 3x5x3 box centered 1 block below the grass. If a picked block is dirt and is lit, it turns into grass.
 - If a block with ID between `06` and `FF` is ticked, the game crashes.
 
 ### General
@@ -152,6 +152,9 @@
 - Changed ID to `02`. Grass blocks from previous versions convert to rock.
   - grass cannot be obtained in worlds generated in older version through normal means.
 - Texture changed, now has a 3 different textures for the top, side and bottom faces.
+- Downgrading calmWater into this version makes it possible to obtain calmWater at the world edge at non-ticking coordinates adjacent to grass, which is normally unobtainable.⬟
+  - This is very difficult to obtain, as rendering the chunk with the calmWater crashes the game.
+- Downgrading sand, gravel, ironOre, goldOre, or coalOre makes it possible to obtain grass somewhere below ironOre, goldOre, coalOre, or floating sand or gravel, or grass below Y 5 at least 3 blocks below a ring of ironOre, goldOre, coalOre, or floating sand or gravel, which are normally unobtainable.⬟
 
 ### Mobs
 **Zombie**
@@ -171,6 +174,14 @@
 
 ### General
 - The game is now in fullscreen mode.
+- Changed the tesselator to only use a single array and buffer instead of 3 (position, texture offset, color).
+  - To prevent an ArrayIndexOutOfBounds exception, the tessellator flushes whenever the position in the array is greater than or equal to $`524288 - length`$, with length being the number of floats used by each vertex.
+  - Erroneously the tessellator can flush before all 4 vertices of a face are handled, which causes the graphical glitches due to the vertex buffer becoming misaligned.
+  - Erroneously the length is never properly reset and increases over time.
+    - It increases by 5 every frame because of the block preview, an additional 5 every frame a particle exists in the world, and an addional 10 every time a chunk is rebuilt.
+	- After enough time `length` can increase enough to cause flushes to happen more often than 4 vertices can be handled, breaking rendering completely.
+	  - This disables block placing/breaking, makes the block type preview, particles, and any newly rebuilt chunks invisible.
+	  - This happens after 102,809 frames provided that no blocks are broken/placed and no chunk is dirtied.
 - Changed chunk rendering.
   - Only 8 chunks can be rebuilt per frame.
     - Dirty chunks are sorted based on whether the chunk is within the player's field of view, when the chunk was last dirtied and their distance to the player.
@@ -212,6 +223,9 @@
 - Particles now billboard vertically as well, instead of just horizontally.
 
 ### General
+- Fixed some graphical glitches caused by the vertex buffer being able to be misalighned.
+  - This is done by changing the overflow prevention condition in the tessellator being changed from `p >= 524288 - length` to `vertices % 4 == 0 && p >= 524288 - 4*length`.
+  - `length` still increases over time, though it no longer causes any critial issues. This causes the performance to deteriorate over time as the tessellator flushes more often than it has to, up to flushing after every quad.
 - Slightly optimized block selection code.
   - Blocks not within the player's field of view are no longer checked.
 - The game is once again windowed with a resolution of 1024x768 like before.

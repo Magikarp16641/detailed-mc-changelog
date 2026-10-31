@@ -49,78 +49,45 @@ Via creative usage of null byte conversion and other manipulation techniques, it
 ## Blocks
 Below is a table of blocks and how they can be created from the header without having to use create time or null byte conversion.
 
-| Block ID | Block Type | Obtainability | Recontinued version | Notes |
-| :---: | --- | --- | --- | --- |
-| `00` | N/A | Can be created in all header editing versions. | N/A | Not discontinued. |
-| `01` | rock | Can be placed in all header editing versions. | N/A | Not discontinued. |
-| `02` | grass | Length of "--" world name. Height of the 32x64x512 world. | N/A | Antidiscontinued on worlds created before rd-160052-launcher. |
-| `03` | dirt | Can be placed in rd-160052-launcher or later. | N/A | Not discontinued. |
-| `04` | stoneBrick | Can be placed in rd-160052-launcher or later. | N/A | Not discontinued. |
-| `05` | wood | Can be placed in rd-160052-launcher or later. | N/A | Not discontinued. |
-| `06` | bush | Lenght of "noname" creator name. Can be placed in rd-161348-launcher or later. | N/A | Not discontinued. |
-| `07` | unbreakable | Length of "unknown" creator name. | ??? | |
-| `08` | water | | 0.0.13a_03 | Briefly discontinued in 0.0.13a-launcher. Discontinued at Y 32 or above (Can be obtained from naturally generated water by shifting the world). Antidiscontinued on worlds created before 0.0.12a_03-200018. |
-| `09` | calmWater | 0.0.13a_03 | Briefly discontinued in 0.0.13a-launcher. Discontinued at Y 32 or above and in unnatural non-ticking locations (Can be obtained from naturally generated calmWater by shifting the world). Antidiscontinued on worlds created before 0.0.12a_03-200018. |
-| `0A` | lava | | N/A | Discontinued at Y 32 or above and briefly discontinued at Y 22 or above in 0.0.13a-launcher (Can be obtained from naturally generated lava by shifting the world). Antidiscontinued on worlds created before 0.0.12a_03-200018. |
-| `0B` | calmLava | | N/A | Discontinued at Y 32 or above and in unnatural non-ticking locations, and briefly discontinued at Y 22 or above in 0.0.13a-launcher (Can be obtained from naturally generated lava by shifting the world). Antidiscontinued on worlds created before 0.0.12a_03-200018. |
-| `0C` | sand | World name length in worlds generated in 0.0.13a-launcher or later. | 0.0.14a_08 | |
-| `0D` | gravel | | 0.0.14a_08 | |
-| `0E` | goldOre | | 0.0.14a_08 (new worlds only) | |
-| `0F` | ironOre | | 0.0.14a_08 (new worlds only) | |
-| `10` | coalOre | | 0.0.14a_08 (new worlds only) | |
-| `11` | treeTrunk | | 0.0.14a_08 | |
-| `12` | leaves | | 0.0.14a_08 | |
-| `13`-`1A` | N/A | | ??? | |
-| `1B` | N/A | Part of the magic number. | ??? | |
-| `1C`-`1F` | N/A | | ??? | |
-| `20` | N/A | Part of the "A Nice World" world name. Width of the 32x64x512 world. | ??? | |
-| `21`-`26` | N/A | | ??? | |
-| `27` | N/A | Part of the magic number. | ??? | |
-| `28`-`2C` | N/A | | ??? | |
-| `2D` | N/A | Part of the "--" world name. | ??? | |
-| `2E`-`3F` | N/A | | ??? | |
-| `40` | N/A | World depth. | ??? | |
-| `41` | N/A | Part of the "A Nice World" world name. | ??? | |
-| `42`-`4D` | N/A | | ??? | |
-| `4E` | N/A | Part of the "A Nice World" world name. | ??? | |
-| `4F`-`56` | N/A | | ??? | |
-| `57` | N/A | Part of the "A Nice World" world name. | ??? | |
-| `58`-`60` | N/A | | ??? | |
-| `61` | N/A | Part of the "noname" creator name. | ??? | |
-| `62` | N/A | | ??? | |
-| `63` | N/A | Part of the "A Nice World" world name. | ??? | |
-| `6C` | N/A | Part of the "A Nice World" world name. | ??? | |
-| `65` | N/A | Part of the "noname" creator name and the "A Nice World" world name. | ??? | |
-| `66`-`68` | N/A | | ??? | |
-| `69` | N/A | Part of the "A Nice World" world name. | ??? | |
-| `6A` | N/A | | ??? | |
-| `6B` | N/A | Part of the "unknown" creator name. | ??? | |
-| `6C` | N/A | Part of the "A Nice World" world name. | ??? | |
-| `6D` | N/A | Part of the "noname" creator name. | ??? | |
-| `6E` | N/A | Part of the "unknown" and "noname" creator names. | ??? | |
-| `6F` | N/A | Part of the "unknown" and "noname" creator names, and the "A Nice World" world name. | ??? | |
-| `70`-`71` | N/A | | ??? | |
-| `72` | N/A | Part of the "A Nice World" world name. | ??? | |
-| `73`-`74` | N/A | | ??? | |
-| `75` | N/A | Part of the "unknown" creator name. | ??? | |
-| `76` | N/A | | ??? | |
-| `77` | N/A | Part of the "unknown" creator name. | ??? | |
-| `78`-`87` | N/A | | ??? | |
-| `88` | N/A | Part of the magic number. | ??? | |
-| `89`-`B6` | N/A | | ??? | |
-| `B7` | N/A | Part of the magic number. | ??? | |
-| `B8`-`FF` | N/A | | ??? | |
+| Block ID | Block Type | Recontinued version | Notes |
+| :---: | --- | --- | --- |
+| `00` | N/A | rd-132211-launcher | Not discontinued. |
+| `01` | rock | rd-132211-launcher | Not discontinued. |
+| `02` | grass | rd-160052-launcher | Not discontinued. |
+| `03` | dirt | rd-160052-launcher | Not discontinued. |
+| `04` | stoneBrick | rd-160052-launcher | Not discontinued. |
+| `05` | wood | rd-160052-launcher | Not discontinued. |
+| `06` | bush | rd-161348-launcher | Not discontinued. |
+| `07` | unbreakable | N/A | Also possinble using a hacked client or [protocol mismatch](/protocol-mismatch.md) in 1.2 (classic server). |
+| `08` | water | 0.0.12a_03-200018 | Briefly discontinued in 0.0.13a-launcher. Discontinued at Y 32 or above. |
+| `09` | calmWater | 0.0.12a_03-200018 | Briefly discontinued in 0.0.13a-launcher. Discontinued at Y 32 or above and in unnatural non-ticking locations (before 0.0.14a_08). |
+| `0A` | lava | 0.0.12a_03-200018 | Discontinued at Y 32 or above and briefly discontinued at Y 22 or above in 0.0.13a-launcher. |
+| `0B` | calmLava | 0.0.12a_03-200018 | Discontinued at Y 32 or above and in unnatural non-ticking locations, and briefly discontinued at Y 22 or above in 0.0.13a-launcher. |
+| `0C` | sand | 0.0.14a_08 | |
+| `0D` | gravel | 0.0.14a_08 | |
+| `0E` | goldOre | 0.0.14a_08 | |
+| `0F` | ironOre | 0.0.14a_08 | |
+| `10` | coalOre | 0.0.14a_08 | |
+| `11` | treeTrunk | 0.0.14a_08 | |
+| `12` | leaves | 0.0.14a_08 | |
+| `13`-`FF` | N/A | N/A | |
 
 ## Block configurations
-Block IDs being created from the header and shifting blocks (either via invalidating the header or changing the world dimensions) both allow invalid block configurations. Those include :
+Block IDs being created from the header and shifting blocks (either via invalidating the header or changing the world dimensions) both allow invalid block configurations. Block configurations that are discontinued at some point include:
 - water or calmWater adjacent to lava or calmLava.
 - calmWater or calmLava above or next to block ID `00`.
-- calmWater at the world border at non-ticking coordinates above or below rock (recontinued in 0.0.14a_08).
-- calmWater at the world border at non-ticking coordinates adjacent to grass, stoneBrick, wood or bush (recontinued in 0.0.14a_08).
-- calmWater at the world border at non-ticking coordinates below dirt (recontinued in 0.0.14a_08).
-- sand or gravel above block ID `00`.
-- grass somewhere below goldOre, ironOre or coalOre.
-- a pocket of water or calmWater surrounded on all sides and top by goldOre, ironOre or coalOre below Y 29.
+- calmWater at the world border at non-ticking coordinates above or below rock.
+- calmWater at the world border at non-ticking coordinates adjacent to grass, stoneBrick, wood or bush.
+- calmWater at the world border at non-ticking coordinates below dirt.
+- sand at world edge, Y 1, or between Y 32 and Y 63 above block ID `00`.
+- sand above block ID `00` below block ID `01`-`06` or `08`-`12`.
+- sand or gravel above block ID `00` next to block ID `04`-`06` or `11`-`12`.
+- gravel at world edge, Y 1, or between Y 31 and Y 63 above block ID `00`.
+- gravel above block ID `00` below block ID `00`-`06` or `08`-`12`.
+- grass somewhere below goldOre, ironOre, coalOre, or sand or gravel above block ID `00`.
+- grass below Y 5 at least 3 blocks below a ring of goldOre, ironOre, coalOre, or sand or gravel above block ID `00`.
+- a pocket of water or calmWater below Y 29 surrounded on all sides and top by goldOre, ironOre, coalOre, or block ID `00` below sand or gravel.
+- global block configurations which don't appear on any world seed.
 
 ## World data
 ### 0.0.13a-launcher - 0.0.13a_03-launcher
@@ -155,56 +122,73 @@ If the world is generated in 0.0.13a_03 or 0.0.13a_03-launcher with the username
   - If the create time consists of 2 3-byte characters separated by an ASCII character, the character can't be `09`, `0C` or `0D`.
 
 ### 0.0.14a_08 - ???
-The width, height and depth of the world can be edited to many different combinations of values from a range of -2,147,483,648 to 2,147,483,647. For the world to not immediately crash on load none of the dimensions can be negative, and their product has to be sufficiently below 4,194,304 for there to be enough bytes in the level.dat for each block to have an associated ID. The height or width cannot be 0 and the height or width can only be 1 if the spawn point is already set (Worlds with such height or width cannot be updated from between 0.0.13a-launcher and 0.0.13a_03-launcher). The area of the world has to be less than 2,147,483,646 (only relevant due to the other limitations if the depth is 0).
+The width, height and depth of the world can be edited to many different combinations of values from a range of -2147483648 to 2147483647. The combinations that can be loaded without crashing depend on the version.
+
+In client versions the width and height have to be positive and the depth has to be non-negative. The volume of the world has to be sufficiently below 4194304 for there to be enough bytes in the level.dat for each block to have an associated ID. The height or width cannot be 0 and the height or width can only be 1 if the spawn point is already set (Worlds with such height or width cannot be updated from between 0.0.13a-launcher and 0.0.13a_03-launcher). The area of the world has to be less than 2147483646 (only relevant due to the other limitations if the depth is 0).
+
+Servers can load worlds as long as they meet the following criteria:
+- $`width * height`$ is between 0 and 2147483645 when cast to an int.
+- At least one of the following is true:
+  - $`width`$ or $`height`$ is at most 0.
+  - $`width * height`$ is at most 2147483645 and $`depth`$ is at most 1.
+  - $`width * height * depth`$ is sufficiently below 419304.
+  - $`width * height`$ is at most 4194304 and $`width * height * depth`$ and $`width * height * (depth - 1)`$ are both non-negative and sufficently below 4194304 when cast to an int.
+    - This also assumes that blocks on the "topmost" layer of the world are all solid. If any of them isn't the requirements become more constrained.
+- Unless $`width`$ or $`height`$ are both at least 2, worlds can be loaded only if the spawn point isn't set to 0,0,0
+Additionally extreme world sizes may experience issues due to random ticks, though technically this does not prevent the world from being loaded, since the world is first saved before any in-game ticks occur.
+- If either $`width`$ or $`height`$ are at least 1073741825, the game gets stuck in an infinite loop.
+- If $`width * height * depth`$ is more than the length of the blocks array, or if $`width`$, $`height`$, or $`depth`$ are less than 1, the world may crash from random ticks unless the product is at most 0 when cast to an int.
+  - Some such combinations of world dimensions don't crash, though the exact set depends on the length of the blocks array.
 
 All 0.0.13a-launcher worlds can be recreated in this save format.
 
 Besides custom world dimensions the following field values are not otherwise possible:
-* rotSpawn above 9.0071993E15
-* rotSpawn not a multiple of 2^-25
-* unprocessed other than 0 if the volume of the world is a multiple of 200
-* unprocessed not a multiple of 100/50/40/25/20/10/8/5/4/2 if the greatest common diviser of the volume of the world and 200 is 100/50/40/25/20/10/8/5/4/2
-* unprocessed tickCount mismatch if the volume of the world modulo 200 is not a multiple of 8
-* xSpawn or zSpawn outside the world
-  * Causes a softlock on load
-* ySpawn below -67,108,864
-* ySpawn not representable as a float
-* ySpawn -16,777,215 or -33,554,432
-* ySpawn above 16,777,216
-* creator or name set to null
-* creator containing null, horizontal tab, line feed, form feed, carriage return, or surrogates
-* creator starting or ending with space or a C0 control character
-* entities ArrayList capacity other than 10,15,22,33,49,73,109,163,244 or 366
-* name other than "A Nice World"
+- rotSpawn above 9.0071993E15
+- rotSpawn not a multiple of 2^-25
+- rotSpawn of Infinity, -Infinity, or NaN
+- unprocessed other than 0 if the volume of the world is a multiple of 200
+- unprocessed not a multiple of 100/50/40/25/20/10/8/5/4/2 if the greatest common diviser of the volume of the world and 200 is 100/50/40/25/20/10/8/5/4/2
+- unprocessed tickCount mismatch if the volume of the world modulo 200 is not a multiple of 8
+- xSpawn or zSpawn outside the world
+  - Causes a softlock on load
+- ySpawn below -67,108,864
+- ySpawn not representable as a float
+- ySpawn -16,777,215 or -33,554,432
+- ySpawn above 16,777,216
+- creator or name set to null
+- creator containing null, horizontal tab, line feed, form feed, carriage return, or surrogates
+- creator starting or ending with space or a C0 control character
+- entities ArrayList capacity other than 10,15,22,33,49,73,109,163,244 or 366
+- name other than "A Nice World"
 
 ## Entities
-* Zombie with bbHeight other than 1.8
-* Zombie with bbWidth other than 0.6
-* Zombie with heightOffset, xRot, xRotI, yRot, yRotI or epsilon other than 0.0
-* Zombie with x or z below -4194304.0 or above 4194304.0
-* Zombie with horizontal velocity greater than 0.25068867
-* Zombie with y above 16777216.0
-* Zombie with yd below -3.919994 or above 0.4116
-* Zombie with position-velocity mismatch
-* Zombie with horizontal velocity-rot-rotA mismatch
-* Zombie with rot below -1.3421773E8 or above 2.1474836E9
-* Zombie with rotA below -7.9999685 or above 99.99962
-* Zombie with speed other than 1.0
-* Zombie with timeOffs below 0.0 or above 1239813.0
-* Zombie with timeOffs not a multiple of 1.376469E-10
-* Zombie with a sufficiently incorrectly sized hitbox
-* Zombie with level as a new Level object
-  * Crashes the game if the zombie is ever inside the bounds of the new level
-* More than 256 zombies in the world
-* Multiple instances of a Zombie in the entities list
-* Multiple Zombies sharing a hitbox
-* Entity entity
-* Particle entity
-  * Has a different serialVersionUID in 0.0.14a_08 and in 0.0.15a-05311904 and later
-* Player entity
-  * Crashes the game on the first game tick and therefore cannot be saved while playing on an applet
-* NetworkPlayer entity
-  * 0.0.15a-05311904 or later only
+- Zombie with bbHeight other than 1.8
+- Zombie with bbWidth other than 0.6
+- Zombie with heightOffset, xRot, xRotI, yRot, yRotI or epsilon other than 0.0
+- Zombie with x or z below -4194304.0 or above 4194304.0
+- Zombie with horizontal velocity greater than 0.25068867
+- Zombie with y above 16777216.0
+- Zombie with yd below -3.919994 or above 0.4116
+- Zombie with position-velocity mismatch
+- Zombie with horizontal velocity-rot-rotA mismatch
+- Zombie with rot below -1.3421773E8 or above 2.1474836E9
+- Zombie with rotA below -7.9999685 or above 99.99962
+- Zombie with speed other than 1.0
+- Zombie with timeOffs below 0.0 or above 1239813.0
+- Zombie with timeOffs not a multiple of 1.376469E-10
+- Zombie with a sufficiently incorrectly sized hitbox
+- Zombie with level as a new Level object
+  - Crashes the game if the zombie is ever inside the bounds of the new level
+- More than 256 zombies in the world
+- Multiple instances of a Zombie in the entities list
+- Multiple Zombies sharing a hitbox
+- Entity entity
+- Particle entity
+  - Has a different serialVersionUID in 0.0.14a_08 and in 0.0.15a-05311904 and later
+- Player entity
+  - Crashes the game on the first game tick and therefore cannot be saved while playing on an applet
+- NetworkPlayer entity
+  - 0.0.15a-05311904 or later only
 
 ## Arbitrary Code Excecution
 WIP

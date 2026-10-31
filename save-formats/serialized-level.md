@@ -34,7 +34,7 @@ The level object has the following fields:
 ## com.mojang.minecraft.Entity
 The Entity class is extended by the NetworkPlayer, Particle, Player, and Zombie classes. Levels typically only include zombies.
 
-The Entity class has the following fields:
+In 0.0.16a_02-081047 the xRotI and yRotI fields were replaced with the xRotO and yRotO fields.
 
 | Field | Type | Description |
 | --- | :---: | --- |
@@ -46,12 +46,14 @@ The Entity class has the following fields:
 | removed | boolean | If the entity is supposed to be removed next tick. Cannot be saved as `true` |
 | x | float | X position. |
 | xRot | float | Pitch, only used for players. |
-| xRotI | float | Unused, was supposed to be used for turn interpolation. Always 0.0. |
+| xRotI | float | Unused, was supposed to be used for turn interpolation. Always 0.0. 0.0.14a_08 - 0.0.15a-05311904. |
+| xRotO | float | No longer unused. 0.0.16a_02-081047 - ??? |
 | xd | float | X velocity. |
 | xo | float | X position in the previous tick. |
 | y | float | Y position. |
 | yRot | float | Yaw, only used for players. |
-| yRotI | float | Unused, was supposed to be used for turn interpolation. Always 0.0. |
+| yRotI | float | Unused, was supposed to be used for turn interpolation. Always 0.0. 0.0.14a_08 - 0.0.15a-05311904. |
+| yRotO | float | No longer unused. 0.0.16a_02-081047 - ??? |
 | yd | float | Y velocity. |
 | yo | float | Y position in the previous tick. |
 | z | float | Z position. |
@@ -94,11 +96,26 @@ The Player class contains an input field, whose class cannot be serialized. As s
 | input | com.mojang.minecraft.player.a | Cannot be serialized. |
 
 ### com.mojang.minecraft.net.NetworkPlayer
-The NetworkPlayer class has the following fields:
+The NetworkPlayer class has the following fields in 0.0.15a-05311904:
 
 | Field | Type | Description |
 | --- | :---: | --- |
 | ticks | int | Number of times the network player has been ticked, used for the animation. |
+
+In 0.0.16a_02-081047 the fields of the class greatly changed. The addition of the minecraft field meant that the NetworkPlayer can now only be serialized if the value is null. When the entity is rendered this causes a NullPointerException.
+
+| Field | Type | Description |
+| --- | :---: | --- |
+| animStep | float | Used for the movement animation. |
+| animStepO | float | The animation step on the last tick. Used for interpolation. |
+| minecraft | com.mojang.minecraft.d | Cannot be serialized. |
+| moveQueue | java.util.List | List of movements of other players the client has yet to process. |
+| name | java.util.String | The player's username rendered above their heads. |
+| xp | int | The x position measured in 32nds of a block. |
+| yBodyRot | float | The rotation of the body. |
+| yBodyRotO | float | The rotation of the body on the last tick. Used for interpolation. |
+| yp | int | The y position measured in 32nds of a block. |
+| zp | int | The z position measured in 32nds of a block. |
 
 ## com.mojang.minecraft.phys.AABB
 | Field | Type | Description |
@@ -201,6 +218,7 @@ If the string is at most 65,535 bytes:
 If the string is at least 65,536 bytes:
 * TC_LONGSTRING constant (`7C`)
 * length of the string (8 bytes)
+* MUTF-8 encoding of the string
 
 ### References
 If a class description or type signature was already written earlier in the data stream, or when the value of a field is an object serialized earlier in the stream. Any future instances of it can be replaced by a reference.
@@ -225,12 +243,12 @@ ArrayList has 1 int field named "size", whose value is equal to the number of el
 | Class | Decimal | Hexadecimal | Versions |
 | --- | :---: | :---: | :---: |
 | com.mojang.minecraft.Entity | 0 | `00 00 00 00 00 00 00 00` | 0.0.14a_08 - ??? |
-| com.mojang.minecraft.character.Zombie | 77479605454997290 | `01 13 43 4A 68 7B 87 2A` | 0.0.14a_08 - ??? |
+| com.mojang.minecraft.character.Zombie | 77479605454997290 | `01 13 43 4A 68 7B 87 2A` | 0.0.14a_08 - ??? (client only) |
 | com.mojang.minecraft.level.Level | 0 | `00 00 00 00 00 00 00 00` | 0.0.14a_08 - ??? |
-| com.mojang.minecraft.net.NetworkPlayer | 77479605454997290 | `01 13 43 4A 68 7B 87 2A` | 0.0.15a-05311904 - ??? |
+| com.mojang.minecraft.net.NetworkPlayer | 77479605454997290 | `01 13 43 4A 68 7B 87 2A` | 0.0.15a-05311904 - ??? (client only) |
 | com.mojang.minecraft.particle.Particle | -635797757596879942 | `F7 2D 31 4E DD 72 B3 BA` | 0.0.14a_08 |
-| com.mojang.minecraft.particle.Particle | -4069360689737339054 | `C7 86 BA 03 59 44 6F 52` | 0.0.15a-05311904 - ??? |
+| com.mojang.minecraft.particle.Particle | -4069360689737339054 | `C7 86 BA 03 59 44 6F 52` | 0.0.15a-05311904 - ??? (client only) |
 | com.mojang.minecraft.phys.AABB | 0 | `00 00 00 00 00 00 00 00` | 0.0.14a_08 - ??? |
-| com.mojang.minecraft.player.Player | 9206737118623327547 | `7F C4 E6 A1 47 F2 65 3B` | 0.0.14a_08 - ??? |
+| com.mojang.minecraft.player.Player | 9206737118623327547 | `7F C4 E6 A1 47 F2 65 3B` | 0.0.14a_08 - ??? (client only) |
 | byte[] | -5984413125824719648 | `AC F3 17 F8 06 08 54 E0` | N/A |
 | java.util.ArrayList | 8683452581122892189 | `78 81 D2 1D 99 C7 61 9D` | N/A |
