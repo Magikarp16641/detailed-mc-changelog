@@ -1,4 +1,4 @@
-At some point between 0.0.15a-05311904 and 0.0.16a_02-081047 protocol version numbers (abbreviated PVN) were added, the server refuses connections from clients with the incorrect protocol version. The protocol is otherwise very similar to the [one](/early-multiplayer-test.md) used in the first multiplayer test.
+At some point between 0.0.15a-05311904 and 0.0.16a_02-081047 protocol version numbers (abbreviated PVN) were added, the server refuses connections from clients with the incorrect protocol version. The protocol is otherwise very similar to the [one](./early-multiplayer-test.md) used in the first multiplayer test.
 
 | Protocol version number | Client | Server |
 | :---: | --- | --- |

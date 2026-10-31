@@ -58,7 +58,7 @@ Below is a table of blocks and how they can be created from the header without h
 | `04` | stoneBrick | rd-160052-launcher | Not discontinued. |
 | `05` | wood | rd-160052-launcher | Not discontinued. |
 | `06` | bush | rd-161348-launcher | Not discontinued. |
-| `07` | unbreakable | N/A | Also possinble using a hacked client or [protocol mismatch](/protocol-mismatch.md) in 1.2 (classic server). |
+| `07` | unbreakable | N/A | Also possinble using a hacked client or [protocol mismatch](./protocol-mismatch.md) in 1.2 (classic server). |
 | `08` | water | 0.0.12a_03-200018 | Briefly discontinued in 0.0.13a-launcher. Discontinued at Y 32 or above. |
 | `09` | calmWater | 0.0.12a_03-200018 | Briefly discontinued in 0.0.13a-launcher. Discontinued at Y 32 or above and in unnatural non-ticking locations (before 0.0.14a_08). |
 | `0A` | lava | 0.0.12a_03-200018 | Discontinued at Y 32 or above and briefly discontinued at Y 22 or above in 0.0.13a-launcher. |
