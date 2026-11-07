@@ -781,8 +781,9 @@
     - This could be used to obtain discontinued block configurations if the server were archived.
 - The client and server communicate with each other using [packets](../server-protocols/early-multiplayer-test.md).
   - The length of a packet, which is used for checking whether the client has received the entire packet, errouneously does not include the length of strings, which can cause a BufferUnderflowException.
+  - Using this client to connect to classic server 1.2 makes it possible place otherwise unplaceable blocks via [protocol mismatch](../complex-methods/protocol-mismatch.md).★
 - The position of players is represented correctly in packets only if the player is within 1024 blocks of 0,0,0 in any direction.
-- The position of a block is represented correctly in packets only if the all it's coordinates are at most 32,767.
+- The position of a block is represented correctly in packets only if the all its coordinates are at most 32,767.
 - The "Generate new level...", "Save level..", and "Load level.." buttons can still be pressed when connected to a server.
   - Generating or loading a level results in client server desync.
 
@@ -817,6 +818,7 @@
 ### Entities
 **Particle**
 - The gravity of particles created from leaves is now only 0.4 times that of other particles.
+- Changed its serialVersionUID.
 
 **Zombie**
 - Zombies no longer swing their head around.
@@ -870,6 +872,8 @@
 ## Changes
 ### Entities
 **NetworkPlayer**
+- The player's username now renders above them.
+  - The name's color is `#FFFFFF` unless it's "Notch" (case-insensitive) in which case it's `#FFFF00`.
 - Added a move queue.
   - Every time a movement packet is received from the server, 2 player moves are added to the move queue to interpolate movement.
   - Every tick 1 player move from the move queue is executed.
@@ -892,6 +896,7 @@
 - The client will no longer attempt to join a server at `79.136.77.240:5565` every time the game is launched. Instead the client will only attempt to join a server if the applet has the `server` and `port` parameters set.
   - If the client fails to connect to the server an error screen with "Failed to connect" and "You failed to connect to the server. It's probably down!" appears.
 - Changed the [server protocol](../server-protocols/classic.md).
+  - It's no longer possible to cause [protocol mismatch] by connecting to classic server 1.2.☆
 - Added protocol version numbers, this version has the PVN of 3.
 - Added server names and the motd. They are now displayed on the loading screen instead of "Connecting to the server.." and "Loading level..".
 - Added several different player movement packets.
@@ -913,6 +918,63 @@
 - Changed the game window title to "Minecraft 0.0.16a_02".
 - Camera rotation is now interpolated.
 - Changed the fog.
+- Updated the contents of the `META-INF` folder.
+
+# 0.0.17a-2014
+## Additions
+### Gameplay
+**Controls**
+- Holding down `TAB` while connected to a server displays a list of every online player.
+  - The list is titled "Connected players:"
+  - The box the list is displayed in is colored with a gradient. The top is `#000000` at 70% opacity and the bottom is `#131313` at 80% opacity.
+  - Usernames are listed in rows of 2, if a player's username is over 120 pixels long it may overlap another player's username or the outside of the box.
+
+**Username verification**
+- Added the `mppass` applet parameter.
+- When connecting to a server, the value of `mppass` is sent as the second string in the `00` packet.
+  - If the `mppass` isn't set, but the `server`, `port`, `username`, and `sessionid` parameters are all set. The client will attempt to join the server, but will experience a NullPointerException when constructing the packet. Because the packet is constructed by a second thread, the packet will still be partially sent to the server.
+
+## Changes
+### Entities
+**NetworkPlayer**
+- Now uses a separate model instance than zombies. The model itself and the texture are unchanged.
+
+**Particle**
+- Changed its serialVersionUID.
+
+### Gameplay
+**Controls**
+- Holding down `LSHIFT` or `RSHIFT` while pressing `F` now cycles through the different draw distances in reverse order.
+- Pressing `T` no longer opens the chat when not connected to a server.
+  - This prevents a NullPointerException from attempting to send a chat message when not connected to a server.
+
+**Chat**
+- The maximum length of a chat message was lowered to $`62 - username length`$. This is because longer chat messages would get cut off due to the string length limit of packets.
+- Increased the number of chat messages that are visible at once to 10, or 20 when the chat is opened.
+- Chat messages older than 10 seconds are now shown when the chat is opened.
+- Chat messages now render 4 pixels lower, removing the gap between the messages and the textbox.
+
+**Multiplayer**
+- Changed the protocol version number to 4.
+- The "Generate new level...", "Save level..", and "Load level.." buttons now appear grayed out when connected to a server. They can still be pressed.
+- The xRot and yRot are no longer read read in the wrong order when receiving the initial `07` packet. The player's xRot can no longer be temporarily above 90 or below -90.
+- The initial `07` packet received from the server now also sets the client's spawn instead of just teleporting the player to the server's spawn.
+  - When setting the rotSpawn the yRot is converted incorrectly. It is multiplied by 320 instead of 360.
+- It is no longer possible to join a server as "guest" if no username is set.
+  - Even if the `server` and `port` applet parameters are set, no attemp to join a server will be made unless the `username` and `sessionid` parameters are set as well.
+- Connecting to a server is now done by a separate thread.
+  - No `08` packets are sent by the main thread until the connection thread sends the `00` packet.
+  - All packets received before the `00` packet is sent are ignored.
+- Encountering an exception while writing or reading packets now prints the exception's stack trace and puts up an error screen titled "Disconnected!" and the exception, instead of just disconnecting the client.
+
+### General
+- Loading or generating a level now triggers the garbage collector.
+- The font textures use a new `default.png` file. The old `default.gif` file is now unused.
+  - The character `30` (`0`) now has a slash to differentiate it from the character `4F` (`O`).
+- A stack trace is now printed to the log if an exception happens in the main loop.
+- The level renderer now invokes `glGenLists(524288)` instead of every chunk invoking `glGenLists(2)`.
+- The version number in the top left of the screen now reads "0.0.17a"
+- Changed the game window title to "Minecraft 0.0.17a".
 - Updated the contents of the `META-INF` folder.
 
 [Header editing]: ../complex-methods/header-editing.md

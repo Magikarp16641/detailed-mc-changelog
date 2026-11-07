@@ -154,38 +154,39 @@ In 0.0.16a_02-081047 the fields of the class greatly changed. The addition of th
 ## Default serialized object format (simplified)
 The Serializable interface can serialize many kinds of objects, most of which are not relevant to a Minecraft save file and as such many irrelevant bits of information are ommited. Classes can define a custom serialization format, such classes will be mentioend when relevant. Strings are written as their length as an unsigned short followed by an MUTF-8 representation of the string. The basic structure of the default format is as follows:
 
-* TC_OBJECT constant (`73`)
-* Class description
-* Field values
+- TC_OBJECT constant (`73`)
+- Class description
+- Field values
 
 ### Class description
-* TC_CLASSDESC constant (`72`)
-* full class name
-* serialVersionUID (8 bytes)
-* flags (1 byte)
-  * SC_WRITE_METHOD (`01`) - the class defines a custom write method
-  * SC_SERIALIZABLE (`02`) - the class is serializable
-  * SC_EXTERNALIZABLE (`04`) - the class is externalizable, not relevant for Minecraft
-  * SC_BLOCK_DATA (`08`) - indicated externalizable data written in Block Data mode, not relevant for Minecraft
-  * SC_ENUM (`10`) - indicates an enum, not relevant for Minecarft.
-* number of fields (2 bytes)
-* field descriptions
-  * type (1 byte)
-    * boolean - Z (`5A`)
-	* byte - B (`42`)
-	* short - S (`53`)
-	* int - I (`49`)
-	* float - F (`46`)
-	* long - J (`4A`)
-	* double - D (`44`)
-	* array - [ (`5B`)
-	* object - L (`4C`)
-  * field name
-  * type signature (array or object only)
-* TC_ENDBLOCKDATA constant (`78`)
-* super class
-  * TC_NULL of there is no super class (`70`)
-  * class description of the super class otherwise
+- TC_CLASSDESC constant (`72`)
+- full class name
+- serialVersionUID (8 bytes)
+- flags (1 byte)
+  - SC_WRITE_METHOD (`01`) - the class defines a custom write method
+  - SC_SERIALIZABLE (`02`) - the class is serializable
+  - SC_EXTERNALIZABLE (`04`) - the class is externalizable, not relevant for Minecraft
+  - SC_BLOCK_DATA (`08`) - indicated externalizable data written in Block Data mode, not relevant for Minecraft
+  - SC_ENUM (`10`) - indicates an enum, not relevant for Minecarft.
+- number of fields (2 bytes)
+- field descriptions
+  - type (1 byte)
+    - boolean - Z (`5A`)
+	- byte - B (`42`)
+	- short - S (`53`)
+	- int - I (`49`)
+	- float - F (`46`)
+	- long - J (`4A`)
+	- double - D (`44`)
+	- array - \[ (`5B`)
+	- object - L (`4C`)
+  - field name
+  - type signature (array or object only)
+    - starts with a TC_STRING constant (`74`)
+- TC_ENDBLOCKDATA constant (`78`)
+- super class
+  - TC_NULL of there is no super class (`70`)
+  - class description of the super class otherwise
 
 ### Field values
 Packed data of the field values, in the same order as in the class description. Field values of super classes are listed first.
@@ -204,27 +205,27 @@ Packed data of the field values, in the same order as in the class description. 
 | object (string) | variable | Uses a custom format |
 
 #### Array serialization
-* TC_ARRAY constant (`75`)
-* class description
-* length of the array (4 bytes)
-* packed contents of the array
+- TC_ARRAY constant (`75`)
+- class description
+- length of the array (4 bytes)
+- packed contents of the array
 
 #### String serialization
 If the string is at most 65,535 bytes:
-* TC_STRING constant (`74`)
-* length of the string (2 bytes)
-* MUTF-8 encoding of the string
+- TC_STRING constant (`74`)
+- length of the string (2 bytes)
+- MUTF-8 encoding of the string
 
 If the string is at least 65,536 bytes:
-* TC_LONGSTRING constant (`7C`)
-* length of the string (8 bytes)
-* MUTF-8 encoding of the string
+- TC_LONGSTRING constant (`7C`)
+- length of the string (8 bytes)
+- MUTF-8 encoding of the string
 
 ### References
 If a class description or type signature was already written earlier in the data stream, or when the value of a field is an object serialized earlier in the stream. Any future instances of it can be replaced by a reference.
 
-* TC_REFERENCE constant (`71`)
-* `00 7E 00 00` + handle number
+- TC_REFERENCE constant (`71`)
+- `00 7E 00 00` + handle number
 
 Handle numbers start at `00 00` and are incremented every new class description, type signature, object, array object or string object. Object and array handles are generated between the class description and the field values.
 
@@ -232,11 +233,11 @@ Handle numbers start at `00 00` and are incremented every new class description,
 ## java.util.ArrayList
 ArrayList has 1 int field named "size", whose value is equal to the number of elements it contains. After the field values the following is written:
 
-* TC_BLOCKDATA constant (`77`)
-* length of the blockdata header (`04`)
-* capacity of the ArrayList
-* packed serialized data of the objects the ArrayList contains
-* TC_ENDBLOCKDATA constant (`78`)
+- TC_BLOCKDATA constant (`77`)
+- length of the blockdata header (`04`)
+- capacity of the ArrayList
+- packed serialized data of the objects the ArrayList contains
+- TC_ENDBLOCKDATA constant (`78`)
 
 ## Table of serialVersionUIDs
 
@@ -247,7 +248,8 @@ ArrayList has 1 int field named "size", whose value is equal to the number of el
 | com.mojang.minecraft.level.Level | 0 | `00 00 00 00 00 00 00 00` | 0.0.14a_08 - ??? |
 | com.mojang.minecraft.net.NetworkPlayer | 77479605454997290 | `01 13 43 4A 68 7B 87 2A` | 0.0.15a-05311904 - ??? (client only) |
 | com.mojang.minecraft.particle.Particle | -635797757596879942 | `F7 2D 31 4E DD 72 B3 BA` | 0.0.14a_08 |
-| com.mojang.minecraft.particle.Particle | -4069360689737339054 | `C7 86 BA 03 59 44 6F 52` | 0.0.15a-05311904 - ??? (client only) |
+| com.mojang.minecraft.particle.Particle | -4069360689737339054 | `C7 86 BA 03 59 44 6F 52` | 0.0.15a-05311904 - 0.0.16a_02-081047 (client only) |
+| com.mojang.minecraft.particle.Particle | -277421575160041072 | `FC 26 66 8C 17 8E 71 90` | 0.0.17a-2014 - ??? (client only) |
 | com.mojang.minecraft.phys.AABB | 0 | `00 00 00 00 00 00 00 00` | 0.0.14a_08 - ??? |
 | com.mojang.minecraft.player.Player | 9206737118623327547 | `7F C4 E6 A1 47 F2 65 3B` | 0.0.14a_08 - ??? (client only) |
 | byte[] | -5984413125824719648 | `AC F3 17 F8 06 08 54 E0` | N/A |

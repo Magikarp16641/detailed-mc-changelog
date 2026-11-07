@@ -115,9 +115,10 @@ This serves as a list of all discontinued features mentioned in this changelog.
 | Multiple instances of a Zombie in the entities list | [Header editing] (0.0.14a_08 - ???) | Cannot be loaded on a server. |
 | Multiple Zombies sharing the same hitbox | [Header editing] (0.0.14a_08 - ???) | Cannot be loaded on a server. |
 | Entity entity | [Header editing] (0.0.14a_08 - ???) | |
-| Particle entity (0.0.14a_08) | [Header editing] (0.0.14a_08) | Temporary. Can't be updated to 0.0.15a-05311904 or later due to a change in the serialVersionUID. |
+| Particle entity (-635797757596879942) | [Header editing] (0.0.14a_08) | Temporary. Can be loaded only in 0.0.14a_08. |
+| Particle entity (-4069360689737339054) | [Header editing] (0.0.15a-05311904 - 0.0.16a_02-081047) | Temporary. Can be loaded only in 0.0.15a-05311904 and 0.0.16_02-081047. |
 | NetworkPlayer entity | [Header editing] (0.0.15a-05311904 - ???) | Crashes the game during rendering in 0.0.16a_02-081047 or later. Cannot be loaded on a server. |
-| Particle entity (0.0.15a-05311904 - ???) | [Header editing] (0.0.15a-05311904 - ???) | Temporary. Cannot be loaded on a server. |
+| Particle entity (-277421575160041072) | [Header editing] (0.0.17a-2014 - ???) | Temporary. Cannot be loaded on a server. |
 
 # World data
 | Discontinued Feature | Version range (path) | Notes |
@@ -125,14 +126,16 @@ This serves as a list of all discontinued features mentioned in this changelog.
 | "--" name | {rd-132211-launcher - 0.0.12a_03-200018} -> {0.0.13a-launcher - ???} | |
 | "unknown" creator | {rd-132211-launcher - 0.0.12a_03-200018} -> {0.0.13a-launcher} | Recontinued on newly generated worlds in 0.0.13a_03. |
 | World dimensions of 32x64x512 | 0.0.13-launcher | New worlds only, partially recontinued using [header editing] (can't be fully recreated for most create time values, see page for more details). All combinations can be recreated using [header editing] in the [0.0.14a_08+ save format](save-formats/serialized-level.md). |
-| World dimensions other than 256x64x256 | [Header editing] (0.0.13a-launcher - ???) | The set of wolrd dimensions that can be loaded depend on the version (see [header editing]). A 32x64x512 world is also possible in 0.0.13a-launcher. A 128x64x128 world is recontinued on new worlds in 0.0.14a_08. |
+| World dimensions other than 256x64x256 | [Header editing] (0.0.13a-launcher - ???) | The set of world dimensions that can be loaded depend on the version (see [header editing]). A 32x64x512 world is also possible in 0.0.13a-launcher. A 128x64x128 world is also possible on client versions in 0.0.14a_08 - ???. |
 | name other than "--" or "A Nice World" | [Header editing] (0.0.13a-launcher - ???) | Between 0.0.13a-launcher and 0.0.13a_03 strings are limited to a maximum of 65,535 bytes. |
 | creator other than "noname" | [Header editing] (0.0.13a-launcher - ???) | Many variants recontinued on newly generated worlds in 0.0.13a_03. Between 0.0.13a-launcher and 0.0.13a_03 strings are limited to a maximum of 65,535 bytes. |
 | creator containing null, horizontal tab, line feed, form feed, carriage return, or surrogates | [Header editing] (0.0.13a-launcher - ???) | Between 0.0.13a-launcher and 0.0.13a_03 strings are limited to a maximum of 65,535 bytes. |
 | creator starting or ending with space or a C0 control character | [Header editing] (0.0.13a-launcher - ???) | Between 0.0.13a-launcher and 0.0.13a_03 strings are limited to a maximum of 65,535 bytes. |
-| creator other than "--" | 0.0.13a_03 - ??? (client only) | |
+| creator other than "--" | 0.0.13a_03 - ??? (client only) | Also possible using [header editing]. |
 | World dimensions of 128x64x128 | 0.0.14a_08 - ??? (client only) | Also possible using [header editing]. |
 | World dimensions of 512x64x512 | 0.0.14a_08 - ??? (client only) | |
+| rotSpawn other than 0 | 0.0.14a_08 - ??? (client only) | Also possible using [header editing]. |
+| rotSpawn other than 0 | [Header editing] (0.0.14a_08 - ???) | Also possible on client versions in 0.0.14a_08 - ???. |
 | rotSpawn above 9.0071993E15 or below -9.0071993E15 | [Header editing] (0.0.14a_08 - ???) | |
 | rotSpawn not a multiple of 2^-25 | [Header editing] (0.0.14a_08 - ???) | |
 | unprocessed other than 0 if the volume of the world is a multiple of 200 | [Header editing] (0.0.14a_08 - ???) | |

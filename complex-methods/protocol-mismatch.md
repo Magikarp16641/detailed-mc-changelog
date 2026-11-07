@@ -65,7 +65,7 @@ None of the available packets provide a long enough sequence of manipulable byte
 | `FF` | Can't be `05`. |
 | XX | Can only place water (`08`). |
 | xx | Can only try to place block ID `FF`, which fails. |
-| YY | Can only place blocks at coordinates $`z ≡ 8 (mod 256)`$. |
+| YY | Can only place blocks at coordinates $`z \equiv 8 \pmod{256}`$. |
 | yy | Can only place blocks at coordinates $`z = 2303`$. |
 | ZZ | Can only try to place blocks at negative Z coordinates, which fails. |
 | zz | Can only place blocks at coordinates $`y = 2303`$. |
@@ -81,18 +81,18 @@ None of the available packets provide a long enough sequence of manipulable byte
 | `FF` | Can't be `05`. |
 | XX | Can only place wood (`05`). |
 | xx | Requires the client loading a world with a width of more than 256 times the id of the placed block. |
-| YY | Can only place blocks at coordinates $`z ≡ 5 (mod 256)`$. Requires the client loading a world with a width of more than 256. |
-| yy | Can only place blocks at coordinates $`1280 ≤ z ≤ 1535`$. Requires the client loading a world with a depth of more than 256 times the id of the placed block. |
-| ZZ | Can only place blocks at coordinates $`y ≡ 5 (mod 256)`$. Requires the client loading a world with a depth of more than 256. |
-| zz | Can only place blocks at coordinates $`1280 ≤ y ≤ 1535`$. Requires the client loading a world with a height of more than 256 times the id of the placed block. |
-| yR | Can only place blocks at coordinates $`x ≡ 5 (mod 256)`$. Requires the client loading a world with a height of more than 256. |
-| xR | Can only place blocks at coordinates $`1280 ≤ x ≤ 1535`$. Can only place rock (`01`). |
+| YY | Can only place blocks at coordinates $`z \equiv 5 \pmod{256}`$. Requires the client loading a world with a width of more than 256. |
+| yy | Can only place blocks at coordinates $`1280 \leq z \leq 1535`$. Requires the client loading a world with a depth of more than 256 times the id of the placed block. |
+| ZZ | Can only place blocks at coordinates $`y \equiv 5 \pmod{256}`$. Requires the client loading a world with a depth of more than 256. |
+| zz | Can only place blocks at coordinates $`1280 \leq y \leq 1535`$. Requires the client loading a world with a height of more than 256 times the id of the placed block. |
+| yR | Can only place blocks at coordinates $`x \equiv 5 \pmod{256}`$. Requires the client loading a world with a height of more than 256. |
+| xR | Can only place blocks at coordinates $`1280 \leq x \leq 1535`$. Can only place rock (`01`). |
 | `05` | Regular player action packet. |
-| XX | Can only place blocks at coordinates $`z ≡ 0 (mod 256)`$ or $`z ≡ 1 (mod 256)`$. Can only place water (`08`). Requires the client loading a world with a width of more than 1280. | 
+| XX | Can only place blocks at coordinates $`z \equiv 0 \pmod{256}`$ or $`z \equiv 1 \pmod{256}`$. Can only place water (`08`). Requires the client loading a world with a width of more than 1280. | 
 | xx | Can only try to place block ID `FF`, which fails. |
-| YY | Can only place blocks at coordinates $`y ≡ 0 (mod 256)`$ or $`y ≡ 1 (mod 256)`$ and $`z ∈ {264,776,1032,1288,1544,3080,3336,4360,4616}`$. Requires the client loading a world with a depth of more than 1280. |
-| yy | Can only place blocks at coordinates $`y ∈ {1,3,4,5,6,12,13,17,18,257,259,260,261,262,268,269,273,274}`$ and $`z = 2303`$. |
+| YY | Can only place blocks at coordinates $`y \equiv 0 \pmod{256}`$ or $`y \equiv 1 \pmod{256}`$ and $`z \in \{264,776,1032,1288,1544,3080,3336,4360,4616\}`$. Requires the client loading a world with a depth of more than 1280. |
+| yy | Can only place blocks at coordinates $`y \in \{1,3,4,5,6,12,13,17,18,257,259,260,261,262,268,269,273,274\}`$ and $`z = 2303`$. |
 | ZZ | Can only try to place blocks at negative Z coordinates, which fails. |
-| zz | Can only place blocks at coordinates $`x ∈ {1,3,4,5,6,12,13,17,18,257,259,260,261,262,268,269,273,274}`$ and $`y = 2303`$. |
+| zz | Can only place blocks at coordinates $`x \in \{1,3,4,5,6,12,13,17,18,257,259,260,261,262,268,269,273,274\}`$ and $`y = 2303`$. |
 | em | Can't be `05`. |
 | id | Can only place blocks at coordinates $`x = 2303`$. |

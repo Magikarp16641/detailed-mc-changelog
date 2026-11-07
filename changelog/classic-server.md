@@ -78,46 +78,6 @@ This server version is based on 0.0.16a_02. It uses the [classic server protocol
   - Warning entries begin with "  !".
   - All other entries begin with "   ".
 
-| Level | Message |
-| :---: | --- |
-| FINE | "Reading.." |
-| FINE | "Raising.." |
-| FINE | "Eroding.." |
-| FINE | "Soiling.." |
-| FINE | "Carving.." |
-| FINE | "Watering.." |
-| FINE | "Melting.." |
-| FINE | "Growing.." |
-| FINE | "Planting.." |
-| INFO | "Setting up" |
-| INFO | "Loading level" |
-| INFO | "Generating level" |
-| INFO | "Now accepting input on " + port |
-| INFO | "Saving level" |
-| INFO | "Load: " + player count + "/" + max players |
-| INFO | "Sending heartbeat" |
-| INFO | ip + " tried to connect, but is banned" |
-| INFO | ip + " tried to connect, but failed because the server was full." |
-| INFO | player + " connected" |
-| INFO | ip + " logged in as " + username |
-| INFO | player + " says: " + message |
-| INFO | "Kicking " + player + ": " + message |
-| INFO | player + " lost connection suddenly. (" + exception ")" |
-| INFO | player + " disconnected" |
-| WARNING | 'Failed to load player list "' + name + '". (' + exception + ')' |
-| WARNING | 'Failed to save player list "' + name + '". (' + exception + ')' |
-| WARNING | "Failed to load server.properties" |
-| WARNING | "server.properties is broken! Delete it or fix it!" |
-| WARNING | "Failed to save server.properties" |
-| WARNING | "Failed to load level. Generating a new level" |
-| WARNING | "Failed to send heartbeat: " + exception |
-| WARNING | player + ":" + exception |
-| WARNING | "Exception handling " + player " + "!" |
-| SEVERE | "Failed to start server!" |
-| SEVERE | "Failed to save level! " + exception |
-| SEVERE | "Failed to assemble heartbeat: " + exception |
-| SEVERE | "Error in main loop, server shutting down!" |
-
 ## Removals
 - Removed the NetworkPlayer, Particle, Player and Zombie entities.
 - Removed rendering code.
@@ -128,3 +88,45 @@ This server version is based on 0.0.16a_02. It uses the [classic server protocol
   - Attempting to load such a world, will result in a new world being generated instead.
 - Removed the `MOJANG_C.DSA` and `MOJANG_C.SF` files.
 - Removed all the signatures from the `MANIFEST.MF` file.
+
+# 1.3
+## Additions
+### General
+- Added protections against cheated player action packets. When the server receives a packet it deems cheated, the offending client will be kicked with the message "Cheat detected: " + reason.
+  - Packets with the block being more than 8 blocks away from the feet of the player are considered cheated with the reason "Distance".
+    - Additionally "Distance: " + the distance is printed to the log.
+  - Packets with the block type not being one that can normally be placed are considered cheated with the reason "Tile type".
+- If the server does not receive a `00` packet within 5 seconds of a client connecting, they will now be kicked with the message "You need to log in!".
+- Added the `/setspawn` command.
+  - Using it sets the world's spawn to the user's server-side position.
+  - During the conversion of the user's yRot from a single byte to degrees, the angle is multiplied by 320 instead of 360, causing the rotSpawn to be set incorrectly.
+- Added `players.txt`, which lists the usernames of all players currently connected to the server.
+- Added the `verify-names` server property.
+  - When clients attempt to join the server the second string in the `00` packet is compared to the MD5 hash of their username prepended with a salt. If they are not equal they get kicked with the message "Illegal name."
+  - When the server starts the salt is set to a random long. The salt is included in a heartbeat.
+
+## Changes
+### General
+**Heartbeat**
+- Heartbeats are now sent every 900 ticks instead of every 600 ticks.
+- Added "salt" and "version" parameters to the heartbeat.
+  - The value of version is the server's protocol version number, which is currently 4.
+- Failing to assemble a heartbeat now throws a RuntimeException instead of being logged as severe.
+- Failing to send a heartbeat is now considered severe instead of a warning.
+- After receiving a new response to a heartbeat the following happens:
+  - "To connect directly to this server, surf to: " + response is added to the log as info.
+  - The response is added to a new `externalurl.txt` file.
+  - "(This is also in externalurl.txt)" is added to the log as info.
+
+**Commands**
+- The `/banip` command can now be provided an ip instead of requiring a username.
+  - The ip can be provided with or without a leading "/".
+- Changed the chat message from username + " got banned" to list of usernames + " got ip banned".
+  - Erroneously the usernames are not separated by ", ", instead the ", " is prepended before the list of usernames.
+
+**Miscellaneous**
+- Changed the protocol version number to 4.
+- A single IP can now only join the server on a maximum of 2 clients at once. Attempting to join with a third kicks them with the message "Too many connection!".
+- It's no longer possible for two client to join the server if their username are identical aside from their cases. Attempting to do so kick them with the message "You logged in from another computer.".
+- Connections that have weren't allowed to join stay connected to the server for 100 ticks instead of 40 ticks.
+- If no `server_level.dat` is found when starting the server the warning "No level file found. Generating a new level" is now logged.

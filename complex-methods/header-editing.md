@@ -184,7 +184,7 @@ Besides custom world dimensions the following field values are not otherwise pos
 - Multiple Zombies sharing a hitbox
 - Entity entity
 - Particle entity
-  - Has a different serialVersionUID in 0.0.14a_08 and in 0.0.15a-05311904 and later
+  - Has a different serialVersionUID in 0.0.14a_08, between 0.0.15a-05311904 and 0.0.16a_02-081047, and in 0.0.17a-2014 or later.
 - Player entity
   - Crashes the game on the first game tick and therefore cannot be saved while playing on an applet
 - NetworkPlayer entity

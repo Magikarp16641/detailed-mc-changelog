@@ -3,6 +3,7 @@ At some point between 0.0.15a-05311904 and 0.0.16a_02-081047 protocol version nu
 | Protocol version number | Client | Server |
 | :---: | --- | --- |
 | 3 | 0.0.16a_02-081047 | 1.2 |
+| 4 | 0.0.17a-2014 | 1.3 |
 
 # Data types
 
@@ -23,14 +24,14 @@ Receiving a packet with an invalid ID causes and exception and disconnects the p
 
 | ID | Data types | Clientbound | Serverbound |
 | :---: | --- | --- | --- |
-| `00` | Byte, String, String | Sent after the server receives a packet with a valid PVN from an unbanned player. Contains the PVN, the server name, and the motd. Creates a loading screen with the server name as the title and the motd as the status. | First packet sent when connecting to a server. Contains the PVN, the player's username as well as the string "--". If the protocol version number is incorrect, or the player is banned the server refuses connection, otherwise a gzipped buffer containing the number of blocks and block IDs is prepared for the player by a separate thread. |
+| `00` | Byte, String, String | Sent after the server receives a packet with a valid PVN from an unbanned player. Contains the PVN, the server name, and the motd. Creates a loading screen with the server name as the title and the motd as the status. | First packet sent when connecting to a server. Contains the PVN, the player's username as well as the value of the `mppass` parameter (or "--" in 0.0.16a_02-081047). The server either refuses the connection and kicks the client, or a gzipped buffer containing the number of blocks and block IDs is prepared for the player by a separate thread. |
 | `01` | - | Sent to every player every 0.5 seconds, does nothing | unused |
 | `02` | - | Sent before the player receives level data. Initializes a buffer for loading the level. | unused |
 | `03` | Short, byte[], Byte | The short indicates the number of bytes from the byte array to copy to the level loading buffer. The byte indicates the level loading percetage used for the loading screen progress bar. | unused |
 | `04` | Short, Short, Short | Sent after all the level data. The data in the level loading buffer is unzipped, the first 4 bytes indicate the number of blocks in the world with the rest being block IDs. The level is initialized with these blocks and the 3 shorts as its dimensions. | unused |
 | `05` | Short, Short, Short, Byte, Byte | unused | Sent when the player breaks/places a blocks. Contains the block's coordinates, the edit mode, and the selected block ID. Based on the edit mode the block at those coordinates is set to ID `00` or the selected block ID (the latter only if it would replace a liquid or block ID `00`). |
 | `06` | Short, Short, Short, Byte | Sent whenever a block changes (with the exception of water/lava turning to calmWater/calmLava and vice versa). Changes the block at the given coordinates to the given block ID. Sends block updates. | unused |
-| `07` | Byte, String, Short, Short, Short, Byte, Byte | Contains an id, a username, coordinates, yRot and xRot. If the id isn't negative a new NetworkPlayer entity is created, otherwise the player's position and rotation is changed. Sent to the client when they join the server with an id of -1, to all online players whenever a new player joins the server, and once for every currently online player to the client when they join the server. | unused |
+| `07` | Byte, String, Short, Short, Short, Byte, Byte | Contains an id, a username, coordinates, yRot and xRot. If the id isn't negative a new NetworkPlayer entity is created, otherwise the player's position and rotation is changed. Sent to the client when they join the server with an id of -1 (The 0.0.16a_02-081047 client erroneously swaps the yRot and xRot in this case), to all online players whenever a new player joins the server, and once for every currently online player to the client when they join the server. | unused |
 | `08` | Byte, Short, Short, Short, Byte, Byte | Contains an id, coordinates, yRot and xRot. If the id is not negative, the position and rotation of the NetworkPlayer of the given id is updated. Sometimes sent by the server after it receives a `08` packet from another client. | Is sent every tick with the id set to -1 and the player's current position and rotation. Can cause packet `08`,`09`,`0A`, or `0B` to be sent to other clients by the server. |
 | `09` | Byte, Byte, Byte, Byte, Byte, Byte | Contains an id, change of position, and yRot and xRot. If the id is not negative, movement of the NetworkPlayer is queued. Sometimes sent by the server after it receives a `08` packet from another client. | unused |
 | `0A` | Byte, Byte, Byte, Byte | Contains an id and change of position. If the id is not negative, movement of the NetworkPlayer is queued. Sometimes sent by the server after it receives a `08` packet from another client. | unused |
