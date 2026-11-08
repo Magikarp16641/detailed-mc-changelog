@@ -47,13 +47,13 @@ In 0.0.16a_02-081047 the xRotI and yRotI fields were replaced with the xRotO and
 | x | float | X position. |
 | xRot | float | Pitch, only used for players. |
 | xRotI | float | Unused, was supposed to be used for turn interpolation. Always 0.0. 0.0.14a_08 - 0.0.15a-05311904. |
-| xRotO | float | No longer unused. 0.0.16a_02-081047 - ??? |
+| xRotO | float | No longer unused. 0.0.16a_02-081047 - ???. |
 | xd | float | X velocity. |
 | xo | float | X position in the previous tick. |
 | y | float | Y position. |
 | yRot | float | Yaw, only used for players. |
 | yRotI | float | Unused, was supposed to be used for turn interpolation. Always 0.0. 0.0.14a_08 - 0.0.15a-05311904. |
-| yRotO | float | No longer unused. 0.0.16a_02-081047 - ??? |
+| yRotO | float | No longer unused. 0.0.16a_02-081047 - ???. |
 | yd | float | Y velocity. |
 | yo | float | Y position in the previous tick. |
 | z | float | Z position. |
@@ -108,14 +108,18 @@ In 0.0.16a_02-081047 the fields of the class greatly changed. The addition of th
 | --- | :---: | --- |
 | animStep | float | Used for the movement animation. |
 | animStepO | float | The animation step on the last tick. Used for interpolation. |
-| minecraft | com.mojang.minecraft.d | Cannot be serialized. |
-| moveQueue | java.util.List | List of movements of other players the client has yet to process. |
-| name | java.util.String | The player's username rendered above their heads. |
+| oRun | float | The value of run on the last tick. 0.0.18a_02 - ???. |
+| run | float | Multiplied by 0.9 every tick and incremented by 0.9 every tick the NetworkPlayer is moving. Does nothing. |
 | xp | int | The x position measured in 32nds of a block. |
 | yBodyRot | float | The rotation of the body. |
 | yBodyRotO | float | The rotation of the body on the last tick. Used for interpolation. |
 | yp | int | The y position measured in 32nds of a block. |
 | zp | int | The z position measured in 32nds of a block. |
+| minecraft | com.mojang.minecraft.d | Cannot be serialized. |
+| model | com.mojang.minecraft.character.a | Cannot be serialized. 0.0.17a-2014 - ???. |
+| moveQueue | java.util.List | List of movements of other players the client has yet to process. |
+| name | java.util.String | The player's username rendered above their heads. |
+| textures$7a7c7041 | com.mojang.minecraft.a.a | Cannot be serialized. 0.0.18a_02 - ???. |
 
 ## com.mojang.minecraft.phys.AABB
 | Field | Type | Description |

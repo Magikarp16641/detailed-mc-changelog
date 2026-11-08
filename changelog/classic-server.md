@@ -130,3 +130,33 @@ This server version is based on 0.0.16a_02. It uses the [classic server protocol
 - It's no longer possible for two client to join the server if their username are identical aside from their cases. Attempting to do so kick them with the message "You logged in from another computer.".
 - Connections that have weren't allowed to join stay connected to the server for 100 ticks instead of 40 ticks.
 - If no `server_level.dat` is found when starting the server the warning "No level file found. Generating a new level" is now logged.
+
+# 1.4-1327
+## Additions
+### General
+**Commands**
+- Added the `/teleport` command.
+  - Teleports the user to the position of the player whose username matches the argument.
+  - If no such player is found the user receives the message "No such player".
+
+**Packet validation**
+- Added checks to prevent strings containing C0 control characters and characters outside the Basic Latin block, as the latter would crash clients trying to render them.
+  - Players with invalid characters in their name get kicked when trying to join with the message "Cheat detected: Bad name!".
+    - Due to a missing return statement if the client sent a chat packet (`0D`) quickly enough, the chat message is sent to every client including the invalid username, crashing vanilla clients.
+  - Players attempting to send a chat message containing invalid characters get kicked with the message "Cheat detected: Bad chat message!".
+- Player action packets (`05`) that attempt to place blocks outside the world now cause the client to get kicked with the message "Cheat detected: Clicked out side the map".
+  - This is possible in a vanilla client by attempting to build above the build limit or by generating/loading a world that is bigger than the server world.
+- All packets received from clients, except for the preLogin packet (`00`), are now ignored before the client sends a valid `00` packet and is sent the level data.
+
+**Logging**
+- The log is now saved inside the `server.log` file.
+
+# 1.4-1422
+## Changes
+### General
+- Player action packets (`05`) that attempt to place blocks outside the world no longer cause the client to get kicked.
+
+# 1.4.1
+## Changes
+### General
+- Players with invalid characters in their name are now properly kicked. They can no longer cause other clients to crash by sending a chat packet (`0D`) quick enough.

@@ -3,7 +3,7 @@ At some point between 0.0.15a-05311904 and 0.0.16a_02-081047 protocol version nu
 | Protocol version number | Client | Server |
 | :---: | --- | --- |
 | 3 | 0.0.16a_02-081047 | 1.2 |
-| 4 | 0.0.17a-2014 | 1.3 |
+| 4 | 0.0.17a-2014<br>0.0.18a_02 | 1.3<br>1.4-1327<br>1.4-1422<br>1.4.1 |
 
 # Data types
 

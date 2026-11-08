@@ -177,7 +177,7 @@
 - Faces on the outside of the world no longer render.
   - This is noticable on the top faces of blocks at Y 63.
   - As a direct result, the selected block type is no longer shown in the top right corner of the screen as it's being rendered at 0,-2,0. The bush is not affected.
-- Zombies can no longer be practically removed by being below Y -100. This can now only happen if the zombie's width is reduced to 0 from float rounding, which may not be possible due to the random nature of a zombie's movement.
+- Zombies can no longer be practically removed by being below Y -100. This can now only happen if the zombie's width is reduced to 0 from float rounding, which would require immense RNG manipulation due to the random nature of zombies's movement.
 
 **Controls**
 - Pressing `N` regenerates the world, respawns the player and deletes all zombies.
@@ -938,6 +938,7 @@
 ### Entities
 **NetworkPlayer**
 - Now uses a separate model instance than zombies. The model itself and the texture are unchanged.
+  - The `model` field is no longer static.
 
 **Particle**
 - Changed its serialVersionUID.
@@ -959,7 +960,7 @@
 - The "Generate new level...", "Save level..", and "Load level.." buttons now appear grayed out when connected to a server. They can still be pressed.
 - The xRot and yRot are no longer read read in the wrong order when receiving the initial `07` packet. The player's xRot can no longer be temporarily above 90 or below -90.
 - The initial `07` packet received from the server now also sets the client's spawn instead of just teleporting the player to the server's spawn.
-  - When setting the rotSpawn the yRot is converted incorrectly. It is multiplied by 320 instead of 360.
+  - When setting the rotSpawn the yRot is converted incorrectly. It is multiplied by 320 instead of 360. The division by 256 is also done before casting to a float, meaning that the resulting rotSpawn is always a whole number.
 - It is no longer possible to join a server as "guest" if no username is set.
   - Even if the `server` and `port` applet parameters are set, no attemp to join a server will be made unless the `username` and `sessionid` parameters are set as well.
 - Connecting to a server is now done by a separate thread.
@@ -973,8 +974,40 @@
   - The character `30` (`0`) now has a slash to differentiate it from the character `4F` (`O`).
 - A stack trace is now printed to the log if an exception happens in the main loop.
 - The level renderer now invokes `glGenLists(524288)` instead of every chunk invoking `glGenLists(2)`.
-- The version number in the top left of the screen now reads "0.0.17a"
+- The version number in the top left of the screen now reads "0.0.17a".
 - Changed the game window title to "Minecraft 0.0.17a".
+- Updated the contents of the `META-INF` folder.
+
+# 0.0.18a_02
+## Changes
+### Entities
+**NetworkPlayer**
+- Added support for custom skins.
+  - When another player joins a server, the client attempts to get the skin from `http://www.minecraft.net/skin/` + username + `.png`.
+  - A 404 response prints "Failed to load texture for " + username to the log.
+  - Succesfully loading a texture prints "Loading texture for " + username to the log.
+- Changed how the body rotates in relation to the head.
+  - Now slowly turns to match the head's yaw.
+- Added `run` and `oRun` float fields.
+  - `run` is multiplied by 0.9 every tick and incremented by 0.9 every tick the NetworkPlayer is moving.
+  - `oRun` is equal to the value of `run` the previous tick.
+- Added a non-transient `textures$7a7c7041` field which cannot be serialized.
+
+### Gameplay
+**Chat**
+- It is now possible to type `24` (`$`), `40` (`@`), `5C` (`\`), and `7C` (`¦`) in the chat.
+
+**Multiplayer**
+- Receiving the `08` packet with a negative id now teleports the player instead of doing nothing.
+  - This was added to support the `/teleport` command.
+
+### General
+- Changed the appearance of several characters.
+  - The character `49` (`I`) now has serifs to differentiate it from character `6C` (`l`).
+  - Moved the texture of the character `7B` (`{`) 1 pixel to the left to fix the issue with it having a width of 1.
+  - Removed an extra pixel on the right side of the character `7D` (`}`).
+- The version number in the top left of the screen now reads "0.0.18a_02".
+- Changed the game window title to "Minecraft 0.0.18a_02".
 - Updated the contents of the `META-INF` folder.
 
 [Header editing]: ../complex-methods/header-editing.md

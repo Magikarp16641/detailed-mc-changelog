@@ -47,7 +47,7 @@ Via creative usage of null byte conversion and other manipulation techniques, it
 
 # Uses
 ## Blocks
-Below is a table of blocks and how they can be created from the header without having to use create time or null byte conversion.
+Below is a table of blocks that can be created using header editing.
 
 | Block ID | Block Type | Recontinued version | Notes |
 | :---: | --- | --- | --- |
@@ -58,7 +58,7 @@ Below is a table of blocks and how they can be created from the header without h
 | `04` | stoneBrick | rd-160052-launcher | Not discontinued. |
 | `05` | wood | rd-160052-launcher | Not discontinued. |
 | `06` | bush | rd-161348-launcher | Not discontinued. |
-| `07` | unbreakable | N/A | Also possinble using a hacked client or [protocol mismatch](./protocol-mismatch.md) in 1.2 (classic server). |
+| `07` | unbreakable | N/A | Also possible using a hacked client or [protocol mismatch](./protocol-mismatch.md) in 1.2 (classic server). |
 | `08` | water | 0.0.12a_03-200018 | Briefly discontinued in 0.0.13a-launcher. Discontinued at Y 32 or above. |
 | `09` | calmWater | 0.0.12a_03-200018 | Briefly discontinued in 0.0.13a-launcher. Discontinued at Y 32 or above and in unnatural non-ticking locations (before 0.0.14a_08). |
 | `0A` | lava | 0.0.12a_03-200018 | Discontinued at Y 32 or above and briefly discontinued at Y 22 or above in 0.0.13a-launcher. |
@@ -86,8 +86,8 @@ Block IDs being created from the header and shifting blocks (either via invalida
 - gravel above block ID `00` below block ID `00`-`06` or `08`-`12`.
 - grass somewhere below goldOre, ironOre, coalOre, or sand or gravel above block ID `00`.
 - grass below Y 5 at least 3 blocks below a ring of goldOre, ironOre, coalOre, or sand or gravel above block ID `00`.
-- a pocket of water or calmWater below Y 29 surrounded on all sides and top by goldOre, ironOre, coalOre, or block ID `00` below sand or gravel.
-- global block configurations which don't appear on any world seed.
+- a pocket of water or calmWater below Y 29 surrounded on all sides and top by goldOre, ironOre, coalOre, or block ID `00` adjacent to sand or gravel above block ID `00`.
+- global block configurations of goldOre, ironOre, coalOre, and sand or gravel above block ID `00` which don't appear on any world seed.
 
 ## World data
 ### 0.0.13a-launcher - 0.0.13a_03-launcher
@@ -158,7 +158,7 @@ Besides custom world dimensions the following field values are not otherwise pos
 - creator or name set to null
 - creator containing null, horizontal tab, line feed, form feed, carriage return, or surrogates
 - creator starting or ending with space or a C0 control character
-- entities ArrayList capacity other than 10,15,22,33,49,73,109,163,244 or 366
+- entities ArrayList capacity other than 10, 15, 22, 33, 49, 73, 109, 163, 244 or 366
 - name other than "A Nice World"
 
 ## Entities
